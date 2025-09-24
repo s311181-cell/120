@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<title>演唱會紀錄器</title>
-<style>
-  body { font-family: Arial; padding: 10px; }
-  input, textarea { margin: 4px 0; width: 200px; }
-  button { margin: 2px; }
-  img { max-width: 120px; display:block; margin-top:4px; }
-  li { border:1px solid #ccc; padding:8px; margin:6px 0; list-style:none; }
-</style>
+  <meta charset="UTF-8">
+  <title>演唱會紀錄器</title>
+  <style>
+    body { font-family: Arial; padding: 10px; }
+    input, textarea { margin: 4px 0; width: 200px; }
+    button { margin: 2px; }
+    img { max-width: 120px; display:block; margin-top:4px; }
+    li { border:1px solid #ccc; padding:8px; margin:6px 0; list-style:none; }
+  </style>
 </head>
 <body>
 
@@ -58,12 +58,12 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstati
 
 // ===== 換成你的 Firebase config =====
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyA3Z6m8r6Z5D9e4z5X9l9s5l9K9u9P9r9",
+  authDomain: "daily-d5009.firebaseapp.com",
+  projectId: "daily-d5009",
+  storageBucket: "daily-d5009.appspot.com",
+  messagingSenderId: "1234567890",
+  appId: "1:1234567890:web:abcdef123456"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -201,6 +201,7 @@ function startEdit(id,data){
 </script>
 </body>
 </html>
+
 
 
 
