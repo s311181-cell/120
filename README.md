@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
-<title>演唱會紀錄器 (Firebase + Storage)</title>
+<title>演唱會紀錄器</title>
 <style>
   body { font-family: Arial; padding: 10px; }
   input, textarea { margin: 4px 0; width: 200px; }
@@ -15,7 +15,6 @@
 
 <h1>🎵 演唱會紀錄器</h1>
 
-<!-- 登入/註冊區 -->
 <div id="loginDiv">
   <h2>登入</h2>
   <form id="loginForm">
@@ -32,7 +31,6 @@
   </form>
 </div>
 
-<!-- 主應用區 -->
 <div id="appDiv" style="display:none">
   <button id="logoutBtn">登出</button>
 
@@ -52,15 +50,13 @@
   <ul id="recordsList"></ul>
 </div>
 
-<!-- Firebase SDK & 主程式 -->
 <script type="module">
-  // ===== Firebase SDK =====
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
   import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
   import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-  // ===== Firebase 設定 =====
+  // ===== 請換成你自己的 Firebase config =====
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
@@ -75,7 +71,6 @@
   const db = getFirestore(app);
   const storage = getStorage(app);
 
-  // ===== DOM 元素 =====
   const loginDiv = document.getElementById("loginDiv");
   const appDiv = document.getElementById("appDiv");
   const loginForm = document.getElementById("loginForm");
@@ -88,7 +83,7 @@
   let editingId = null;
   let editingImageUrl = null;
 
-  // ===== 登入狀態監聽 =====
+  // ===== 監聽登入狀態 =====
   onAuthStateChanged(auth, user => {
     if(user){
       loginDiv.style.display="none";
@@ -130,7 +125,7 @@
   // ===== 登出 =====
   logoutBtn.addEventListener("click", async ()=>{ await signOut(auth); });
 
-  // ===== 儲存紀錄（新增/編輯） =====
+  // ===== 新增/編輯紀錄 =====
   recordForm.addEventListener("submit", async e=>{
     e.preventDefault();
     const user = auth.currentUser;
@@ -185,7 +180,8 @@
       editBtn.onclick = ()=> startEdit(docSnap.id,d);
       const delBtn = document.createElement("button"); delBtn.textContent="刪除";
       delBtn.onclick = async ()=>{ await deleteDoc(doc(db,"concerts",docSnap.id)); loadRecords(uid); };
-      li.appendChild(editBtn); li.appendChild(delBtn);
+      li.appendChild(editBtn);
+      li.appendChild(delBtn);
       recordsList.appendChild(li);
     });
   }
@@ -207,3 +203,4 @@
 </body>
 </html>
 
+ 
