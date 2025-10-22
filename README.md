@@ -58,15 +58,27 @@ import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
 // ✅ ✅ ✅ 請填入你 Firebase 控制台的正確 config 值：
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY", // ← 例如：AIzaSyxxxxxx
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
+  authDomain: "daily-d5009.firebaseapp.com",
+  projectId: "daily-d5009",
+  storageBucket: "daily-d5009.firebasestorage.app",
+  messagingSenderId: "630564153291",
+  appId: "1:630564153291:web:5f9e7672784fd511b6b84e",
+  measurementId: "G-K3Y09STCHR"
 };
 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 // ✅ 初始化 Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
