@@ -51,26 +51,29 @@
 </div>
 
 <script type="module">
+// ✅ 載入 Firebase 模組
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ===== 換成你的 Firebase config =====
+// ✅ ✅ ✅ 請填入你 Firebase 控制台的正確 config 值：
 const firebaseConfig = {
-  apiKey: "AIzaSyA3Z6m8r6Z5D9e4z5X9l9s5l9K9u9P9r9",
-  authDomain: "daily-d5009.firebaseapp.com",
-  projectId: "daily-d5009",
-  storageBucket: "daily-d5009.appspot.com",
-  messagingSenderId: "1234567890",
-  appId: "1:1234567890:web:abcdef123456"
+  apiKey: "YOUR_API_KEY", // ← 例如：AIzaSyxxxxxx
+  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT_ID.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
 
+// ✅ 初始化 Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
+// ✅ 抓取 DOM 元素
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -83,59 +86,67 @@ const imageInput = document.getElementById("imageInput");
 let editingId = null;
 let editingImageUrl = null;
 
-// ===== 監聽登入狀態 =====
+// ✅ 登入狀態監聽
 onAuthStateChanged(auth, user => {
-  if(user){
-    loginDiv.style.display="none";
-    appDiv.style.display="block";
+  if (user) {
+    loginDiv.style.display = "none";
+    appDiv.style.display = "block";
     loadRecords(user.uid);
   } else {
-    loginDiv.style.display="block";
-    appDiv.style.display="none";
+    loginDiv.style.display = "block";
+    appDiv.style.display = "none";
   }
 });
 
-// ===== 註冊 =====
-signupForm.addEventListener("submit", async e=>{
+// ✅ 註冊處理
+signupForm.addEventListener("submit", async e => {
   e.preventDefault();
   const email = signupForm["email"].value;
   const password = signupForm["password"].value;
-  try{
-    await createUserWithEmailAndPassword(auth,email,password);
-    alert("註冊成功！");
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+    alert("✅ 註冊成功！");
     signupForm.reset();
-  }catch(err){
-    alert("註冊失敗："+err.message);
+  } catch (err) {
+    console.error("❌ 註冊錯誤:", err.code, err.message);
+    alert("註冊失敗：" + err.message);
   }
 });
 
-// ===== 登入 =====
-loginForm.addEventListener("submit", async e=>{
+// ✅ 登入處理
+loginForm.addEventListener("submit", async e => {
   e.preventDefault();
   const email = loginForm["email"].value;
   const password = loginForm["password"].value;
-  try{
-    await signInWithEmailAndPassword(auth,email,password);
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
     loginForm.reset();
-  }catch(err){
-    alert("登入失敗："+err.message);
+  } catch (err) {
+    console.error("❌ 登入錯誤:", err.code, err.message);
+    alert("登入失敗：" + err.message);
   }
 });
 
-// ===== 登出 =====
-logoutBtn.addEventListener("click", async ()=>{ await signOut(auth); });
+// ✅ 登出處理
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+  } catch (err) {
+    alert("登出失敗：" + err.message);
+  }
+});
 
-// ===== 新增/編輯紀錄 =====
-recordForm.addEventListener("submit", async e=>{
+// ✅ 儲存紀錄
+recordForm.addEventListener("submit", async e => {
   e.preventDefault();
   const user = auth.currentUser;
-  if(!user) return;
+  if (!user) return;
 
   let imageUrl = editingImageUrl || "";
   const file = imageInput.files[0];
-  if(file){
+  if (file) {
     const storageRef = ref(storage, `images/${user.uid}_${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef,file);
+    await uploadBytes(storageRef, file);
     imageUrl = await getDownloadURL(storageRef);
   }
 
@@ -151,43 +162,49 @@ recordForm.addEventListener("submit", async e=>{
     createdAt: new Date()
   };
 
-  try{
-    if(editingId){
-      await updateDoc(doc(db,"concerts",editingId),data);
+  try {
+    if (editingId) {
+      await updateDoc(doc(db, "concerts", editingId), data);
       editingId = null;
       editingImageUrl = null;
     } else {
-      await addDoc(collection(db,"concerts"),data);
+      await addDoc(collection(db, "concerts"), data);
     }
     recordForm.reset();
+    imageInput.value = "";
     loadRecords(user.uid);
-  }catch(err){ alert("儲存失敗："+err.message);}
+  } catch (err) {
+    alert("儲存失敗：" + err.message);
+  }
 });
 
-// ===== 載入紀錄 =====
-async function loadRecords(uid){
-  recordsList.innerHTML="";
-  const q = query(collection(db,"concerts"),where("uid","==",uid));
+// ✅ 載入紀錄
+async function loadRecords(uid) {
+  recordsList.innerHTML = "";
+  const q = query(collection(db, "concerts"), where("uid", "==", uid));
   const snap = await getDocs(q);
-  snap.forEach(docSnap=>{
+  snap.forEach(docSnap => {
     const d = docSnap.data();
     const li = document.createElement("li");
     li.innerHTML = `<strong>${d.artist}</strong> (${d.datetime})<br>
-                    票價:${d.price} 座位:${d.seat} 場地:${d.venue}<br>
-                    備註:${d.notes}<br>`;
-    if(d.image) li.innerHTML += `<img src="${d.image}"><br>`;
-    const editBtn = document.createElement("button"); editBtn.textContent="編輯";
-    editBtn.onclick = ()=> startEdit(docSnap.id,d);
-    const delBtn = document.createElement("button"); delBtn.textContent="刪除";
-    delBtn.onclick = async ()=>{ await deleteDoc(doc(db,"concerts",docSnap.id)); loadRecords(uid); };
+                    票價: ${d.price} 座位: ${d.seat} 場地: ${d.venue}<br>
+                    備註: ${d.notes}<br>`;
+    if (d.image) li.innerHTML += `<img src="${d.image}"><br>`;
+    const editBtn = document.createElement("button"); editBtn.textContent = "編輯";
+    editBtn.onclick = () => startEdit(docSnap.id, d);
+    const delBtn = document.createElement("button"); delBtn.textContent = "刪除";
+    delBtn.onclick = async () => {
+      await deleteDoc(doc(db, "concerts", docSnap.id));
+      loadRecords(uid);
+    };
     li.appendChild(editBtn);
     li.appendChild(delBtn);
     recordsList.appendChild(li);
   });
 }
 
-// ===== 編輯紀錄 =====
-function startEdit(id,data){
+// ✅ 編輯紀錄
+function startEdit(id, data) {
   editingId = id;
   editingImageUrl = data.image || null;
   recordForm["artist"].value = data.artist;
@@ -197,11 +214,6 @@ function startEdit(id,data){
   recordForm["venue"].value = data.venue;
   recordForm["notes"].value = data.notes;
 }
-
 </script>
 </body>
 </html>
-
-
-
-
