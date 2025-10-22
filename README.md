@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-body {
-  background-color: #fff0f5; /* 背景淡粉紅 */
-  color: #333;
-  font-family: 'Arial', sans-serif;
-}
-
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
