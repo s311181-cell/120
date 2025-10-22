@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>演唱會紀錄器</title>
+  <title>追星日記</title>
   <style>
     body { font-family: Arial; padding: 10px; }
     input, textarea { margin: 4px 0; width: 200px; }
