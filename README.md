@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<h1>🎵 演唱會紀錄器</h1>
+<h1>🎵 MINEJOURNAL</h1>
 
 <div id="loginDiv">
   <h2>登入</h2>
