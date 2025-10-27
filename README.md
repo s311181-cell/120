@@ -53,19 +53,19 @@
 <script type="module">
 // ✅ 載入 Firebase 模組
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+import { 
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
+  signOut, onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, collection, addDoc, getDocs, query, where, 
+  deleteDoc, doc, updateDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getStorage, ref, uploadBytes, getDownloadURL 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ✅ ✅ ✅ 請填入你 Firebase 控制台的正確 config 值：
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// ✅ Firebase 設定
 const firebaseConfig = {
   apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
   authDomain: "daily-d5009.firebaseapp.com",
@@ -76,16 +76,13 @@ const firebaseConfig = {
   measurementId: "G-K3Y09STCHR"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 // ✅ 初始化 Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// ✅ 抓取 DOM 元素
+// ✅ DOM 元素
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -120,8 +117,7 @@ signupForm.addEventListener("submit", async e => {
     alert("✅ 註冊成功！");
     signupForm.reset();
   } catch (err) {
-    console.error("❌ 註冊錯誤:", err.code, err.message);
-    alert("註冊失敗：" + err.message);
+    alert("❌ 註冊失敗：" + err.message);
   }
 });
 
@@ -134,8 +130,7 @@ loginForm.addEventListener("submit", async e => {
     await signInWithEmailAndPassword(auth, email, password);
     loginForm.reset();
   } catch (err) {
-    console.error("❌ 登入錯誤:", err.code, err.message);
-    alert("登入失敗：" + err.message);
+    alert("❌ 登入失敗：" + err.message);
   }
 });
 
@@ -199,12 +194,14 @@ async function loadRecords(uid) {
     const d = docSnap.data();
     const li = document.createElement("li");
     li.innerHTML = `<strong>${d.artist}</strong> (${d.datetime})<br>
-                    票價: ${d.price} 座位: ${d.seat} 場地: ${d.venue}<br>
-                    備註: ${d.notes}<br>`;
+                    票價: ${d.price || "無"}　座位: ${d.seat || "無"}　場地: ${d.venue || "無"}<br>
+                    備註: ${d.notes || ""}<br>`;
     if (d.image) li.innerHTML += `<img src="${d.image}"><br>`;
-    const editBtn = document.createElement("button"); editBtn.textContent = "編輯";
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "編輯";
     editBtn.onclick = () => startEdit(docSnap.id, d);
-    const delBtn = document.createElement("button"); delBtn.textContent = "刪除";
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "刪除";
     delBtn.onclick = async () => {
       await deleteDoc(doc(db, "concerts", docSnap.id));
       loadRecords(uid);
@@ -227,38 +224,6 @@ function startEdit(id, data) {
   recordForm["notes"].value = data.notes;
 }
 </script>
+
 </body>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
-    authDomain: "daily-d5009.firebaseapp.com",
-    projectId: "daily-d5009",
-    storageBucket: "daily-d5009.firebasestorage.app",
-    messagingSenderId: "630564153291",
-    appId: "1:630564153291:web:5f9e7672784fd511b6b84e",
-    measurementId: "G-K3Y09STCHR"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
-  authDomain: "daily-d5009.firebaseapp.com",
-  projectId: "daily-d5009",
-  storageBucket: "daily-d5009.firebasestorage.app",
-  messagingSenderId: "630564153291",
-  appId: "1:630564153291:web:5f9e7672784fd511b6b84e",
-  measurementId: "G-K3Y09STCHR"
-};
 </html>
