@@ -2,56 +2,58 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <title>追星日記</title>
+  <title>🎵 MINEJOURNAL - 追星日記</title>
   <style>
-    body { font-family: Arial; padding: 10px; }
-    input, textarea { margin: 4px 0; width: 200px; }
-    button { margin: 2px; }
-    img { max-width: 120px; display:block; margin-top:4px; }
-    li { border:1px solid #ccc; padding:8px; margin:6px 0; list-style:none; }
+    body { font-family: "Segoe UI", Arial; background: #f5f7fa; padding: 20px; }
+    h1 { color: #444; }
+    input, textarea { margin: 6px 0; width: 240px; padding: 6px; }
+    button { margin: 4px; padding: 6px 12px; cursor: pointer; }
+    img { max-width: 140px; display: block; margin-top: 6px; border-radius: 6px; }
+    li { border: 1px solid #ccc; border-radius: 8px; background: white; padding: 8px; margin: 8px 0; list-style: none; }
   </style>
 </head>
+
 <body>
+  <h1>🎵 MINEJOURNAL</h1>
 
-<h1>🎵 MINEJOURNAL</h1>
+  <!-- 登入與註冊 -->
+  <div id="loginDiv">
+    <h2>登入</h2>
+    <form id="loginForm">
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="密碼" required><br>
+      <button type="submit">登入</button>
+    </form>
 
-<div id="loginDiv">
-  <h2>登入</h2>
-  <form id="loginForm">
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="密碼" required><br>
-    <button type="submit">登入</button>
-  </form>
+    <h2>註冊</h2>
+    <form id="signupForm">
+      <input type="email" name="email" placeholder="Email" required><br>
+      <input type="password" name="password" placeholder="密碼" required><br>
+      <button type="submit">註冊</button>
+    </form>
+  </div>
 
-  <h2>註冊</h2>
-  <form id="signupForm">
-    <input type="email" name="email" placeholder="Email" required><br>
-    <input type="password" name="password" placeholder="密碼" required><br>
-    <button type="submit">註冊</button>
-  </form>
-</div>
+  <!-- 主內容 -->
+  <div id="appDiv" style="display:none">
+    <button id="logoutBtn">登出</button>
 
-<div id="appDiv" style="display:none">
-  <button id="logoutBtn">登出</button>
+    <h2>新增 / 編輯演唱會紀錄</h2>
+    <form id="recordForm">
+      <input type="text" name="artist" placeholder="表演者/活動名稱" required><br>
+      <input type="datetime-local" name="datetime" required><br>
+      <input type="number" name="price" placeholder="票價"><br>
+      <input type="text" name="seat" placeholder="座位/區域"><br>
+      <input type="text" name="venue" placeholder="場地"><br>
+      <textarea name="notes" placeholder="備註"></textarea><br>
+      <input type="file" id="imageInput" accept="image/*"><br>
+      <button type="submit">💾 儲存</button>
+    </form>
 
-  <h2>新增 / 編輯演唱會紀錄</h2>
-  <form id="recordForm">
-    <input type="text" name="artist" placeholder="表演者/活動名稱" required><br>
-    <input type="datetime-local" name="datetime" required><br>
-    <input type="number" name="price" placeholder="票價"><br>
-    <input type="text" name="seat" placeholder="座位/區域"><br>
-    <input type="text" name="venue" placeholder="場地"><br>
-    <textarea name="notes" placeholder="備註"></textarea><br>
-    <input type="file" id="imageInput" accept="image/*"><br>
-    <button type="submit">儲存</button>
-  </form>
-
-  <h2>我的紀錄</h2>
-  <ul id="recordsList"></ul>
-</div>
+    <h2>我的紀錄</h2>
+    <ul id="recordsList"></ul>
+  </div>
 
 <script type="module">
-// ✅ 載入 Firebase 模組
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
@@ -65,24 +67,23 @@ import {
   getStorage, ref, uploadBytes, getDownloadURL 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ✅ Firebase 設定
+// ✅ Firebase 設定修正
 const firebaseConfig = {
   apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
   authDomain: "daily-d5009.firebaseapp.com",
   projectId: "daily-d5009",
-  storageBucket: "daily-d5009.firebasestorage.app",
+  storageBucket: "daily-d5009.appspot.com",  // ✅ 修正這裡！
   messagingSenderId: "630564153291",
   appId: "1:630564153291:web:5f9e7672784fd511b6b84e",
   measurementId: "G-K3Y09STCHR"
 };
 
-// ✅ 初始化 Firebase
+// ✅ 初始化
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// ✅ DOM 元素
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -107,21 +108,21 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-// ✅ 註冊處理
+// ✅ 註冊
 signupForm.addEventListener("submit", async e => {
   e.preventDefault();
   const email = signupForm["email"].value;
   const password = signupForm["password"].value;
   try {
     await createUserWithEmailAndPassword(auth, email, password);
-    alert("✅ 註冊成功！");
+    alert("✅ 註冊成功，請登入！");
     signupForm.reset();
   } catch (err) {
     alert("❌ 註冊失敗：" + err.message);
   }
 });
 
-// ✅ 登入處理
+// ✅ 登入
 loginForm.addEventListener("submit", async e => {
   e.preventDefault();
   const email = loginForm["email"].value;
@@ -134,7 +135,7 @@ loginForm.addEventListener("submit", async e => {
   }
 });
 
-// ✅ 登出處理
+// ✅ 登出
 logoutBtn.addEventListener("click", async () => {
   try {
     await signOut(auth);
@@ -147,41 +148,46 @@ logoutBtn.addEventListener("click", async () => {
 recordForm.addEventListener("submit", async e => {
   e.preventDefault();
   const user = auth.currentUser;
-  if (!user) return;
+  if (!user) return alert("請先登入！");
 
   let imageUrl = editingImageUrl || "";
   const file = imageInput.files[0];
-  if (file) {
-    const storageRef = ref(storage, `images/${user.uid}_${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef, file);
-    imageUrl = await getDownloadURL(storageRef);
-  }
-
-  const data = {
-    uid: user.uid,
-    artist: recordForm["artist"].value,
-    datetime: recordForm["datetime"].value,
-    price: recordForm["price"].value,
-    seat: recordForm["seat"].value,
-    venue: recordForm["venue"].value,
-    notes: recordForm["notes"].value,
-    image: imageUrl,
-    createdAt: new Date()
-  };
 
   try {
+    if (file) {
+      const storageRef = ref(storage, `images/${user.uid}_${Date.now()}_${file.name}`);
+      await uploadBytes(storageRef, file);
+      imageUrl = await getDownloadURL(storageRef);
+    }
+
+    const data = {
+      uid: user.uid,
+      artist: recordForm["artist"].value,
+      datetime: recordForm["datetime"].value,
+      price: recordForm["price"].value,
+      seat: recordForm["seat"].value,
+      venue: recordForm["venue"].value,
+      notes: recordForm["notes"].value,
+      image: imageUrl,
+      createdAt: new Date()
+    };
+
     if (editingId) {
       await updateDoc(doc(db, "concerts", editingId), data);
+      alert("✅ 更新成功！");
       editingId = null;
       editingImageUrl = null;
     } else {
       await addDoc(collection(db, "concerts"), data);
+      alert("✅ 新增成功！");
     }
+
     recordForm.reset();
     imageInput.value = "";
     loadRecords(user.uid);
   } catch (err) {
-    alert("儲存失敗：" + err.message);
+    console.error(err);
+    alert("❌ 儲存失敗：" + err.message);
   }
 });
 
@@ -190,22 +196,28 @@ async function loadRecords(uid) {
   recordsList.innerHTML = "";
   const q = query(collection(db, "concerts"), where("uid", "==", uid));
   const snap = await getDocs(q);
+
   snap.forEach(docSnap => {
     const d = docSnap.data();
     const li = document.createElement("li");
     li.innerHTML = `<strong>${d.artist}</strong> (${d.datetime})<br>
-                    票價: ${d.price || "無"}　座位: ${d.seat || "無"}　場地: ${d.venue || "無"}<br>
-                    備註: ${d.notes || ""}<br>`;
+                    💰票價: ${d.price || "無"}　🪑座位: ${d.seat || "無"}　🏟️場地: ${d.venue || "無"}<br>
+                    📝備註: ${d.notes || ""}<br>`;
     if (d.image) li.innerHTML += `<img src="${d.image}"><br>`;
+
     const editBtn = document.createElement("button");
     editBtn.textContent = "編輯";
     editBtn.onclick = () => startEdit(docSnap.id, d);
+
     const delBtn = document.createElement("button");
     delBtn.textContent = "刪除";
     delBtn.onclick = async () => {
-      await deleteDoc(doc(db, "concerts", docSnap.id));
-      loadRecords(uid);
+      if (confirm("確定刪除這筆紀錄？")) {
+        await deleteDoc(doc(db, "concerts", docSnap.id));
+        loadRecords(uid);
+      }
     };
+
     li.appendChild(editBtn);
     li.appendChild(delBtn);
     recordsList.appendChild(li);
@@ -222,8 +234,8 @@ function startEdit(id, data) {
   recordForm["seat"].value = data.seat;
   recordForm["venue"].value = data.venue;
   recordForm["notes"].value = data.notes;
+  alert("📝 你正在編輯一筆紀錄！");
 }
 </script>
-
 </body>
 </html>
