@@ -53,7 +53,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js";
 
 // Firebase 設定
@@ -61,9 +61,10 @@ const firebaseConfig = {
   apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
   authDomain: "daily-d5009.firebaseapp.com",
   projectId: "daily-d5009",
-  storageBucket: "daily-d5009.appspot.com",
+  storageBucket: "daily-d5009.firebasestorage.app",
   messagingSenderId: "630564153291",
-  appId: "1:630564153291:web:5f9e7672784fd511b6b84e"
+  appId: "1:630564153291:web:5f9e7672784fd511b6b84e",
+  measurementId: "G-K3Y09STCHR"
 };
 
 const app = initializeApp(firebaseConfig);
@@ -106,8 +107,7 @@ signupForm.addEventListener("submit", async e=>{
     alert("✅ 註冊成功！");
     signupForm.reset();
   } catch(err){
-    console.error(err);
-    alert("❌ 註冊失敗："+err.message);
+    alert("❌ 註冊失敗：" + err.message);
   }
 });
 
@@ -120,8 +120,7 @@ loginForm.addEventListener("submit", async e=>{
     await signInWithEmailAndPassword(auth,email,password);
     loginForm.reset();
   } catch(err){
-    console.error(err);
-    alert("❌ 登入失敗："+err.message);
+    alert("❌ 登入失敗：" + err.message);
   }
 });
 
@@ -130,8 +129,7 @@ logoutBtn.addEventListener("click", async ()=>{
   try{
     await signOut(auth);
   } catch(err){
-    console.error(err);
-    alert("登出失敗："+err.message);
+    alert("登出失敗：" + err.message);
   }
 });
 
@@ -143,75 +141,80 @@ recordForm.addEventListener("submit", async e=>{
 
   let imageUrl = editingImageUrl || "";
   const file = imageInput.files[0];
+  if(file){
+    const storageRef = ref(storage, `images/${user.uid}_${Date.now()}_${file.name}`);
+    await uploadBytes(storageRef,file);
+    imageUrl = await getDownloadURL(storageRef);
+  }
+
+  const data = {
+    uid: user.uid,
+    artist: recordForm["artist"].value,
+    datetime: recordForm["datetime"].value,
+    price: recordForm["price"].value,
+    seat: recordForm["seat"].value,
+    venue: recordForm["venue"].value,
+    notes: recordForm["notes"].value,
+    image: imageUrl,
+    createdAt: new Date()
+  };
+
   try{
-    if(file){
-      const storageRef = ref(storage, `images/${user.uid}_${Date.now()}_${file.name}`);
-      await uploadBytes(storageRef, file);
-      imageUrl = await getDownloadURL(storageRef);
-    }
-
-    const data = {
-      uid: user.uid,
-      artist: recordForm["artist"].value,
-      datetime: recordForm["datetime"].value,
-      price: recordForm["price"].value,
-      seat: recordForm["seat"].value,
-      venue: recordForm["venue"].value,
-      notes: recordForm["notes"].value,
-      image: imageUrl,
-      createdAt: new Date()
-    };
-
     if(editingId){
-      await updateDoc(doc(db,"concerts",editingId), data);
+      await updateDoc(doc(db,"concerts",editingId),data);
       editingId = null;
       editingImageUrl = null;
     } else{
-      await addDoc(collection(db,"concerts"), data);
+      await addDoc(collection(db,"concerts"),data);
     }
-
     recordForm.reset();
     imageInput.value="";
     loadRecords(user.uid);
   } catch(err){
-    console.error(err);
-    alert("儲存失敗："+err.message);
+    alert("儲存失敗：" + err.message);
   }
 });
 
-// 載入紀錄
+// 載入紀錄（兼容舊資料 + 日期排序）
 async function loadRecords(uid){
   recordsList.innerHTML="";
-  try{
-    const q = query(
-      collection(db,"concerts"),
-      where("uid","==",uid),
-      orderBy("datetime","desc")
-    );
-    const snap = await getDocs(q);
-    snap.forEach(docSnap=>{
-      const d = docSnap.data();
-      const li = document.createElement("li");
-      li.innerHTML=`<strong>${d.artist}</strong> (${d.datetime})<br>
-                    票價: ${d.price || "無"}　座位: ${d.seat || "無"}　場地: ${d.venue || "無"}<br>
-                    備註: ${d.notes || ""}<br>`;
-      if(d.image) li.innerHTML+=`<img src="${d.image}"><br>`;
-      const editBtn = document.createElement("button");
-      editBtn.textContent="編輯";
-      editBtn.onclick=()=>startEdit(docSnap.id,d);
-      const delBtn = document.createElement("button");
-      delBtn.textContent="刪除";
-      delBtn.onclick=async ()=>{
-        await deleteDoc(doc(db,"concerts",docSnap.id));
-        loadRecords(uid);
-      };
-      li.appendChild(editBtn);
-      li.appendChild(delBtn);
-      recordsList.appendChild(li);
+
+  const colRef = collection(db,"concerts");
+  const snap = await getDocs(colRef);
+
+  const records = snap.docs.map(docSnap => {
+    const d = docSnap.data();
+    return { id: docSnap.id, data: d };
+  }).filter(r => !r.data.uid || r.data.uid === uid)
+    .sort((a,b) => {
+      const t1 = new Date(a.data.datetime).getTime();
+      const t2 = new Date(b.data.datetime).getTime();
+      return t2 - t1;
     });
-  } catch(err){
-    console.error(err);
-  }
+
+  records.forEach(r=>{
+    const d = r.data;
+    const li = document.createElement("li");
+    li.innerHTML=`<strong>${d.artist}</strong> (${d.datetime})<br>
+                  票價: ${d.price || "無"}　座位: ${d.seat || "無"}　場地: ${d.venue || "無"}<br>
+                  備註: ${d.notes || ""}<br>`;
+    if(d.image) li.innerHTML+=`<img src="${d.image}"><br>`;
+
+    const editBtn = document.createElement("button");
+    editBtn.textContent = "編輯";
+    editBtn.onclick = ()=> startEdit(r.id,d);
+
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "刪除";
+    delBtn.onclick = async ()=>{
+      await deleteDoc(doc(db,"concerts",r.id));
+      loadRecords(uid);
+    };
+
+    li.appendChild(editBtn);
+    li.appendChild(delBtn);
+    recordsList.appendChild(li);
+  });
 }
 
 // 編輯
