@@ -57,7 +57,7 @@ import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, si
 import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ✅ Firebase 設定（apiKey 已換成你提供的）
+// 🔑 使用你的新 API Key
 const firebaseConfig = {
   apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
   authDomain: "daily-d5009.firebaseapp.com",
@@ -86,7 +86,7 @@ const imageInput = document.getElementById("imageInput");
 let editingId = null;
 let editingImageUrl = null;
 
-// 登入狀態監控
+// 登入狀態
 onAuthStateChanged(auth, user => {
   if(user){
     loginDiv.style.display = "none";
@@ -176,7 +176,7 @@ recordForm.addEventListener("submit", async e=>{
   }
 });
 
-// 載入紀錄（依 datetime 由新到舊排序）
+// 載入紀錄（按日期排序）
 async function loadRecords(uid){
   recordsList.innerHTML="";
   const q = query(
@@ -184,31 +184,27 @@ async function loadRecords(uid){
     where("uid","==",uid),
     orderBy("datetime","desc")
   );
-  try {
-    const snap = await getDocs(q);
-    snap.forEach(docSnap=>{
-      const d = docSnap.data();
-      const li = document.createElement("li");
-      li.innerHTML=`<strong>${d.artist}</strong> (${d.datetime})<br>
-                    票價: ${d.price || "無"}　座位: ${d.seat || "無"}　場地: ${d.venue || "無"}<br>
-                    備註: ${d.notes || ""}<br>`;
-      if(d.image) li.innerHTML+=`<img src="${d.image}"><br>`;
-      const editBtn = document.createElement("button");
-      editBtn.textContent="編輯";
-      editBtn.onclick=()=>startEdit(docSnap.id,d);
-      const delBtn = document.createElement("button");
-      delBtn.textContent="刪除";
-      delBtn.onclick=async ()=>{
-        await deleteDoc(doc(db,"concerts",docSnap.id));
-        loadRecords(uid);
-      };
-      li.appendChild(editBtn);
-      li.appendChild(delBtn);
-      recordsList.appendChild(li);
-    });
-  } catch(err){
-    alert("讀取失敗："+err.message);
-  }
+  const snap = await getDocs(q);
+  snap.forEach(docSnap=>{
+    const d = docSnap.data();
+    const li = document.createElement("li");
+    li.innerHTML=`<strong>${d.artist}</strong> (${d.datetime})<br>
+                  票價: ${d.price || "無"}　座位: ${d.seat || "無"}　場地: ${d.venue || "無"}<br>
+                  備註: ${d.notes || ""}<br>`;
+    if(d.image) li.innerHTML+=`<img src="${d.image}"><br>`;
+    const editBtn = document.createElement("button");
+    editBtn.textContent="編輯";
+    editBtn.onclick=()=>startEdit(docSnap.id,d);
+    const delBtn = document.createElement("button");
+    delBtn.textContent="刪除";
+    delBtn.onclick=async ()=>{
+      await deleteDoc(doc(db,"concerts",docSnap.id));
+      loadRecords(uid);
+    };
+    li.appendChild(editBtn);
+    li.appendChild(delBtn);
+    recordsList.appendChild(li);
+  });
 }
 
 // 編輯
