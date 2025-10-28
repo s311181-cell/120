@@ -51,13 +51,11 @@
 </div>
 
 <script type="module">
-// Firebase 模組
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// ✅ Firebase 設定（請換成你專案設定裡的）
 const firebaseConfig = {
   apiKey: "AIzaSyB8R8WssA4u7R2zBhiYNSR8CWwWkC6pdlw",
   authDomain: "daily-d5009.firebaseapp.com",
@@ -67,13 +65,11 @@ const firebaseConfig = {
   appId: "1:630564153291:web:5f9e7672784fd511b6b84e"
 };
 
-// 初始化
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-// DOM
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -86,7 +82,6 @@ const imageInput = document.getElementById("imageInput");
 let editingId = null;
 let editingImageUrl = null;
 
-// 登入狀態
 onAuthStateChanged(auth, user => {
   if(user){
     loginDiv.style.display = "none";
@@ -98,7 +93,6 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-// 註冊
 signupForm.addEventListener("submit", async e=>{
   e.preventDefault();
   const email = signupForm["email"].value;
@@ -112,7 +106,6 @@ signupForm.addEventListener("submit", async e=>{
   }
 });
 
-// 登入
 loginForm.addEventListener("submit", async e=>{
   e.preventDefault();
   const email = loginForm["email"].value;
@@ -125,7 +118,6 @@ loginForm.addEventListener("submit", async e=>{
   }
 });
 
-// 登出
 logoutBtn.addEventListener("click", async ()=>{
   try{
     await signOut(auth);
@@ -134,7 +126,6 @@ logoutBtn.addEventListener("click", async ()=>{
   }
 });
 
-// 儲存紀錄
 recordForm.addEventListener("submit", async e=>{
   e.preventDefault();
   const user = auth.currentUser;
@@ -176,13 +167,12 @@ recordForm.addEventListener("submit", async e=>{
   }
 });
 
-// 載入紀錄（✅ 按日期排序）
+// ✅ 回到原始載入紀錄，不使用 orderBy
 async function loadRecords(uid){
   recordsList.innerHTML="";
   const q = query(
     collection(db,"concerts"),
-    where("uid","==",uid),
-    orderBy("datetime","desc")
+    where("uid","==",uid)
   );
   const snap = await getDocs(q);
   snap.forEach(docSnap=>{
@@ -207,7 +197,6 @@ async function loadRecords(uid){
   });
 }
 
-// 編輯
 function startEdit(id,data){
   editingId=id;
   editingImageUrl=data.image || null;
