@@ -59,12 +59,13 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstati
 
 // Firebase 設定
 const firebaseConfig = {
-  apiKey: "你的API_KEY",
+  apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
   authDomain: "daily-d5009.firebaseapp.com",
   projectId: "daily-d5009",
-  storageBucket: "daily-d5009.appspot.com",
+  storageBucket: "daily-d5009.firebasestorage.app",
   messagingSenderId: "630564153291",
-  appId: "1:630564153291:web:5f9e7672784fd511b6b84e"
+  appId: "1:630564153291:web:5f9e7672784fd511b6b84e",
+  measurementId: "G-K3Y09STCHR"
 };
 
 // 初始化
@@ -166,7 +167,7 @@ recordForm.addEventListener("submit", async e=>{
       editingId=null;
       editingImageUrl=null;
     } else{
-      await addDoc(collection(db,"concerts"),data);
+      await addDoc(collection(db,"concerts"),data); // 頂層集合
     }
     recordForm.reset();
     imageInput.value="";
@@ -179,7 +180,7 @@ recordForm.addEventListener("submit", async e=>{
 // 載入紀錄
 async function loadRecords(uid){
   recordsList.innerHTML="";
-  const q = query(collection(db,"concerts"),where("uid","==",uid));
+  const q = query(collection(db,"concerts"),where("uid","==",uid)); // 頂層集合
   const snap = await getDocs(q);
   snap.forEach(docSnap=>{
     const d = docSnap.data();
