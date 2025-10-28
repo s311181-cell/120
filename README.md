@@ -54,12 +54,12 @@
 // Firebase 模組
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-// Firebase 設定
+// ✅ Firebase 設定（請換成你專案設定裡的）
 const firebaseConfig = {
-  apiKey: "你的API_KEY",
+  apiKey: "AIzaSyB8R8WssA4u7R2zBhiYNSR8CWwWkC6pdlw",
   authDomain: "daily-d5009.firebaseapp.com",
   projectId: "daily-d5009",
   storageBucket: "daily-d5009.appspot.com",
@@ -176,10 +176,14 @@ recordForm.addEventListener("submit", async e=>{
   }
 });
 
-// 載入紀錄
+// 載入紀錄（✅ 按日期排序）
 async function loadRecords(uid){
   recordsList.innerHTML="";
-  const q = query(collection(db,"concerts"),where("uid","==",uid));
+  const q = query(
+    collection(db,"concerts"),
+    where("uid","==",uid),
+    orderBy("datetime","desc")
+  );
   const snap = await getDocs(q);
   snap.forEach(docSnap=>{
     const d = docSnap.data();
