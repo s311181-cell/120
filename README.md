@@ -6,19 +6,19 @@
   <title>KPOP 追星日記</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    
-    body { 
+
+    body {
       font-family: 'Arial', sans-serif;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
       min-height: 100vh;
       padding: 20px;
     }
-    
+
     .container {
       max-width: 800px;
       margin: 0 auto;
     }
-    
+
     h1 {
       text-align: center;
       color: white;
@@ -27,12 +27,12 @@
       text-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3);
       animation: glow 2s ease-in-out infinite alternate;
     }
-    
+
     @keyframes glow {
       from { text-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3); }
       to { text-shadow: 0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.5); }
     }
-    
+
     .card {
       background: rgba(255, 255, 255, 0.95);
       border-radius: 20px;
@@ -41,7 +41,7 @@
       box-shadow: 0 8px 32px rgba(0,0,0,0.1);
       backdrop-filter: blur(10px);
     }
-    
+
     h2 {
       color: #764ba2;
       margin-bottom: 20px;
@@ -49,7 +49,7 @@
       border-bottom: 3px solid #f093fb;
       padding-bottom: 10px;
     }
-    
+
     input, textarea {
       width: 100%;
       padding: 12px;
@@ -60,18 +60,18 @@
       transition: all 0.3s;
       display: block;
     }
-    
+
     input:focus, textarea:focus {
       outline: none;
       border-color: #764ba2;
       box-shadow: 0 0 15px rgba(118, 75, 162, 0.3);
     }
-    
+
     textarea {
       min-height: 100px;
       resize: vertical;
     }
-    
+
     button {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       color: white;
@@ -84,21 +84,21 @@
       transition: all 0.3s;
       margin: 5px;
     }
-    
+
     button:hover {
       transform: translateY(-2px);
       box-shadow: 0 5px 20px rgba(118, 75, 162, 0.4);
     }
-    
+
     button:active {
       transform: translateY(0);
     }
-    
+
     #logoutBtn {
       background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
       float: right;
     }
-    
+
     .record-item {
       background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
       border-radius: 15px;
@@ -108,11 +108,11 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       transition: transform 0.3s;
     }
-    
+
     .record-item:hover {
       transform: translateX(5px);
     }
-    
+
     .record-header {
       font-size: 1.3em;
       font-weight: bold;
@@ -122,51 +122,51 @@
       align-items: center;
       gap: 10px;
     }
-    
+
     .record-info {
       background: white;
       padding: 15px;
       border-radius: 10px;
       margin: 10px 0;
     }
-    
+
     .info-row {
       padding: 8px 0;
       border-bottom: 1px solid #f0f0f0;
       display: flex;
       align-items: flex-start;
     }
-    
+
     .info-row:last-child {
       border-bottom: none;
     }
-    
+
     .info-label {
       font-weight: bold;
       color: #764ba2;
       min-width: 80px;
       margin-right: 10px;
     }
-    
+
     .info-value {
       color: #333;
       flex: 1;
     }
-    
+
     .button-group {
       margin-top: 15px;
     }
-    
+
     .edit-btn {
       background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
       color: #764ba2;
     }
-    
+
     .delete-btn {
       background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
       color: #764ba2;
     }
-    
+
     #recordsList:empty::before {
       content: "還沒有任何紀錄喔!快去看演唱會吧 🎤✨";
       display: block;
@@ -175,7 +175,7 @@
       font-size: 1.2em;
       padding: 40px;
     }
-    
+
     .auth-forms {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -196,61 +196,61 @@
       border-radius: 10px;
       margin: 10px 0;
     }
-    
+
     /* 手機版優化 */
     @media (max-width: 768px) {
       body {
         padding: 10px;
       }
-      
+
       h1 {
         font-size: 1.3em;
         margin-bottom: 15px;
         word-break: keep-all;
       }
-      
+
       .card {
         padding: 20px;
         border-radius: 15px;
       }
-      
+
       h2 {
         font-size: 1.2em;
         margin-bottom: 15px;
       }
-      
+
       .auth-forms {
         grid-template-columns: 1fr;
         gap: 20px;
       }
-      
+
       input, textarea, button {
         font-size: 16px;
       }
-      
+
       button {
         padding: 12px 20px;
       }
-      
+
       #logoutBtn {
         float: none;
         width: 100%;
         margin-bottom: 10px;
       }
-      
+
       .record-header {
         font-size: 1.1em;
       }
-      
+
       .info-label {
         min-width: 70px;
         font-size: 0.95em;
       }
-      
+
       .info-value {
         font-size: 0.95em;
       }
-      
+
       .button-group button {
         font-size: 14px;
         padding: 10px 15px;
@@ -375,7 +375,7 @@ signupForm.addEventListener("submit", async e => {
   e.preventDefault();
   const email = signupForm["email"].value.trim();
   const password = signupForm["password"].value;
-  
+
   try {
     await createUserWithEmailAndPassword(auth, email, password);
     alert("✅ 註冊成功!");
@@ -397,7 +397,7 @@ loginForm.addEventListener("submit", async e => {
   e.preventDefault();
   const email = loginForm["email"].value.trim();
   const password = loginForm["password"].value;
-  
+
   try {
     await signInWithEmailAndPassword(auth, email, password);
     loginForm.reset();
@@ -476,7 +476,7 @@ function cancelEdit() {
 
 async function loadRecords(uid) {
   recordsList.innerHTML = '<li class="loading">載入中...</li>';
-  
+
   try {
     const q = query(collection(db, "concerts"), where("uid", "==", uid));
     const snap = await getDocs(q);
@@ -536,11 +536,11 @@ function displayRecords(records, uid) {
     const d = r.data;
     const li = document.createElement("li");
     li.className = "record-item";
-    
+
     const datetime = new Date(d.datetime);
     const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
     const timeStr = datetime.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-    
+
     li.innerHTML = `
       <div class="record-header">
         🎤 ${d.artist}
@@ -572,7 +572,7 @@ function displayRecords(records, uid) {
         </div>` : ''}
       </div>
     `;
-    
+
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
 
@@ -608,14 +608,14 @@ function startEdit(id, data) {
   formTitle.textContent = "編輯演唱會紀錄";
   submitBtn.textContent = "💾 更新紀錄";
   cancelBtn.style.display = "inline-block";
-  
+
   recordForm["artist"].value = data.artist || "";
   recordForm["datetime"].value = data.datetime || "";
   recordForm["price"].value = data.price || "";
   recordForm["seat"].value = data.seat || "";
   recordForm["venue"].value = data.venue || "";
   recordForm["notes"].value = data.notes || "";
-  
+
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
