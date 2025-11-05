@@ -231,8 +231,9 @@
   </div>
 
   <div id="appDiv" style="display:none">
-    <div style="margin-bottom: 20px;">
-      <button id="logoutBtn">登出</button>
+    <div class="card" style="margin-bottom: 20px;">
+      <button id="logoutBtn" style="float: right;">登出</button>
+      <div style="clear: both;"></div>
     </div>
 
     <div class="card">
@@ -499,3 +500,4 @@ function startEdit(id,data){
 </script>
 </body>
 </html>
+ 
