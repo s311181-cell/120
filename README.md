@@ -153,15 +153,6 @@
       flex: 1;
     }
     
-    img {
-      max-width: 100%;
-      max-height: 300px;
-      border-radius: 10px;
-      margin: 10px 0;
-      display: block;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    
     .button-group {
       margin-top: 15px;
     }
@@ -189,6 +180,21 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 20px;
+    }
+
+    .loading {
+      text-align: center;
+      color: #764ba2;
+      padding: 20px;
+      font-weight: bold;
+    }
+
+    .error {
+      background: #fee;
+      color: #c33;
+      padding: 10px;
+      border-radius: 10px;
+      margin: 10px 0;
     }
     
     @media (max-width: 600px) {
@@ -222,7 +228,7 @@
           <h2>註冊</h2>
           <form id="signupForm">
             <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="密碼" required>
+            <input type="password" name="password" placeholder="密碼 (至少6個字元)" required minlength="6">
             <button type="submit">註冊</button>
           </form>
         </div>
@@ -237,33 +243,23 @@
     </div>
 
     <div class="card">
-      <h2>新增 / 編輯演唱會紀錄</h2>
+      <h2 id="formTitle">新增演唱會紀錄</h2>
       <form id="recordForm">
         <input type="text" name="artist" placeholder="表演者/活動名稱" required>
         <input type="datetime-local" name="datetime" required>
-        <input type="number" name="price" placeholder="票價 (NT$)">
+        <input type="number" name="price" placeholder="票價 (NT$)" min="0">
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
         <textarea name="notes" placeholder="備註 (心得、歌單、感想...)"></textarea>
-        <button type="submit">💾 儲存紀錄</button>
+        <button type="submit" id="submitBtn">💾 儲存紀錄</button>
+        <button type="button" id="cancelBtn" style="display:none; background: #999;">✖️ 取消編輯</button>
       </form>
     </div>
 
     <div class="card">
       <h2>📊 我的追星統計</h2>
-      <div id="statsDiv" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; margin-bottom: 20px;">
-        <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 15px; text-align: center;">
-          <div style="font-size: 2em; font-weight: bold; color: #764ba2;">0</div>
-          <div style="color: #764ba2; font-weight: bold;">🎤 總場次</div>
-        </div>
-        <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; border-radius: 15px; text-align: center;">
-          <div style="font-size: 2em; font-weight: bold; color: #764ba2;">$0</div>
-          <div style="color: #764ba2; font-weight: bold;">💰 總花費</div>
-        </div>
-        <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 20px; border-radius: 15px; text-align: center;">
-          <div style="font-size: 2em; font-weight: bold; color: #764ba2;">$0</div>
-          <div style="color: #764ba2; font-weight: bold;">💵 平均票價</div>
-        </div>
+      <div id="statsDiv">
+        <div class="loading">載入中...</div>
       </div>
     </div>
 
@@ -275,10 +271,9 @@
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-storage.js";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
@@ -290,10 +285,16 @@ const firebaseConfig = {
   measurementId: "G-K3Y09STCHR"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+let app, auth, db;
+
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+  db = getFirestore(app);
+} catch (error) {
+  console.error("Firebase 初始化失敗:", error);
+  alert("應用程式初始化失敗，請檢查網路連線或稍後再試");
+}
 
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
@@ -302,6 +303,9 @@ const signupForm = document.getElementById("signupForm");
 const logoutBtn = document.getElementById("logoutBtn");
 const recordForm = document.getElementById("recordForm");
 const recordsList = document.getElementById("recordsList");
+const formTitle = document.getElementById("formTitle");
+const submitBtn = document.getElementById("submitBtn");
+const cancelBtn = document.getElementById("cancelBtn");
 
 let editingId = null;
 
@@ -316,85 +320,134 @@ onAuthStateChanged(auth, user => {
   }
 });
 
-signupForm.addEventListener("submit", async e=>{
+signupForm.addEventListener("submit", async e => {
   e.preventDefault();
-  const email = signupForm["email"].value;
+  const email = signupForm["email"].value.trim();
   const password = signupForm["password"].value;
-  try{
-    await createUserWithEmailAndPassword(auth,email,password);
+  
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
     alert("✅ 註冊成功!");
     signupForm.reset();
-  } catch(err){
-    alert("❌ 註冊失敗:" + err.message);
+  } catch(err) {
+    let errorMsg = "註冊失敗";
+    if (err.code === 'auth/email-already-in-use') {
+      errorMsg = "此 Email 已被註冊";
+    } else if (err.code === 'auth/invalid-email') {
+      errorMsg = "Email 格式不正確";
+    } else if (err.code === 'auth/weak-password') {
+      errorMsg = "密碼強度不足（至少6個字元）";
+    }
+    alert("❌ " + errorMsg);
   }
 });
 
-loginForm.addEventListener("submit", async e=>{
+loginForm.addEventListener("submit", async e => {
   e.preventDefault();
-  const email = loginForm["email"].value;
+  const email = loginForm["email"].value.trim();
   const password = loginForm["password"].value;
-  try{
-    await signInWithEmailAndPassword(auth,email,password);
+  
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
     loginForm.reset();
-  } catch(err){
-    alert("❌ 登入失敗:" + err.message);
+  } catch(err) {
+    let errorMsg = "登入失敗";
+    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+      errorMsg = "Email 或密碼錯誤";
+    } else if (err.code === 'auth/invalid-email') {
+      errorMsg = "Email 格式不正確";
+    }
+    alert("❌ " + errorMsg);
   }
 });
 
-logoutBtn.addEventListener("click", async ()=>{
-  try{
+logoutBtn.addEventListener("click", async () => {
+  try {
     await signOut(auth);
-  } catch(err){
-    alert("登出失敗:" + err.message);
+    alert("✅ 已登出");
+  } catch(err) {
+    alert("❌ 登出失敗: " + err.message);
   }
 });
 
-recordForm.addEventListener("submit", async e=>{
+cancelBtn.addEventListener("click", () => {
+  cancelEdit();
+});
+
+recordForm.addEventListener("submit", async e => {
   e.preventDefault();
   const user = auth.currentUser;
-  if(!user) return;
+  if(!user) {
+    alert("請先登入");
+    return;
+  }
 
   const data = {
     uid: user.uid,
-    artist: recordForm["artist"].value,
+    artist: recordForm["artist"].value.trim(),
     datetime: recordForm["datetime"].value,
-    price: recordForm["price"].value,
-    seat: recordForm["seat"].value,
-    venue: recordForm["venue"].value,
-    notes: recordForm["notes"].value,
-    createdAt: new Date()
+    price: recordForm["price"].value || "",
+    seat: recordForm["seat"].value.trim(),
+    venue: recordForm["venue"].value.trim(),
+    notes: recordForm["notes"].value.trim(),
+    updatedAt: new Date().toISOString()
   };
 
-  try{
-    if(editingId){
-      await updateDoc(doc(db,"concerts",editingId),data);
-      editingId = null;
-    } else{
-      await addDoc(collection(db,"concerts"),data);
+  if (!editingId) {
+    data.createdAt = new Date().toISOString();
+  }
+
+  try {
+    if(editingId) {
+      await updateDoc(doc(db, "concerts", editingId), data);
+      alert("✅ 更新成功!");
+      cancelEdit();
+    } else {
+      await addDoc(collection(db, "concerts"), data);
+      alert("✅ 新增成功!");
+      recordForm.reset();
     }
-    recordForm.reset();
     loadRecords(user.uid);
-  } catch(err){
-    alert("儲存失敗:" + err.message);
+  } catch(err) {
+    console.error("儲存錯誤:", err);
+    alert("❌ 儲存失敗: " + err.message);
   }
 });
 
-async function loadRecords(uid){
-  recordsList.innerHTML="";
+function cancelEdit() {
+  editingId = null;
+  recordForm.reset();
+  formTitle.textContent = "新增演唱會紀錄";
+  submitBtn.textContent = "💾 儲存紀錄";
+  cancelBtn.style.display = "none";
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 
-  const colRef = collection(db,"concerts");
-  const snap = await getDocs(colRef);
+async function loadRecords(uid) {
+  recordsList.innerHTML = '<li class="loading">載入中...</li>';
+  
+  try {
+    const q = query(collection(db, "concerts"), where("uid", "==", uid));
+    const snap = await getDocs(q);
 
-  const records = snap.docs.map(docSnap => {
-    const d = docSnap.data();
-    return { id: docSnap.id, data: d };
-  }).filter(r => !r.data.uid || r.data.uid === uid)
-    .sort((a,b) => {
+    const records = snap.docs.map(docSnap => ({
+      id: docSnap.id,
+      data: docSnap.data()
+    })).sort((a, b) => {
       const t1 = new Date(a.data.datetime).getTime();
       const t2 = new Date(b.data.datetime).getTime();
       return t2 - t1;
     });
 
+    updateStats(records);
+    displayRecords(records, uid);
+  } catch(err) {
+    console.error("載入錯誤:", err);
+    recordsList.innerHTML = '<li class="error">❌ 載入失敗，請重新整理頁面</li>';
+  }
+}
+
+function updateStats(records) {
   const totalCount = records.length;
   const totalSpent = records.reduce((sum, r) => {
     const price = parseInt(r.data.price) || 0;
@@ -404,21 +457,31 @@ async function loadRecords(uid){
 
   const statsDiv = document.getElementById('statsDiv');
   statsDiv.innerHTML = `
-    <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 15px; text-align: center;">
-      <div style="font-size: 2em; font-weight: bold; color: #764ba2;">${totalCount}</div>
-      <div style="color: #764ba2; font-weight: bold;">🎤 總場次</div>
-    </div>
-    <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; border-radius: 15px; text-align: center;">
-      <div style="font-size: 2em; font-weight: bold; color: #764ba2;">${totalSpent.toLocaleString()}</div>
-      <div style="color: #764ba2; font-weight: bold;">💰 總花費</div>
-    </div>
-    <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 20px; border-radius: 15px; text-align: center;">
-      <div style="font-size: 2em; font-weight: bold; color: #764ba2;">${avgPrice.toLocaleString()}</div>
-      <div style="color: #764ba2; font-weight: bold;">💵 平均票價</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+      <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #764ba2;">${totalCount}</div>
+        <div style="color: #764ba2; font-weight: bold;">🎤 總場次</div>
+      </div>
+      <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #764ba2;">$${totalSpent.toLocaleString()}</div>
+        <div style="color: #764ba2; font-weight: bold;">💰 總花費</div>
+      </div>
+      <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #764ba2;">$${avgPrice.toLocaleString()}</div>
+        <div style="color: #764ba2; font-weight: bold;">💵 平均票價</div>
+      </div>
     </div>
   `;
+}
 
-  records.forEach(r=>{
+function displayRecords(records, uid) {
+  recordsList.innerHTML = "";
+
+  if (records.length === 0) {
+    return;
+  }
+
+  records.forEach(r => {
     const d = r.data;
     const li = document.createElement("li");
     li.className = "record-item";
@@ -442,7 +505,7 @@ async function loadRecords(uid){
         </div>
         <div class="info-row">
           <span class="info-label">💰 票價:</span>
-          <span class="info-value">${d.price ? 'NT$ ' + d.price : '未填寫'}</span>
+          <span class="info-value">${d.price ? 'NT$ ' + parseInt(d.price).toLocaleString() : '未填寫'}</span>
         </div>
         <div class="info-row">
           <span class="info-label">💺 座位:</span>
@@ -465,15 +528,20 @@ async function loadRecords(uid){
     const editBtn = document.createElement("button");
     editBtn.className = "edit-btn";
     editBtn.textContent = "✏️ 編輯";
-    editBtn.onclick = ()=> startEdit(r.id,d);
+    editBtn.onclick = () => startEdit(r.id, d);
 
     const delBtn = document.createElement("button");
     delBtn.className = "delete-btn";
     delBtn.textContent = "🗑️ 刪除";
-    delBtn.onclick = async ()=>{
-      if(confirm("確定要刪除這筆紀錄嗎?")) {
-        await deleteDoc(doc(db,"concerts",r.id));
-        loadRecords(uid);
+    delBtn.onclick = async () => {
+      if(confirm(`確定要刪除「${d.artist}」的紀錄嗎?`)) {
+        try {
+          await deleteDoc(doc(db, "concerts", r.id));
+          alert("✅ 刪除成功");
+          loadRecords(uid);
+        } catch(err) {
+          alert("❌ 刪除失敗: " + err.message);
+        }
       }
     };
 
@@ -484,14 +552,18 @@ async function loadRecords(uid){
   });
 }
 
-function startEdit(id,data){
+function startEdit(id, data) {
   editingId = id;
-  recordForm["artist"].value = data.artist;
-  recordForm["datetime"].value = data.datetime;
-  recordForm["price"].value = data.price;
-  recordForm["seat"].value = data.seat;
-  recordForm["venue"].value = data.venue;
-  recordForm["notes"].value = data.notes;
+  formTitle.textContent = "編輯演唱會紀錄";
+  submitBtn.textContent = "💾 更新紀錄";
+  cancelBtn.style.display = "inline-block";
+  
+  recordForm["artist"].value = data.artist || "";
+  recordForm["datetime"].value = data.datetime || "";
+  recordForm["price"].value = data.price || "";
+  recordForm["seat"].value = data.seat || "";
+  recordForm["venue"].value = data.venue || "";
+  recordForm["notes"].value = data.notes || "";
   
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
