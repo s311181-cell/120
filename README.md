@@ -244,7 +244,6 @@
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
         <textarea name="notes" placeholder="備註 (心得、歌單、感想...)"></textarea>
-        <input type="file" id="imageInput" accept="image/*">
         <button type="submit">💾 儲存紀錄</button>
       </form>
     </div>
@@ -302,10 +301,8 @@ const signupForm = document.getElementById("signupForm");
 const logoutBtn = document.getElementById("logoutBtn");
 const recordForm = document.getElementById("recordForm");
 const recordsList = document.getElementById("recordsList");
-const imageInput = document.getElementById("imageInput");
 
 let editingId = null;
-let editingImageUrl = null;
 
 onAuthStateChanged(auth, user => {
   if(user){
@@ -356,14 +353,6 @@ recordForm.addEventListener("submit", async e=>{
   const user = auth.currentUser;
   if(!user) return;
 
-  let imageUrl = editingImageUrl || "";
-  const file = imageInput.files[0];
-  if(file){
-    const storageRef = ref(storage, `images/${user.uid}_${Date.now()}_${file.name}`);
-    await uploadBytes(storageRef,file);
-    imageUrl = await getDownloadURL(storageRef);
-  }
-
   const data = {
     uid: user.uid,
     artist: recordForm["artist"].value,
@@ -372,7 +361,6 @@ recordForm.addEventListener("submit", async e=>{
     seat: recordForm["seat"].value,
     venue: recordForm["venue"].value,
     notes: recordForm["notes"].value,
-    image: imageUrl,
     createdAt: new Date()
   };
 
@@ -380,12 +368,10 @@ recordForm.addEventListener("submit", async e=>{
     if(editingId){
       await updateDoc(doc(db,"concerts",editingId),data);
       editingId = null;
-      editingImageUrl = null;
     } else{
       await addDoc(collection(db,"concerts"),data);
     }
     recordForm.reset();
-    imageInput.value="";
     loadRecords(user.uid);
   } catch(err){
     alert("儲存失敗：" + err.message);
@@ -474,12 +460,6 @@ async function loadRecords(uid){
       </div>
     `;
     
-    if(d.image) {
-      const img = document.createElement("img");
-      img.src = d.image;
-      li.appendChild(img);
-    }
-
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
 
@@ -507,7 +487,6 @@ async function loadRecords(uid){
 
 function startEdit(id,data){
   editingId = id;
-  editingImageUrl = data.image || null;
   recordForm["artist"].value = data.artist;
   recordForm["datetime"].value = data.datetime;
   recordForm["price"].value = data.price;
