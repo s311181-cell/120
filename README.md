@@ -22,7 +22,7 @@
     h1 {
       text-align: center;
       color: white;
-      font-size: 3em;
+      font-size: 2.5em;
       margin-bottom: 30px;
       text-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3);
       animation: glow 2s ease-in-out infinite alternate;
@@ -204,8 +204,9 @@
       }
       
       h1 {
-        font-size: 2em;
-        margin-bottom: 20px;
+        font-size: 1.3em;
+        margin-bottom: 15px;
+        word-break: keep-all;
       }
       
       .card {
@@ -214,7 +215,7 @@
       }
       
       h2 {
-        font-size: 1.3em;
+        font-size: 1.2em;
         margin-bottom: 15px;
       }
       
@@ -238,7 +239,7 @@
       }
       
       .record-header {
-        font-size: 1.2em;
+        font-size: 1.1em;
       }
       
       .info-label {
@@ -343,7 +344,7 @@ try {
   db = getFirestore(app);
 } catch (error) {
   console.error("Firebase 初始化失敗:", error);
-  alert("應用程式初始化失敗，請檢查網路連線或稍後再試");
+  alert("應用程式初始化失敗,請檢查網路連線或稍後再試");
 }
 
 const loginDiv = document.getElementById("loginDiv");
