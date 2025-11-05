@@ -177,7 +177,7 @@
     }
     
     #recordsList:empty::before {
-      content: "還沒有任何紀錄喔！快去看演唱會吧 🎤✨";
+      content: "還沒有任何紀錄喔!快去看演唱會吧 🎤✨";
       display: block;
       text-align: center;
       color: #764ba2;
@@ -322,10 +322,10 @@ signupForm.addEventListener("submit", async e=>{
   const password = signupForm["password"].value;
   try{
     await createUserWithEmailAndPassword(auth,email,password);
-    alert("✅ 註冊成功！");
+    alert("✅ 註冊成功!");
     signupForm.reset();
   } catch(err){
-    alert("❌ 註冊失敗：" + err.message);
+    alert("❌ 註冊失敗:" + err.message);
   }
 });
 
@@ -337,7 +337,7 @@ loginForm.addEventListener("submit", async e=>{
     await signInWithEmailAndPassword(auth,email,password);
     loginForm.reset();
   } catch(err){
-    alert("❌ 登入失敗：" + err.message);
+    alert("❌ 登入失敗:" + err.message);
   }
 });
 
@@ -345,7 +345,7 @@ logoutBtn.addEventListener("click", async ()=>{
   try{
     await signOut(auth);
   } catch(err){
-    alert("登出失敗：" + err.message);
+    alert("登出失敗:" + err.message);
   }
 });
 
@@ -375,7 +375,7 @@ recordForm.addEventListener("submit", async e=>{
     recordForm.reset();
     loadRecords(user.uid);
   } catch(err){
-    alert("儲存失敗：" + err.message);
+    alert("儲存失敗:" + err.message);
   }
 });
 
@@ -395,7 +395,6 @@ async function loadRecords(uid){
       return t2 - t1;
     });
 
-  // 計算統計
   const totalCount = records.length;
   const totalSpent = records.reduce((sum, r) => {
     const price = parseInt(r.data.price) || 0;
@@ -403,7 +402,6 @@ async function loadRecords(uid){
   }, 0);
   const avgPrice = totalCount > 0 ? Math.round(totalSpent / totalCount) : 0;
 
-  // 更新統計顯示
   const statsDiv = document.getElementById('statsDiv');
   statsDiv.innerHTML = `
     <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 15px; text-align: center;">
@@ -435,27 +433,27 @@ async function loadRecords(uid){
       </div>
       <div class="record-info">
         <div class="info-row">
-          <span class="info-label">📅 日期：</span>
+          <span class="info-label">📅 日期:</span>
           <span class="info-value">${dateStr}</span>
         </div>
         <div class="info-row">
-          <span class="info-label">🕐 時間：</span>
+          <span class="info-label">🕐 時間:</span>
           <span class="info-value">${timeStr}</span>
         </div>
         <div class="info-row">
-          <span class="info-label">💰 票價：</span>
+          <span class="info-label">💰 票價:</span>
           <span class="info-value">${d.price ? 'NT$ ' + d.price : '未填寫'}</span>
         </div>
         <div class="info-row">
-          <span class="info-label">💺 座位：</span>
+          <span class="info-label">💺 座位:</span>
           <span class="info-value">${d.seat || '未填寫'}</span>
         </div>
         <div class="info-row">
-          <span class="info-label">📍 場地：</span>
+          <span class="info-label">📍 場地:</span>
           <span class="info-value">${d.venue || '未填寫'}</span>
         </div>
         ${d.notes ? `<div class="info-row">
-          <span class="info-label">📝 備註：</span>
+          <span class="info-label">📝 備註:</span>
           <span class="info-value">${d.notes}</span>
         </div>` : ''}
       </div>
@@ -473,7 +471,7 @@ async function loadRecords(uid){
     delBtn.className = "delete-btn";
     delBtn.textContent = "🗑️ 刪除";
     delBtn.onclick = async ()=>{
-      if(confirm("確定要刪除這筆紀錄嗎？")) {
+      if(confirm("確定要刪除這筆紀錄嗎?")) {
         await deleteDoc(doc(db,"concerts",r.id));
         loadRecords(uid);
       }
@@ -500,4 +498,3 @@ function startEdit(id,data){
 </script>
 </body>
 </html>
- 
