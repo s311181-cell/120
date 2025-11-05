@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> MINEJOURNAL </title>
+  <title>KPOP 追星日記</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
@@ -56,7 +56,7 @@
       margin: 8px 0;
       border: 2px solid #e0e0e0;
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 16px;
       transition: all 0.3s;
       display: block;
     }
@@ -197,12 +197,62 @@
       margin: 10px 0;
     }
     
-    @media (max-width: 600px) {
-      .auth-forms {
-        grid-template-columns: 1fr;
+    /* 手機版優化 */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
       }
+      
       h1 {
         font-size: 2em;
+        margin-bottom: 20px;
+      }
+      
+      .card {
+        padding: 20px;
+        border-radius: 15px;
+      }
+      
+      h2 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+      }
+      
+      .auth-forms {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      
+      input, textarea, button {
+        font-size: 16px;
+      }
+      
+      button {
+        padding: 12px 20px;
+      }
+      
+      #logoutBtn {
+        float: none;
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      
+      .record-header {
+        font-size: 1.2em;
+      }
+      
+      .info-label {
+        min-width: 70px;
+        font-size: 0.95em;
+      }
+      
+      .info-value {
+        font-size: 0.95em;
+      }
+      
+      .button-group button {
+        font-size: 14px;
+        padding: 10px 15px;
       }
     }
   </style>
@@ -238,7 +288,7 @@
 
   <div id="appDiv" style="display:none">
     <div class="card" style="margin-bottom: 20px;">
-      <button id="logoutBtn" style="float: right;">登出</button>
+      <button id="logoutBtn">登出</button>
       <div style="clear: both;"></div>
     </div>
 
@@ -336,7 +386,7 @@ signupForm.addEventListener("submit", async e => {
     } else if (err.code === 'auth/invalid-email') {
       errorMsg = "Email 格式不正確";
     } else if (err.code === 'auth/weak-password') {
-      errorMsg = "密碼強度不足（至少6個字元）";
+      errorMsg = "密碼強度不足(至少6個字元)";
     }
     alert("❌ " + errorMsg);
   }
@@ -443,7 +493,7 @@ async function loadRecords(uid) {
     displayRecords(records, uid);
   } catch(err) {
     console.error("載入錯誤:", err);
-    recordsList.innerHTML = '<li class="error">❌ 載入失敗，請重新整理頁面</li>';
+    recordsList.innerHTML = '<li class="error">❌ 載入失敗,請重新整理頁面</li>';
   }
 }
 
