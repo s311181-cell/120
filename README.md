@@ -9,44 +9,84 @@
 
     body {
       font-family: 'Arial', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+      background: linear-gradient(135deg, #000000 0%, #ff1493 50%, #000000 100%);
       min-height: 100vh;
       padding: 20px;
+      transition: all 0.3s;
+    }
+
+    body.desktop-mode {
+      padding: 40px;
     }
 
     .container {
-      max-width: 800px;
+      max-width: 480px;
       margin: 0 auto;
+      transition: max-width 0.3s;
+    }
+
+    body.desktop-mode .container {
+      max-width: 1200px;
+    }
+
+    .mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: rgba(255, 20, 147, 0.9);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(255, 20, 147, 0.5);
+      transition: all 0.3s;
+    }
+
+    .mode-toggle:hover {
+      transform: scale(1.05);
+      background: rgba(255, 20, 147, 1);
     }
 
     h1 {
       text-align: center;
       color: white;
-      font-size: 2.5em;
+      font-size: 2em;
       margin-bottom: 30px;
-      text-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3);
+      text-shadow: 0 0 20px rgba(255,20,147,0.8), 0 0 40px rgba(255,20,147,0.5);
       animation: glow 2s ease-in-out infinite alternate;
     }
 
+    body.desktop-mode h1 {
+      font-size: 3em;
+    }
+
     @keyframes glow {
-      from { text-shadow: 0 0 20px rgba(255,255,255,0.5), 0 0 40px rgba(255,255,255,0.3); }
-      to { text-shadow: 0 0 30px rgba(255,255,255,0.8), 0 0 60px rgba(255,255,255,0.5); }
+      from { text-shadow: 0 0 20px rgba(255,20,147,0.8), 0 0 40px rgba(255,20,147,0.5); }
+      to { text-shadow: 0 0 30px rgba(255,20,147,1), 0 0 60px rgba(255,20,147,0.8); }
     }
 
     .card {
       background: rgba(255, 255, 255, 0.95);
       border-radius: 20px;
-      padding: 30px;
+      padding: 25px;
       margin-bottom: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 32px rgba(255,20,147,0.3);
       backdrop-filter: blur(10px);
     }
 
+    body.desktop-mode .card {
+      padding: 40px;
+    }
+
     h2 {
-      color: #764ba2;
+      color: #ff1493;
       margin-bottom: 20px;
-      font-size: 1.5em;
-      border-bottom: 3px solid #f093fb;
+      font-size: 1.3em;
+      border-bottom: 3px solid #ff69b4;
       padding-bottom: 10px;
     }
 
@@ -63,8 +103,8 @@
 
     input:focus, textarea:focus {
       outline: none;
-      border-color: #764ba2;
-      box-shadow: 0 0 15px rgba(118, 75, 162, 0.3);
+      border-color: #ff1493;
+      box-shadow: 0 0 15px rgba(255, 20, 147, 0.3);
     }
 
     textarea {
@@ -73,7 +113,7 @@
     }
 
     button {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #ff1493 0%, #ff69b4 100%);
       color: white;
       border: none;
       padding: 12px 30px;
@@ -87,7 +127,7 @@
 
     button:hover {
       transform: translateY(-2px);
-      box-shadow: 0 5px 20px rgba(118, 75, 162, 0.4);
+      box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
     }
 
     button:active {
@@ -95,12 +135,46 @@
     }
 
     #logoutBtn {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      background: linear-gradient(135deg, #ff69b4 0%, #ff1493 100%);
       float: right;
     }
 
+    .photo-upload {
+      margin: 15px 0;
+    }
+
+    .photo-preview {
+      margin-top: 10px;
+      text-align: center;
+      position: relative;
+    }
+
+    .photo-preview img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .remove-photo-btn {
+      background: linear-gradient(135deg, #ff9999 0%, #ff6666 100%);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: all 0.3s;
+    }
+
+    .remove-photo-btn:hover {
+      transform: scale(1.05);
+    }
+
     .record-item {
-      background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+      background: linear-gradient(135deg, #ffe6f0 0%, #ffc0e0 100%);
       border-radius: 15px;
       padding: 20px;
       margin: 15px 0;
@@ -113,10 +187,38 @@
       transform: translateX(5px);
     }
 
+    .record-photo-container {
+      margin: 15px 0;
+      text-align: center;
+    }
+
+    .record-photo {
+      text-align: center;
+    }
+
+    .record-photo img {
+      max-width: 100%;
+      max-height: 250px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .record-photo img:hover {
+      transform: scale(1.02);
+    }
+
+    .no-photo-placeholder {
+      color: #ffb3d9;
+      font-size: 3em;
+      padding: 60px 20px;
+    }
+
     .record-header {
       font-size: 1.3em;
       font-weight: bold;
-      color: #764ba2;
+      color: #ff1493;
       margin-bottom: 15px;
       display: flex;
       align-items: center;
@@ -143,7 +245,7 @@
 
     .info-label {
       font-weight: bold;
-      color: #764ba2;
+      color: #ff1493;
       min-width: 80px;
       margin-right: 10px;
     }
@@ -158,33 +260,37 @@
     }
 
     .edit-btn {
-      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
-      color: #764ba2;
+      background: linear-gradient(135deg, #ffb3d9 0%, #ff80bf 100%);
+      color: #fff;
     }
 
     .delete-btn {
-      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
-      color: #764ba2;
+      background: linear-gradient(135deg, #ff9999 0%, #ff6666 100%);
+      color: #fff;
     }
 
     #recordsList:empty::before {
       content: "還沒有任何紀錄喔!快去看演唱會吧 🎤✨";
       display: block;
       text-align: center;
-      color: #764ba2;
+      color: #ff1493;
       font-size: 1.2em;
       padding: 40px;
     }
 
     .auth-forms {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       gap: 20px;
+    }
+
+    body.desktop-mode .auth-forms {
+      grid-template-columns: 1fr 1fr;
     }
 
     .loading {
       text-align: center;
-      color: #764ba2;
+      color: #ff1493;
       padding: 20px;
       font-weight: bold;
     }
@@ -197,68 +303,38 @@
       margin: 10px 0;
     }
 
-    /* 手機版優化 */
-    @media (max-width: 768px) {
-      body {
-        padding: 10px;
-      }
+    .image-size-warning {
+      color: #ff1493;
+      font-size: 0.9em;
+      margin-top: 5px;
+    }
 
-      h1 {
-        font-size: 1.3em;
-        margin-bottom: 15px;
-        word-break: keep-all;
-      }
+    body.desktop-mode .record-item {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: start;
+    }
 
-      .card {
-        padding: 20px;
-        border-radius: 15px;
-      }
+    body.desktop-mode .record-photo-container {
+      background: linear-gradient(135deg, #ffe6f0 0%, #ffd6ed 100%);
+      border-radius: 15px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 300px;
+      margin: 0;
+    }
 
-      h2 {
-        font-size: 1.2em;
-        margin-bottom: 15px;
-      }
-
-      .auth-forms {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-
-      input, textarea, button {
-        font-size: 16px;
-      }
-
-      button {
-        padding: 12px 20px;
-      }
-
-      #logoutBtn {
-        float: none;
-        width: 100%;
-        margin-bottom: 10px;
-      }
-
-      .record-header {
-        font-size: 1.1em;
-      }
-
-      .info-label {
-        min-width: 70px;
-        font-size: 0.95em;
-      }
-
-      .info-value {
-        font-size: 0.95em;
-      }
-
-      .button-group button {
-        font-size: 14px;
-        padding: 10px 15px;
-      }
+    body.desktop-mode .no-photo-placeholder {
+      font-size: 4em;
     }
   </style>
 </head>
 <body>
+
+<button class="mode-toggle" onclick="toggleMode()">💻 電腦模式</button>
 
 <div class="container">
   <h1>🎵 MINEJOURNAL ✨</h1>
@@ -302,6 +378,14 @@
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
         <textarea name="notes" placeholder="備註 (心得、歌單、感想...)"></textarea>
+        
+        <div class="photo-upload">
+          <label style="display: block; font-weight: bold; color: #ff1493; margin-bottom: 8px;">📷 上傳照片 (選填)</label>
+          <input type="file" id="photoInput" accept="image/*" style="padding: 8px;">
+          <div class="image-size-warning">💡 建議照片小於 2MB，以確保儲存順暢</div>
+          <div id="photoPreview" class="photo-preview"></div>
+        </div>
+
         <button type="submit" id="submitBtn">💾 儲存紀錄</button>
         <button type="button" id="cancelBtn" style="display:none; background: #999;">✖️ 取消編輯</button>
       </form>
@@ -357,8 +441,56 @@ const recordsList = document.getElementById("recordsList");
 const formTitle = document.getElementById("formTitle");
 const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
+const photoInput = document.getElementById("photoInput");
+const photoPreview = document.getElementById("photoPreview");
 
 let editingId = null;
+let currentPhotoBase64 = null;
+
+window.toggleMode = function() {
+  const body = document.body;
+  const btn = document.querySelector('.mode-toggle');
+  
+  if (body.classList.contains('desktop-mode')) {
+    body.classList.remove('desktop-mode');
+    btn.textContent = '💻 電腦模式';
+  } else {
+    body.classList.add('desktop-mode');
+    btn.textContent = '📱 手機模式';
+  }
+}
+
+window.removePhoto = function() {
+  currentPhotoBase64 = null;
+  photoInput.value = '';
+  photoPreview.innerHTML = '';
+}
+
+photoInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) {
+    currentPhotoBase64 = null;
+    photoPreview.innerHTML = '';
+    return;
+  }
+
+  if (file.size > 2 * 1024 * 1024) {
+    alert('⚠️ 照片太大了！請選擇小於 2MB 的照片');
+    photoInput.value = '';
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
+    currentPhotoBase64 = event.target.result;
+    photoPreview.innerHTML = `
+      <img src="${currentPhotoBase64}" alt="預覽">
+      <br>
+      <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
+    `;
+  };
+  reader.readAsDataURL(file);
+});
 
 onAuthStateChanged(auth, user => {
   if(user){
@@ -441,6 +573,7 @@ recordForm.addEventListener("submit", async e => {
     seat: recordForm["seat"].value.trim(),
     venue: recordForm["venue"].value.trim(),
     notes: recordForm["notes"].value.trim(),
+    photo: currentPhotoBase64 || "",
     updatedAt: new Date().toISOString()
   };
 
@@ -457,6 +590,9 @@ recordForm.addEventListener("submit", async e => {
       await addDoc(collection(db, "concerts"), data);
       alert("✅ 新增成功!");
       recordForm.reset();
+      photoInput.value = '';
+      photoPreview.innerHTML = '';
+      currentPhotoBase64 = null;
     }
     loadRecords(user.uid);
   } catch(err) {
@@ -468,6 +604,9 @@ recordForm.addEventListener("submit", async e => {
 function cancelEdit() {
   editingId = null;
   recordForm.reset();
+  photoInput.value = '';
+  photoPreview.innerHTML = '';
+  currentPhotoBase64 = null;
   formTitle.textContent = "新增演唱會紀錄";
   submitBtn.textContent = "💾 儲存紀錄";
   cancelBtn.style.display = "none";
@@ -509,17 +648,17 @@ function updateStats(records) {
   const statsDiv = document.getElementById('statsDiv');
   statsDiv.innerHTML = `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-      <div style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #764ba2;">${totalCount}</div>
-        <div style="color: #764ba2; font-weight: bold;">🎤 總場次</div>
+      <div style="background: linear-gradient(135deg, #ffb3d9 0%, #ff80bf 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #fff;">${totalCount}</div>
+        <div style="color: #fff; font-weight: bold;">🎤 總場次</div>
       </div>
-      <div style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #764ba2;">$${totalSpent.toLocaleString()}</div>
-        <div style="color: #764ba2; font-weight: bold;">💰 總花費</div>
+      <div style="background: linear-gradient(135deg, #ff80bf 0%, #ff1493 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${totalSpent.toLocaleString()}</div>
+        <div style="color: #fff; font-weight: bold;">💰 總花費</div>
       </div>
-      <div style="background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #764ba2;">$${avgPrice.toLocaleString()}</div>
-        <div style="color: #764ba2; font-weight: bold;">💵 平均票價</div>
+      <div style="background: linear-gradient(135deg, #ff1493 0%, #c71585 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${avgPrice.toLocaleString()}</div>
+        <div style="color: #fff; font-weight: bold;">💵 平均票價</div>
       </div>
     </div>
   `;
@@ -541,35 +680,50 @@ function displayRecords(records, uid) {
     const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
     const timeStr = datetime.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
 
-    li.innerHTML = `
-      <div class="record-header">
-        🎤 ${d.artist}
+    const photoHTML = d.photo ? `
+      <div class="record-photo-container">
+        <div class="record-photo">
+          <img src="${d.photo}" alt="${d.artist}" onclick="window.open(this.src)">
+        </div>
       </div>
-      <div class="record-info">
-        <div class="info-row">
-          <span class="info-label">📅 日期:</span>
-          <span class="info-value">${dateStr}</span>
+    ` : `
+      <div class="record-photo-container">
+        <div class="no-photo-placeholder">📷</div>
+      </div>
+    `;
+
+    li.innerHTML = `
+      ${photoHTML}
+      <div>
+        <div class="record-header">
+          🎤 ${d.artist}
         </div>
-        <div class="info-row">
-          <span class="info-label">🕐 時間:</span>
-          <span class="info-value">${timeStr}</span>
+        <div class="record-info">
+          <div class="info-row">
+            <span class="info-label">📅 日期:</span>
+            <span class="info-value">${dateStr}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">🕐 時間:</span>
+            <span class="info-value">${timeStr}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">💰 票價:</span>
+            <span class="info-value">${d.price ? 'NT$ ' + parseInt(d.price).toLocaleString() : '未填寫'}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">💺 座位:</span>
+            <span class="info-value">${d.seat || '未填寫'}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">📍 場地:</span>
+            <span class="info-value">${d.venue || '未填寫'}</span>
+          </div>
+          ${d.notes ? `<div class="info-row">
+            <span class="info-label">📝 備註:</span>
+            <span class="info-value">${d.notes}</span>
+          </div>` : ''}
         </div>
-        <div class="info-row">
-          <span class="info-label">💰 票價:</span>
-          <span class="info-value">${d.price ? 'NT$ ' + parseInt(d.price).toLocaleString() : '未填寫'}</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">💺 座位:</span>
-          <span class="info-value">${d.seat || '未填寫'}</span>
-        </div>
-        <div class="info-row">
-          <span class="info-label">📍 場地:</span>
-          <span class="info-value">${d.venue || '未填寫'}</span>
-        </div>
-        ${d.notes ? `<div class="info-row">
-          <span class="info-label">📝 備註:</span>
-          <span class="info-value">${d.notes}</span>
-        </div>` : ''}
       </div>
     `;
 
@@ -615,6 +769,17 @@ function startEdit(id, data) {
   recordForm["seat"].value = data.seat || "";
   recordForm["venue"].value = data.venue || "";
   recordForm["notes"].value = data.notes || "";
+  
+  currentPhotoBase64 = data.photo || null;
+  if (data.photo) {
+    photoPreview.innerHTML = `
+      <img src="${data.photo}" alt="預覽">
+      <br>
+      <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
+    `;
+  } else {
+    photoPreview.innerHTML = '';
+  }
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
