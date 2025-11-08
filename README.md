@@ -288,6 +288,50 @@
       grid-template-columns: 1fr 1fr;
     }
 
+    .forgot-password-link {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .forgot-password-link button {
+      background: none;
+      color: #ff1493;
+      text-decoration: underline;
+      padding: 5px;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: none;
+    }
+
+    .forgot-password-link button:hover {
+      color: #ff69b4;
+      transform: none;
+    }
+
+    .forgot-password-note {
+      color: #ff1493;
+      font-size: 13px;
+      margin-top: 8px;
+      text-align: center;
+      font-weight: bold;
+      background: #fff0f6;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ffb3d9;
+    }
+
+    .mode-switch-note {
+      color: #ff1493;
+      font-size: 13px;
+      text-align: center;
+      font-weight: bold;
+      background: #fff0f6;
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #ffb3d9;
+      margin-top: 15px;
+    }
+
     .loading {
       text-align: center;
       color: #ff1493;
@@ -349,6 +393,10 @@
             <input type="password" name="password" placeholder="密碼" required>
             <button type="submit">登入</button>
           </form>
+          <div class="forgot-password-link">
+            <button type="button" id="forgotPasswordBtn">忘記密碼？</button>
+            <div class="forgot-password-note">⚠️ 提醒：重設密碼的信件可能在垃圾郵件中</div>
+          </div>
         </div>
 
         <div>
@@ -359,6 +407,9 @@
             <button type="submit">註冊</button>
           </form>
         </div>
+      </div>
+      <div class="mode-switch-note">
+        💻 提示：點擊右上角按鈕可切換手機/電腦模式
       </div>
     </div>
   </div>
@@ -374,7 +425,7 @@
       <form id="recordForm">
         <input type="text" name="artist" placeholder="表演者/活動名稱" required>
         <input type="datetime-local" name="datetime" required>
-        <input type="number" name="price" placeholder="票價 (NT$)" min="0">
+        <input type="text" name="price" placeholder="票價 (例如: 1500 或 1500*2)">
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
         <textarea name="notes" placeholder="備註 (心得、歌單、感想...)"></textarea>
@@ -407,7 +458,7 @@
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -426,6 +477,10 @@ try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
+  
+  setPersistence(auth, browserSessionPersistence).catch((error) => {
+    console.error("Persistence 設定失敗:", error);
+  });
 } catch (error) {
   console.error("Firebase 初始化失敗:", error);
   alert("應用程式初始化失敗,請檢查網路連線或稍後再試");
@@ -443,6 +498,7 @@ const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
 const photoInput = document.getElementById("photoInput");
 const photoPreview = document.getElementById("photoPreview");
+const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 
 let editingId = null;
 let currentPhotoBase64 = null;
@@ -535,7 +591,7 @@ loginForm.addEventListener("submit", async e => {
     loginForm.reset();
   } catch(err) {
     let errorMsg = "登入失敗";
-    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
       errorMsg = "Email 或密碼錯誤";
     } else if (err.code === 'auth/invalid-email') {
       errorMsg = "Email 格式不正確";
@@ -550,6 +606,34 @@ logoutBtn.addEventListener("click", async () => {
     alert("✅ 已登出");
   } catch(err) {
     alert("❌ 登出失敗: " + err.message);
+  }
+});
+
+forgotPasswordBtn.addEventListener("click", async () => {
+  const email = prompt("請輸入您的註冊 Email，我們將發送密碼重設連結：");
+  
+  if (!email) {
+    return;
+  }
+  
+  if (!email.includes('@')) {
+    alert("❌ 請輸入有效的 Email 地址");
+    return;
+  }
+  
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("✅ 密碼重設郵件已發送！\n\n請檢查您的信箱（包括垃圾郵件），點擊郵件中的連結來重設密碼。");
+  } catch(err) {
+    let errorMsg = "發送失敗";
+    if (err.code === 'auth/user-not-found') {
+      errorMsg = "找不到此 Email 的帳號";
+    } else if (err.code === 'auth/invalid-email') {
+      errorMsg = "Email 格式不正確";
+    } else if (err.code === 'auth/too-many-requests') {
+      errorMsg = "請求次數過多，請稍後再試";
+    }
+    alert("❌ " + errorMsg);
   }
 });
 
@@ -569,7 +653,7 @@ recordForm.addEventListener("submit", async e => {
     uid: user.uid,
     artist: recordForm["artist"].value.trim(),
     datetime: recordForm["datetime"].value,
-    price: recordForm["price"].value || "",
+    price: recordForm["price"].value.trim() || "",
     seat: recordForm["seat"].value.trim(),
     venue: recordForm["venue"].value.trim(),
     notes: recordForm["notes"].value.trim(),
@@ -639,10 +723,19 @@ async function loadRecords(uid) {
 
 function updateStats(records) {
   const totalCount = records.length;
-  const totalSpent = records.reduce((sum, r) => {
-    const price = parseInt(r.data.price) || 0;
-    return sum + price;
-  }, 0);
+  let totalSpent = 0;
+  
+  records.forEach(r => {
+    const priceStr = r.data.price || "";
+    try {
+      const calculated = eval(priceStr.replace(/[^0-9+\-*/().]/g, ''));
+      if (!isNaN(calculated)) {
+        totalSpent += calculated;
+      }
+    } catch(e) {
+    }
+  });
+  
   const avgPrice = totalCount > 0 ? Math.round(totalSpent / totalCount) : 0;
 
   const statsDiv = document.getElementById('statsDiv');
@@ -653,7 +746,7 @@ function updateStats(records) {
         <div style="color: #fff; font-weight: bold;">🎤 總場次</div>
       </div>
       <div style="background: linear-gradient(135deg, #ff80bf 0%, #ff1493 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${totalSpent.toLocaleString()}</div>
+        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${Math.round(totalSpent).toLocaleString()}</div>
         <div style="color: #fff; font-weight: bold;">💰 總花費</div>
       </div>
       <div style="background: linear-gradient(135deg, #ff1493 0%, #c71585 100%); padding: 20px; border-radius: 15px; text-align: center;">
@@ -709,7 +802,7 @@ function displayRecords(records, uid) {
           </div>
           <div class="info-row">
             <span class="info-label">💰 票價:</span>
-            <span class="info-value">${d.price ? 'NT$ ' + parseInt(d.price).toLocaleString() : '未填寫'}</span>
+            <span class="info-value">${d.price || '未填寫'}</span>
           </div>
           <div class="info-row">
             <span class="info-label">💺 座位:</span>
