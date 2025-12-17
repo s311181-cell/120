@@ -374,6 +374,126 @@
     body.desktop-mode .no-photo-placeholder {
       font-size: 4em;
     }
+
+    /* 新增的樣式 */
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #ff1493;
+      cursor: pointer;
+      padding: 5px;
+      font-size: 18px;
+      margin: 0;
+    }
+
+    .toggle-password:hover {
+      color: #ff69b4;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .password-strength {
+      height: 4px;
+      border-radius: 2px;
+      margin: 5px 0 10px 0;
+      transition: all 0.3s;
+    }
+
+    .strength-weak {
+      background: linear-gradient(90deg, #ff4d4d 0%, #ff9999 100%);
+      width: 33%;
+    }
+
+    .strength-medium {
+      background: linear-gradient(90deg, #ff9966 0%, #ffcc66 100%);
+      width: 66%;
+    }
+
+    .strength-strong {
+      background: linear-gradient(90deg, #66cc66 0%, #99ff99 100%);
+      width: 100%;
+    }
+
+    .password-hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .password-hint.valid {
+      color: #66cc66;
+    }
+
+    .password-hint.invalid {
+      color: #ff6666;
+    }
+
+    .search-bar {
+      position: relative;
+      margin-bottom: 15px;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 12px 40px 12px 12px;
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff1493;
+    }
+
+    .export-btn {
+      background: linear-gradient(135deg, #66cc66 0%, #99ff99 100%);
+      margin-top: 10px;
+    }
+
+    .draft-notice {
+      background: #fff0f6;
+      border: 1px solid #ffb3d9;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 14px;
+      color: #ff1493;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .toolbar-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .record-count {
+      color: #ff1493;
+      font-weight: bold;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -390,7 +510,12 @@
           <h2>登入</h2>
           <form id="loginForm">
             <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="密碼" required>
+           
+            <div class="password-container">
+              <input type="password" name="password" placeholder="密碼" required id="loginPassword">
+              <button type="button" class="toggle-password" data-target="loginPassword">👁️</button>
+            </div>
+           
             <button type="submit">登入</button>
           </form>
           <div class="forgot-password-link">
@@ -403,7 +528,21 @@
           <h2>註冊</h2>
           <form id="signupForm">
             <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="密碼 (至少6個字元)" required minlength="6">
+           
+            <div class="password-container">
+              <input type="password" name="password" placeholder="密碼 (至少6個字元)" required minlength="6" id="signupPassword">
+              <button type="button" class="toggle-password" data-target="signupPassword">👁️</button>
+            </div>
+           
+            <!-- 密碼強度指示器 -->
+            <div id="passwordStrength" class="password-strength" style="display: none;"></div>
+           
+            <!-- 密碼提示 -->
+            <div id="passwordHints" style="margin-bottom: 10px;">
+              <div class="password-hint" id="lengthHint">至少6個字元</div>
+              <div class="password-hint" id="strengthHint">包含大小寫字母和數字</div>
+            </div>
+           
             <button type="submit">註冊</button>
           </form>
         </div>
@@ -416,12 +555,26 @@
 
   <div id="appDiv" style="display:none">
     <div class="card" style="margin-bottom: 20px;">
-      <button id="logoutBtn">登出</button>
+      <div class="toolbar">
+        <div class="record-count" id="recordCount">載入中...</div>
+        <div class="toolbar-buttons">
+          <button onclick="exportData()" class="export-btn">📥 匯出資料</button>
+          <button id="logoutBtn">登出</button>
+        </div>
+      </div>
       <div style="clear: both;"></div>
     </div>
 
     <div class="card">
       <h2 id="formTitle">新增演唱會紀錄</h2>
+     
+      <!-- 草稿提示 -->
+      <div id="draftNotice" class="draft-notice" style="display: none;">
+        <span>💾 偵測到未儲存的草稿</span>
+        <button onclick="loadDraft()" style="margin-left: auto; padding: 5px 10px; font-size: 12px;">載入草稿</button>
+        <button onclick="clearDraft()" style="padding: 5px 10px; font-size: 12px; background: #ff6666;">清除</button>
+      </div>
+     
       <form id="recordForm">
         <input type="text" name="artist" placeholder="表演者/活動名稱" required>
         <input type="datetime-local" name="datetime" required>
@@ -429,7 +582,7 @@
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
         <textarea name="notes" placeholder="備註 (心得、歌單、感想...)"></textarea>
-        
+       
         <div class="photo-upload">
           <label style="display: block; font-weight: bold; color: #ff1493; margin-bottom: 8px;">📷 上傳照片 (選填)</label>
           <input type="file" id="photoInput" accept="image/*" style="padding: 8px;">
@@ -450,7 +603,13 @@
     </div>
 
     <div class="card">
-      <h2>我的演唱會紀錄</h2>
+      <div class="toolbar">
+        <h2 style="margin: 0; border: none;">我的演唱會紀錄</h2>
+        <div class="search-bar">
+          <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋表演者、場地或備註...">
+          <span class="search-icon">🔍</span>
+        </div>
+      </div>
       <ul id="recordsList"></ul>
     </div>
   </div>
@@ -477,7 +636,7 @@ try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
-  
+ 
   setPersistence(auth, browserSessionPersistence).catch((error) => {
     console.error("Persistence 設定失敗:", error);
   });
@@ -486,6 +645,7 @@ try {
   alert("應用程式初始化失敗,請檢查網路連線或稍後再試");
 }
 
+// DOM 元素
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -499,14 +659,253 @@ const cancelBtn = document.getElementById("cancelBtn");
 const photoInput = document.getElementById("photoInput");
 const photoPreview = document.getElementById("photoPreview");
 const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
+const searchInput = document.getElementById("searchInput");
+const draftNotice = document.getElementById("draftNotice");
+const recordCount = document.getElementById("recordCount");
 
+// 全域變數
 let editingId = null;
 let currentPhotoBase64 = null;
+let allRecords = [];
+let currentUserId = null;
+
+// ======================
+// 1. 密碼顯示/隱藏功能
+// ======================
+
+function initPasswordToggles() {
+  // 為所有密碼顯示切換按鈕添加事件
+  document.querySelectorAll('.toggle-password').forEach(button => {
+    button.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-target');
+      const passwordInput = document.getElementById(targetId);
+     
+      if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.textContent = '🙈';
+      } else {
+        passwordInput.type = 'password';
+        this.textContent = '👁️';
+      }
+    });
+  });
+ 
+  // 註冊頁面密碼強度檢查
+  const signupPassword = document.getElementById('signupPassword');
+  if (signupPassword) {
+    signupPassword.addEventListener('input', checkPasswordStrength);
+  }
+}
+
+// ======================
+// 2. 密碼強度檢查功能
+// ======================
+
+function checkPasswordStrength() {
+  const password = this.value;
+  const strengthBar = document.getElementById('passwordStrength');
+  const lengthHint = document.getElementById('lengthHint');
+  const strengthHint = document.getElementById('strengthHint');
+ 
+  if (password.length === 0) {
+    strengthBar.style.display = 'none';
+    return;
+  }
+ 
+  strengthBar.style.display = 'block';
+ 
+  // 檢查密碼長度
+  const hasMinLength = password.length >= 6;
+  lengthHint.className = hasMinLength ? 'password-hint valid' : 'password-hint invalid';
+ 
+  // 檢查密碼強度
+  let strength = 0;
+  if (password.length >= 8) strength++;
+  if (/[a-z]/.test(password)) strength++; // 小寫字母
+  if (/[A-Z]/.test(password)) strength++; // 大寫字母
+  if (/[0-9]/.test(password)) strength++; // 數字
+  if (/[^A-Za-z0-9]/.test(password)) strength++; // 特殊符號
+ 
+  // 更新強度提示
+  if (strength >= 4) {
+    strengthHint.textContent = '密碼強度：強';
+    strengthHint.className = 'password-hint valid';
+    strengthBar.className = 'password-strength strength-strong';
+  } else if (strength >= 3) {
+    strengthHint.textContent = '密碼強度：中';
+    strengthHint.className = 'password-hint';
+    strengthBar.className = 'password-strength strength-medium';
+  } else {
+    strengthHint.textContent = '密碼強度：弱';
+    strengthHint.className = 'password-hint invalid';
+    strengthBar.className = 'password-strength strength-weak';
+  }
+}
+
+// ======================
+// 3. 草稿自動儲存功能
+// ======================
+
+function saveDraft() {
+  const formData = {
+    artist: recordForm["artist"].value,
+    datetime: recordForm["datetime"].value,
+    price: recordForm["price"].value,
+    seat: recordForm["seat"].value,
+    venue: recordForm["venue"].value,
+    notes: recordForm["notes"].value,
+    photo: currentPhotoBase64,
+    hasDraft: true,
+    timestamp: new Date().toISOString()
+  };
+ 
+  // 檢查是否有任何資料
+  const hasData = Object.values(formData).some(val =>
+    val && val.toString().trim().length > 0 && val !== currentPhotoBase64
+  );
+ 
+  if (hasData && !editingId) {
+    localStorage.setItem('concertDraft', JSON.stringify(formData));
+    draftNotice.style.display = 'flex';
+  }
+}
+
+function loadDraft() {
+  const draft = JSON.parse(localStorage.getItem('concertDraft'));
+  if (draft) {
+    recordForm["artist"].value = draft.artist || "";
+    recordForm["datetime"].value = draft.datetime || "";
+    recordForm["price"].value = draft.price || "";
+    recordForm["seat"].value = draft.seat || "";
+    recordForm["venue"].value = draft.venue || "";
+    recordForm["notes"].value = draft.notes || "";
+   
+    if (draft.photo) {
+      currentPhotoBase64 = draft.photo;
+      photoPreview.innerHTML = `
+        <img src="${draft.photo}" alt="草稿預覽">
+        <br>
+        <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
+      `;
+    }
+   
+    alert('草稿已載入！');
+  }
+}
+
+function clearDraft() {
+  if (confirm('確定要清除草稿嗎？')) {
+    localStorage.removeItem('concertDraft');
+    draftNotice.style.display = 'none';
+  }
+}
+
+// ======================
+// 4. 搜尋功能
+// ======================
+
+function initSearch() {
+  if (searchInput) {
+    searchInput.addEventListener('input', function() {
+      filterRecords(this.value.trim().toLowerCase());
+    });
+  }
+}
+
+function filterRecords(searchTerm) {
+  if (!searchTerm) {
+    displayRecords(allRecords, currentUserId);
+    return;
+  }
+ 
+  const filtered = allRecords.filter(record => {
+    const data = record.data;
+    return (
+      (data.artist && data.artist.toLowerCase().includes(searchTerm)) ||
+      (data.venue && data.venue.toLowerCase().includes(searchTerm)) ||
+      (data.notes && data.notes.toLowerCase().includes(searchTerm)) ||
+      (data.seat && data.seat.toLowerCase().includes(searchTerm))
+    );
+  });
+ 
+  displayRecords(filtered, currentUserId);
+ 
+  // 更新紀錄計數
+  recordCount.textContent = `找到 ${filtered.length} 筆紀錄`;
+}
+
+// ======================
+// 5. 資料匯出功能
+// ======================
+
+window.exportData = function() {
+  if (allRecords.length === 0) {
+    alert('目前沒有任何紀錄可以匯出');
+    return;
+  }
+ 
+  let exportText = '🎵 MINEJOURNAL 演唱會紀錄匯出\n';
+  exportText += `匯出時間：${new Date().toLocaleString('zh-TW')}\n`;
+  exportText += `總場次：${allRecords.length}\n`;
+  exportText += '='.repeat(50) + '\n\n';
+ 
+  let totalSpent = 0;
+ 
+  allRecords.forEach((record, index) => {
+    const data = record.data;
+    const datetime = new Date(data.datetime);
+    const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+    const timeStr = datetime.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+   
+    // 計算花費
+    if (data.price) {
+      try {
+        const calculated = eval(data.price.replace(/[^0-9+\-*/().]/g, ''));
+        if (!isNaN(calculated)) {
+          totalSpent += calculated;
+        }
+      } catch(e) {}
+    }
+   
+    exportText += `【紀錄 ${index + 1}】\n`;
+    exportText += `🎤 表演者：${data.artist}\n`;
+    exportText += `📅 日期：${dateStr} ${timeStr}\n`;
+    exportText += `💰 票價：${data.price || '未填寫'}\n`;
+    exportText += `💺 座位：${data.seat || '未填寫'}\n`;
+    exportText += `📍 場地：${data.venue || '未填寫'}\n`;
+    if (data.notes) {
+      exportText += `📝 備註：${data.notes}\n`;
+    }
+    exportText += `🕐 建立時間：${new Date(data.createdAt || data.updatedAt).toLocaleString('zh-TW')}\n`;
+    exportText += '-'.repeat(30) + '\n\n';
+  });
+ 
+  exportText += '='.repeat(50) + '\n';
+  exportText += `💰 總花費：$${Math.round(totalSpent).toLocaleString()}\n`;
+  exportText += `📊 平均票價：$${allRecords.length > 0 ? Math.round(totalSpent / allRecords.length).toLocaleString() : 0}\n`;
+ 
+  // 建立下載連結
+  const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `MineJournal_${new Date().toISOString().split('T')[0]}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+ 
+  alert(`資料已匯出！總共 ${allRecords.length} 筆紀錄。`);
+};
+
+// ======================
+// 其他功能
+// ======================
 
 window.toggleMode = function() {
   const body = document.body;
   const btn = document.querySelector('.mode-toggle');
-  
+ 
   if (body.classList.contains('desktop-mode')) {
     body.classList.remove('desktop-mode');
     btn.textContent = '💻 電腦模式';
@@ -520,6 +919,7 @@ window.removePhoto = function() {
   currentPhotoBase64 = null;
   photoInput.value = '';
   photoPreview.innerHTML = '';
+  saveDraft(); // 儲存草稿
 }
 
 photoInput.addEventListener('change', async (e) => {
@@ -544,18 +944,46 @@ photoInput.addEventListener('change', async (e) => {
       <br>
       <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
     `;
+    saveDraft(); // 儲存草稿
   };
   reader.readAsDataURL(file);
 });
+
+// 表單輸入時自動儲存草稿
+recordForm.addEventListener('input', saveDraft);
+
+// 檢查是否有草稿
+function checkDraft() {
+  const draft = localStorage.getItem('concertDraft');
+  if (draft) {
+    const draftData = JSON.parse(draft);
+    // 檢查草稿是否超過24小時
+    const draftTime = new Date(draftData.timestamp);
+    const now = new Date();
+    const hoursDiff = (now - draftTime) / (1000 * 60 * 60);
+   
+    if (hoursDiff < 24) {
+      draftNotice.style.display = 'flex';
+    } else {
+      localStorage.removeItem('concertDraft');
+    }
+  }
+}
 
 onAuthStateChanged(auth, user => {
   if(user){
     loginDiv.style.display = "none";
     appDiv.style.display = "block";
+    currentUserId = user.uid;
     loadRecords(user.uid);
+    checkDraft();
+    initPasswordToggles();
+    initSearch();
   } else {
     loginDiv.style.display = "block";
     appDiv.style.display = "none";
+    currentUserId = null;
+    initPasswordToggles();
   }
 });
 
@@ -568,6 +996,7 @@ signupForm.addEventListener("submit", async e => {
     await createUserWithEmailAndPassword(auth, email, password);
     alert("✅ 註冊成功!");
     signupForm.reset();
+    document.getElementById('passwordStrength').style.display = 'none';
   } catch(err) {
     let errorMsg = "註冊失敗";
     if (err.code === 'auth/email-already-in-use') {
@@ -611,16 +1040,16 @@ logoutBtn.addEventListener("click", async () => {
 
 forgotPasswordBtn.addEventListener("click", async () => {
   const email = prompt("請輸入您的註冊 Email，我們將發送密碼重設連結：");
-  
+ 
   if (!email) {
     return;
   }
-  
+ 
   if (!email.includes('@')) {
     alert("❌ 請輸入有效的 Email 地址");
     return;
   }
-  
+ 
   try {
     await sendPasswordResetEmail(auth, email);
     alert("✅ 密碼重設郵件已發送！\n\n請檢查您的信箱（包括垃圾郵件），點擊郵件中的連結來重設密碼。");
@@ -677,6 +1106,9 @@ recordForm.addEventListener("submit", async e => {
       photoInput.value = '';
       photoPreview.innerHTML = '';
       currentPhotoBase64 = null;
+      // 清除草稿
+      localStorage.removeItem('concertDraft');
+      draftNotice.style.display = 'none';
     }
     loadRecords(user.uid);
   } catch(err) {
@@ -695,6 +1127,9 @@ function cancelEdit() {
   submitBtn.textContent = "💾 儲存紀錄";
   cancelBtn.style.display = "none";
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // 清除草稿
+  localStorage.removeItem('concertDraft');
+  draftNotice.style.display = 'none';
 }
 
 async function loadRecords(uid) {
@@ -704,7 +1139,7 @@ async function loadRecords(uid) {
     const q = query(collection(db, "concerts"), where("uid", "==", uid));
     const snap = await getDocs(q);
 
-    const records = snap.docs.map(docSnap => ({
+    allRecords = snap.docs.map(docSnap => ({
       id: docSnap.id,
       data: docSnap.data()
     })).sort((a, b) => {
@@ -713,8 +1148,11 @@ async function loadRecords(uid) {
       return t2 - t1;
     });
 
-    updateStats(records);
-    displayRecords(records, uid);
+    updateStats(allRecords);
+    displayRecords(allRecords, uid);
+   
+    // 更新紀錄計數
+    recordCount.textContent = `共 ${allRecords.length} 筆紀錄`;
   } catch(err) {
     console.error("載入錯誤:", err);
     recordsList.innerHTML = '<li class="error">❌ 載入失敗,請重新整理頁面</li>';
@@ -724,7 +1162,7 @@ async function loadRecords(uid) {
 function updateStats(records) {
   const totalCount = records.length;
   let totalSpent = 0;
-  
+ 
   records.forEach(r => {
     const priceStr = r.data.price || "";
     try {
@@ -735,7 +1173,7 @@ function updateStats(records) {
     } catch(e) {
     }
   });
-  
+ 
   const avgPrice = totalCount > 0 ? Math.round(totalSpent / totalCount) : 0;
 
   const statsDiv = document.getElementById('statsDiv');
@@ -761,6 +1199,14 @@ function displayRecords(records, uid) {
   recordsList.innerHTML = "";
 
   if (records.length === 0) {
+    const searchTerm = searchInput ? searchInput.value.trim() : '';
+    if (searchTerm) {
+      recordsList.innerHTML = `
+        <li style="text-align: center; padding: 40px; color: #ff1493;">
+          🔍 沒有找到符合「${searchTerm}」的紀錄
+        </li>
+      `;
+    }
     return;
   }
 
@@ -862,7 +1308,7 @@ function startEdit(id, data) {
   recordForm["seat"].value = data.seat || "";
   recordForm["venue"].value = data.venue || "";
   recordForm["notes"].value = data.notes || "";
-  
+ 
   currentPhotoBase64 = data.photo || null;
   if (data.photo) {
     photoPreview.innerHTML = `
@@ -876,6 +1322,9 @@ function startEdit(id, data) {
 
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// 初始化密碼顯示功能
+initPasswordToggles();
 </script>
 </body>
 </html>
