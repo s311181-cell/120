@@ -461,17 +461,9 @@
       margin-top: 10px;
     }
 
+    /* 移除草稿提示樣式 */
     .draft-notice {
-      background: #fff0f6;
-      border: 1px solid #ffb3d9;
-      border-radius: 10px;
-      padding: 10px;
-      margin: 10px 0;
-      font-size: 14px;
-      color: #ff1493;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      display: none !important;
     }
 
     .toolbar {
@@ -516,6 +508,20 @@
       align-items: center;
       gap: 5px;
       font-weight: bold;
+    }
+
+    /* 清除按鈕樣式 */
+    .clear-form-btn {
+      background: linear-gradient(135deg, #ff9999 0%, #ff6666 100%);
+      margin-left: 10px;
+    }
+
+    .form-buttons {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
     }
   </style>
 </head>
@@ -581,7 +587,7 @@
       <div class="toolbar">
         <div class="record-count" id="recordCount">載入中...</div>
         <div class="toolbar-buttons">
-          <button onclick="exportData()" class="export-btn">📥 匯出資料</button>
+          <!-- 已移除匯出資料按鈕 -->
           <button id="logoutBtn">登出</button>
         </div>
       </div>
@@ -591,12 +597,7 @@
     <div class="card">
       <h2 id="formTitle">新增演唱會紀錄</h2>
      
-      <!-- 草稿提示 -->
-      <div id="draftNotice" class="draft-notice" style="display: none;">
-        <span>💾 偵測到未儲存的草稿</span>
-        <button onclick="loadDraft()" style="margin-left: auto; padding: 5px 10px; font-size: 12px;">載入草稿</button>
-        <button onclick="clearDraft()" style="padding: 5px 10px; font-size: 12px; background: #ff6666;">清除</button>
-      </div>
+      <!-- 已移除草稿提示 -->
      
       <form id="recordForm">
         <input type="text" name="artist" placeholder="表演者/活動名稱" required>
@@ -630,8 +631,11 @@
           <div id="photoPreview" class="photo-preview"></div>
         </div>
 
-        <button type="submit" id="submitBtn">💾 儲存紀錄</button>
-        <button type="button" id="cancelBtn" style="display:none; background: #999;">✖️ 取消編輯</button>
+        <div class="form-buttons">
+          <button type="submit" id="submitBtn">💾 儲存紀錄</button>
+          <button type="button" id="clearBtn" class="clear-form-btn">🗑️ 清除表單</button>
+          <button type="button" id="cancelBtn" style="display:none; background: #999;">✖️ 取消編輯</button>
+        </div>
       </form>
     </div>
 
@@ -696,11 +700,11 @@ const recordsList = document.getElementById("recordsList");
 const formTitle = document.getElementById("formTitle");
 const submitBtn = document.getElementById("submitBtn");
 const cancelBtn = document.getElementById("cancelBtn");
+const clearBtn = document.getElementById("clearBtn");
 const photoInput = document.getElementById("photoInput");
 const photoPreview = document.getElementById("photoPreview");
 const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 const searchInput = document.getElementById("searchInput");
-const draftNotice = document.getElementById("draftNotice");
 const recordCount = document.getElementById("recordCount");
 
 // 全域變數
@@ -713,7 +717,7 @@ let currentUserId = null;
 // 1. 密碼顯示/隱藏功能 - 完全修復版
 // ======================
 
-// 方法一：使用事件委託（最可靠的方式）
+// 使用事件委託（最可靠的方式）
 document.addEventListener('click', function(e) {
   // 檢查點擊的是否為 toggle-password 按鈕
   if (e.target && e.target.classList.contains('toggle-password')) {
@@ -830,68 +834,34 @@ function checkPasswordStrength(password) {
 }
 
 // ======================
-// 3. 草稿自動儲存功能
+// 3. 清除表單功能
 // ======================
 
-function saveDraft() {
-  const formData = {
-    artist: recordForm["artist"].value,
-    datetime: recordForm["datetime"].value,
-    price: recordForm["price"].value,
-    currency: document.getElementById('currencySelect').value,
-    seat: recordForm["seat"].value,
-    venue: recordForm["venue"].value,
-    notes: recordForm["notes"].value,
-    photo: currentPhotoBase64,
-    hasDraft: true,
-    timestamp: new Date().toISOString()
-  };
- 
-  // 檢查是否有任何資料
-  const hasData = Object.values(formData).some(val =>
-    val && val.toString().trim().length > 0 && val !== currentPhotoBase64
-  );
- 
-  if (hasData && !editingId) {
-    localStorage.setItem('concertDraft', JSON.stringify(formData));
-    draftNotice.style.display = 'flex';
+// 清除表單按鈕事件
+clearBtn.addEventListener("click", function() {
+  if (confirm('確定要清除表單中的所有內容嗎？')) {
+    clearForm();
   }
-}
+});
 
-function loadDraft() {
-  const draft = JSON.parse(localStorage.getItem('concertDraft'));
-  if (draft) {
-    recordForm["artist"].value = draft.artist || "";
-    recordForm["datetime"].value = draft.datetime || "";
-    recordForm["price"].value = draft.price || "";
-    
-    // 設定幣別
-    if (draft.currency) {
-      document.getElementById('currencySelect').value = draft.currency;
-    }
-    
-    recordForm["seat"].value = draft.seat || "";
-    recordForm["venue"].value = draft.venue || "";
-    recordForm["notes"].value = draft.notes || "";
-   
-    if (draft.photo) {
-      currentPhotoBase64 = draft.photo;
-      photoPreview.innerHTML = `
-        <img src="${draft.photo}" alt="草稿預覽">
-        <br>
-        <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
-      `;
-    }
-   
-    alert('草稿已載入！');
+function clearForm() {
+  // 重置所有表單欄位
+  recordForm.reset();
+  
+  // 重置幣別選擇器為預設值
+  document.getElementById('currencySelect').value = 'TWD';
+  
+  // 清除照片預覽
+  photoInput.value = '';
+  photoPreview.innerHTML = '';
+  currentPhotoBase64 = null;
+  
+  // 如果是編輯模式，切換回新增模式
+  if (editingId) {
+    cancelEdit();
   }
-}
-
-function clearDraft() {
-  if (confirm('確定要清除草稿嗎？')) {
-    localStorage.removeItem('concertDraft');
-    draftNotice.style.display = 'none';
-  }
+  
+  alert('表單已清除！');
 }
 
 // ======================
@@ -929,61 +899,8 @@ function filterRecords(searchTerm) {
 }
 
 // ======================
-// 5. 資料匯出功能 - 精簡版
+// 5. 已移除：匯出資料功能
 // ======================
-
-window.exportData = function() {
-  if (allRecords.length === 0) {
-    alert('目前沒有任何紀錄可以匯出');
-    return;
-  }
- 
-  let exportText = '🎵 MINEJOURNAL 演唱會紀錄\n';
-  exportText += `匯出時間：${new Date().toLocaleString('zh-TW')}\n`;
-  exportText += `總場次：${allRecords.length}\n`;
-  exportText += '='.repeat(50) + '\n\n';
- 
-  // 按時間排序（從新到舊）
-  const sortedRecords = [...allRecords].sort((a, b) => {
-    return new Date(b.data.datetime) - new Date(a.data.datetime);
-  });
- 
-  sortedRecords.forEach((record, index) => {
-    const data = record.data;
-    const datetime = new Date(data.datetime);
-    const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
-    const timeStr = datetime.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
-   
-    exportText += `【紀錄 ${index + 1}】\n`;
-    exportText += `🎤 表演者：${data.artist}\n`;
-    exportText += `📅 日期：${dateStr} ${timeStr}\n`;
-    
-    // 顯示幣別和金額
-    const currencySymbol = getCurrencySymbol(data.currency || 'TWD');
-    exportText += `💰 票價：${currencySymbol} ${data.price || '未填寫'}\n`;
-    
-    exportText += `💺 座位：${data.seat || '未填寫'}\n`;
-    exportText += `📍 場地：${data.venue || '未填寫'}\n`;
-    if (data.notes) {
-      exportText += `📝 備註：${data.notes}\n`;
-    }
-    exportText += `🕐 建立時間：${new Date(data.createdAt || data.updatedAt).toLocaleString('zh-TW')}\n`;
-    exportText += '-'.repeat(30) + '\n\n';
-  });
- 
-  // 建立下載連結
-  const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = `MineJournal_${new Date().toISOString().split('T')[0]}.txt`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
- 
-  alert(`資料已匯出！總共 ${allRecords.length} 筆紀錄。`);
-};
 
 // 獲取貨幣符號
 function getCurrencySymbol(currencyCode) {
@@ -1023,7 +940,6 @@ window.removePhoto = function() {
   currentPhotoBase64 = null;
   photoInput.value = '';
   photoPreview.innerHTML = '';
-  saveDraft(); // 儲存草稿
 }
 
 photoInput.addEventListener('change', async (e) => {
@@ -1048,31 +964,9 @@ photoInput.addEventListener('change', async (e) => {
       <br>
       <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
     `;
-    saveDraft(); // 儲存草稿
   };
   reader.readAsDataURL(file);
 });
-
-// 表單輸入時自動儲存草稿
-recordForm.addEventListener('input', saveDraft);
-
-// 檢查是否有草稿
-function checkDraft() {
-  const draft = localStorage.getItem('concertDraft');
-  if (draft) {
-    const draftData = JSON.parse(draft);
-    // 檢查草稿是否超過24小時
-    const draftTime = new Date(draftData.timestamp);
-    const now = new Date();
-    const hoursDiff = (now - draftTime) / (1000 * 60 * 60);
-   
-    if (hoursDiff < 24) {
-      draftNotice.style.display = 'flex';
-    } else {
-      localStorage.removeItem('concertDraft');
-    }
-  }
-}
 
 onAuthStateChanged(auth, user => {
   if(user){
@@ -1080,7 +974,6 @@ onAuthStateChanged(auth, user => {
     appDiv.style.display = "block";
     currentUserId = user.uid;
     loadRecords(user.uid);
-    checkDraft();
     initPasswordToggles(); // 初始化密碼按鈕
     initSearch();
   } else {
@@ -1207,15 +1100,7 @@ recordForm.addEventListener("submit", async e => {
     } else {
       await addDoc(collection(db, "concerts"), data);
       alert("✅ 新增成功!");
-      recordForm.reset();
-      // 重置幣別選擇器為預設值
-      document.getElementById('currencySelect').value = 'TWD';
-      photoInput.value = '';
-      photoPreview.innerHTML = '';
-      currentPhotoBase64 = null;
-      // 清除草稿
-      localStorage.removeItem('concertDraft');
-      draftNotice.style.display = 'none';
+      clearForm(); // 使用清除表單功能
     }
     loadRecords(user.uid);
   } catch(err) {
@@ -1235,10 +1120,8 @@ function cancelEdit() {
   formTitle.textContent = "新增演唱會紀錄";
   submitBtn.textContent = "💾 儲存紀錄";
   cancelBtn.style.display = "none";
+  clearBtn.style.display = "inline-block";
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  // 清除草稿
-  localStorage.removeItem('concertDraft');
-  draftNotice.style.display = 'none';
 }
 
 async function loadRecords(uid) {
@@ -1443,6 +1326,7 @@ function startEdit(id, data) {
   formTitle.textContent = "編輯演唱會紀錄";
   submitBtn.textContent = "💾 更新紀錄";
   cancelBtn.style.display = "inline-block";
+  clearBtn.style.display = "none"; // 編輯模式隱藏清除按鈕
 
   recordForm["artist"].value = data.artist || "";
   recordForm["datetime"].value = data.datetime || "";
