@@ -90,7 +90,7 @@
       padding-bottom: 10px;
     }
 
-    input, textarea {
+    input, textarea, select {
       width: 100%;
       padding: 12px;
       margin: 8px 0;
@@ -101,7 +101,7 @@
       display: block;
     }
 
-    input:focus, textarea:focus {
+    input:focus, textarea:focus, select:focus {
       outline: none;
       border-color: #ff1493;
       box-shadow: 0 0 15px rgba(255, 20, 147, 0.3);
@@ -494,6 +494,29 @@
       font-weight: bold;
       font-size: 14px;
     }
+
+    /* 幣別選擇器樣式 */
+    .currency-input-group {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .currency-input-group input {
+      flex: 1;
+    }
+
+    .currency-select {
+      width: 120px;
+      flex-shrink: 0;
+    }
+
+    .currency-display {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -578,7 +601,24 @@
       <form id="recordForm">
         <input type="text" name="artist" placeholder="表演者/活動名稱" required>
         <input type="datetime-local" name="datetime" required>
-        <input type="text" name="price" placeholder="票價 (例如: 1500 或 1500*2)">
+        
+        <!-- 修改：票價與幣別選擇 -->
+        <div class="currency-input-group">
+          <input type="text" name="price" placeholder="票價 (例如: 1500 或 1500*2)" required>
+          <select name="currency" class="currency-select" id="currencySelect">
+            <option value="TWD">新台幣 (TWD)</option>
+            <option value="KRW">韓元 (KRW)</option>
+            <option value="JPY">日圓 (JPY)</option>
+            <option value="USD">美元 (USD)</option>
+            <option value="EUR">歐元 (EUR)</option>
+            <option value="HKD">港幣 (HKD)</option>
+            <option value="CNY">人民幣 (CNY)</option>
+            <option value="THB">泰銖 (THB)</option>
+            <option value="SGD">新加坡幣 (SGD)</option>
+            <option value="MYR">馬來西亞令吉 (MYR)</option>
+          </select>
+        </div>
+        
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
         <textarea name="notes" placeholder="備註 (心得、歌單、感想...)"></textarea>
@@ -670,17 +710,19 @@ let allRecords = [];
 let currentUserId = null;
 
 // ======================
-// 1. 密碼顯示/隱藏功能 - 修正版本
+// 1. 密碼顯示/隱藏功能 - 完全修復版
 // ======================
 
-// 使用事件委託來處理所有密碼顯示/隱藏按鈕
+// 方法一：使用事件委託（最可靠的方式）
 document.addEventListener('click', function(e) {
+  // 檢查點擊的是否為 toggle-password 按鈕
   if (e.target && e.target.classList.contains('toggle-password')) {
     const button = e.target;
     const targetId = button.getAttribute('data-target');
     const passwordInput = document.getElementById(targetId);
     
     if (passwordInput) {
+      // 切換密碼顯示/隱藏
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
         button.textContent = '🙈';
@@ -688,18 +730,28 @@ document.addEventListener('click', function(e) {
         passwordInput.type = 'password';
         button.textContent = '👁️';
       }
+      
+      // 防止表單提交
+      e.preventDefault();
+      e.stopPropagation();
     }
   }
 });
 
-// 保持原有的 initPasswordToggles 函數，但修正事件監聽
+// 方法二：在頁面加載完成後初始化所有現有的按鈕
 function initPasswordToggles() {
-  // 為所有密碼顯示切換按鈕添加事件
+  console.log('初始化密碼切換按鈕...');
+  
   document.querySelectorAll('.toggle-password').forEach(button => {
-    button.addEventListener('click', function() {
+    // 移除舊的事件監聽器（如果有的話）
+    const newButton = button.cloneNode(true);
+    button.parentNode.replaceChild(newButton, button);
+    
+    // 添加新的事件監聽器
+    newButton.addEventListener('click', function(e) {
       const targetId = this.getAttribute('data-target');
       const passwordInput = document.getElementById(targetId);
-     
+      
       if (passwordInput) {
         if (passwordInput.type === 'password') {
           passwordInput.type = 'text';
@@ -708,13 +760,19 @@ function initPasswordToggles() {
           passwordInput.type = 'password';
           this.textContent = '👁️';
         }
+        
+        // 防止表單提交
+        e.preventDefault();
+        e.stopPropagation();
       }
     });
   });
+  
+  console.log('密碼切換按鈕初始化完成');
 }
 
 // ======================
-// 2. 密碼強度檢查功能 - 修正版本
+// 2. 密碼強度檢查功能
 // ======================
 
 // 使用事件委託監聽密碼輸入
@@ -780,6 +838,7 @@ function saveDraft() {
     artist: recordForm["artist"].value,
     datetime: recordForm["datetime"].value,
     price: recordForm["price"].value,
+    currency: document.getElementById('currencySelect').value,
     seat: recordForm["seat"].value,
     venue: recordForm["venue"].value,
     notes: recordForm["notes"].value,
@@ -805,6 +864,12 @@ function loadDraft() {
     recordForm["artist"].value = draft.artist || "";
     recordForm["datetime"].value = draft.datetime || "";
     recordForm["price"].value = draft.price || "";
+    
+    // 設定幣別
+    if (draft.currency) {
+      document.getElementById('currencySelect').value = draft.currency;
+    }
+    
     recordForm["seat"].value = draft.seat || "";
     recordForm["venue"].value = draft.venue || "";
     recordForm["notes"].value = draft.notes || "";
@@ -864,7 +929,7 @@ function filterRecords(searchTerm) {
 }
 
 // ======================
-// 5. 資料匯出功能
+// 5. 資料匯出功能 - 精簡版
 // ======================
 
 window.exportData = function() {
@@ -873,33 +938,30 @@ window.exportData = function() {
     return;
   }
  
-  let exportText = '🎵 MINEJOURNAL 演唱會紀錄匯出\n';
+  let exportText = '🎵 MINEJOURNAL 演唱會紀錄\n';
   exportText += `匯出時間：${new Date().toLocaleString('zh-TW')}\n`;
   exportText += `總場次：${allRecords.length}\n`;
   exportText += '='.repeat(50) + '\n\n';
  
-  let totalSpent = 0;
+  // 按時間排序（從新到舊）
+  const sortedRecords = [...allRecords].sort((a, b) => {
+    return new Date(b.data.datetime) - new Date(a.data.datetime);
+  });
  
-  allRecords.forEach((record, index) => {
+  sortedRecords.forEach((record, index) => {
     const data = record.data;
     const datetime = new Date(data.datetime);
     const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
     const timeStr = datetime.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
    
-    // 計算花費
-    if (data.price) {
-      try {
-        const calculated = eval(data.price.replace(/[^0-9+\-*/().]/g, ''));
-        if (!isNaN(calculated)) {
-          totalSpent += calculated;
-        }
-      } catch(e) {}
-    }
-   
     exportText += `【紀錄 ${index + 1}】\n`;
     exportText += `🎤 表演者：${data.artist}\n`;
     exportText += `📅 日期：${dateStr} ${timeStr}\n`;
-    exportText += `💰 票價：${data.price || '未填寫'}\n`;
+    
+    // 顯示幣別和金額
+    const currencySymbol = getCurrencySymbol(data.currency || 'TWD');
+    exportText += `💰 票價：${currencySymbol} ${data.price || '未填寫'}\n`;
+    
     exportText += `💺 座位：${data.seat || '未填寫'}\n`;
     exportText += `📍 場地：${data.venue || '未填寫'}\n`;
     if (data.notes) {
@@ -908,10 +970,6 @@ window.exportData = function() {
     exportText += `🕐 建立時間：${new Date(data.createdAt || data.updatedAt).toLocaleString('zh-TW')}\n`;
     exportText += '-'.repeat(30) + '\n\n';
   });
- 
-  exportText += '='.repeat(50) + '\n';
-  exportText += `💰 總花費：$${Math.round(totalSpent).toLocaleString()}\n`;
-  exportText += `📊 平均票價：$${allRecords.length > 0 ? Math.round(totalSpent / allRecords.length).toLocaleString() : 0}\n`;
  
   // 建立下載連結
   const blob = new Blob([exportText], { type: 'text/plain;charset=utf-8' });
@@ -926,6 +984,23 @@ window.exportData = function() {
  
   alert(`資料已匯出！總共 ${allRecords.length} 筆紀錄。`);
 };
+
+// 獲取貨幣符號
+function getCurrencySymbol(currencyCode) {
+  const symbols = {
+    'TWD': 'NT$',
+    'KRW': '₩',
+    'JPY': '¥',
+    'USD': 'US$',
+    'EUR': '€',
+    'HKD': 'HK$',
+    'CNY': '¥',
+    'THB': '฿',
+    'SGD': 'S$',
+    'MYR': 'RM'
+  };
+  return symbols[currencyCode] || currencyCode;
+}
 
 // ======================
 // 其他功能
@@ -1006,13 +1081,13 @@ onAuthStateChanged(auth, user => {
     currentUserId = user.uid;
     loadRecords(user.uid);
     checkDraft();
-    initPasswordToggles();
+    initPasswordToggles(); // 初始化密碼按鈕
     initSearch();
   } else {
     loginDiv.style.display = "block";
     appDiv.style.display = "none";
     currentUserId = null;
-    initPasswordToggles();
+    initPasswordToggles(); // 初始化密碼按鈕
   }
 });
 
@@ -1112,6 +1187,7 @@ recordForm.addEventListener("submit", async e => {
     artist: recordForm["artist"].value.trim(),
     datetime: recordForm["datetime"].value,
     price: recordForm["price"].value.trim() || "",
+    currency: document.getElementById('currencySelect').value,
     seat: recordForm["seat"].value.trim(),
     venue: recordForm["venue"].value.trim(),
     notes: recordForm["notes"].value.trim(),
@@ -1132,6 +1208,8 @@ recordForm.addEventListener("submit", async e => {
       await addDoc(collection(db, "concerts"), data);
       alert("✅ 新增成功!");
       recordForm.reset();
+      // 重置幣別選擇器為預設值
+      document.getElementById('currencySelect').value = 'TWD';
       photoInput.value = '';
       photoPreview.innerHTML = '';
       currentPhotoBase64 = null;
@@ -1149,6 +1227,8 @@ recordForm.addEventListener("submit", async e => {
 function cancelEdit() {
   editingId = null;
   recordForm.reset();
+  // 重置幣別選擇器為預設值
+  document.getElementById('currencySelect').value = 'TWD';
   photoInput.value = '';
   photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
@@ -1190,38 +1270,63 @@ async function loadRecords(uid) {
 
 function updateStats(records) {
   const totalCount = records.length;
-  let totalSpent = 0;
- 
+  
+  // 計算各幣別總花費
+  const currencyTotals = {};
+  
   records.forEach(r => {
     const priceStr = r.data.price || "";
+    const currency = r.data.currency || "TWD";
+    
+    if (!currencyTotals[currency]) {
+      currencyTotals[currency] = 0;
+    }
+    
     try {
       const calculated = eval(priceStr.replace(/[^0-9+\-*/().]/g, ''));
       if (!isNaN(calculated)) {
-        totalSpent += calculated;
+        currencyTotals[currency] += calculated;
       }
     } catch(e) {
+      // 忽略計算錯誤
     }
   });
- 
-  const avgPrice = totalCount > 0 ? Math.round(totalSpent / totalCount) : 0;
 
   const statsDiv = document.getElementById('statsDiv');
-  statsDiv.innerHTML = `
+  let statsHTML = `
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
       <div style="background: linear-gradient(135deg, #ffb3d9 0%, #ff80bf 100%); padding: 20px; border-radius: 15px; text-align: center;">
         <div style="font-size: 2em; font-weight: bold; color: #fff;">${totalCount}</div>
         <div style="color: #fff; font-weight: bold;">🎤 總場次</div>
       </div>
-      <div style="background: linear-gradient(135deg, #ff80bf 0%, #ff1493 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${Math.round(totalSpent).toLocaleString()}</div>
-        <div style="color: #fff; font-weight: bold;">💰 總花費</div>
-      </div>
-      <div style="background: linear-gradient(135deg, #ff1493 0%, #c71585 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${avgPrice.toLocaleString()}</div>
-        <div style="color: #fff; font-weight: bold;">💵 平均票價</div>
-      </div>
-    </div>
   `;
+  
+  // 顯示各幣別總花費
+  const currencies = Object.keys(currencyTotals);
+  currencies.forEach((currency, index) => {
+    if (index < 2) { // 只顯示前兩種幣別（避免太多）
+      const symbol = getCurrencySymbol(currency);
+      statsHTML += `
+        <div style="background: linear-gradient(135deg, ${index === 0 ? '#ff80bf' : '#ff1493'} 0%, ${index === 0 ? '#ff1493' : '#c71585'} 100%); padding: 20px; border-radius: 15px; text-align: center;">
+          <div style="font-size: 2em; font-weight: bold; color: #fff;">${symbol} ${Math.round(currencyTotals[currency]).toLocaleString()}</div>
+          <div style="color: #fff; font-weight: bold;">💰 ${currency}總花費</div>
+        </div>
+      `;
+    }
+  });
+  
+  // 如果超過兩種幣別，顯示一個匯總
+  if (currencies.length > 2) {
+    statsHTML += `
+      <div style="background: linear-gradient(135deg, #c71585 0%, #8b008b 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 1.5em; font-weight: bold; color: #fff;">${currencies.length}種幣別</div>
+        <div style="color: #fff; font-weight: bold;">🌍 使用多國貨幣</div>
+      </div>
+    `;
+  }
+  
+  statsHTML += '</div>';
+  statsDiv.innerHTML = statsHTML;
 }
 
 function displayRecords(records, uid) {
@@ -1259,6 +1364,10 @@ function displayRecords(records, uid) {
         <div class="no-photo-placeholder">📷</div>
       </div>
     `;
+    
+    // 獲取貨幣符號
+    const currency = d.currency || 'TWD';
+    const currencySymbol = getCurrencySymbol(currency);
 
     li.innerHTML = `
       ${photoHTML}
@@ -1277,7 +1386,11 @@ function displayRecords(records, uid) {
           </div>
           <div class="info-row">
             <span class="info-label">💰 票價:</span>
-            <span class="info-value">${d.price || '未填寫'}</span>
+            <span class="info-value">
+              <span class="currency-display">
+                ${currencySymbol} ${d.price || '未填寫'} (${currency})
+              </span>
+            </span>
           </div>
           <div class="info-row">
             <span class="info-label">💺 座位:</span>
@@ -1334,6 +1447,10 @@ function startEdit(id, data) {
   recordForm["artist"].value = data.artist || "";
   recordForm["datetime"].value = data.datetime || "";
   recordForm["price"].value = data.price || "";
+  
+  // 設定幣別
+  document.getElementById('currencySelect').value = data.currency || "TWD";
+  
   recordForm["seat"].value = data.seat || "";
   recordForm["venue"].value = data.venue || "";
   recordForm["notes"].value = data.notes || "";
