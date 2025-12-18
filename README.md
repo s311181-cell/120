@@ -456,16 +456,6 @@
       color: #ff1493;
     }
 
-    .export-btn {
-      background: linear-gradient(135deg, #66cc66 0%, #99ff99 100%);
-      margin-top: 10px;
-    }
-
-    /* 移除草稿提示樣式 */
-    .draft-notice {
-      display: none !important;
-    }
-
     .toolbar {
       display: flex;
       justify-content: space-between;
@@ -522,6 +512,31 @@
       margin-top: 20px;
       flex-wrap: wrap;
       gap: 10px;
+    }
+    
+    /* 統計區塊樣式 */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+    
+    .stat-card {
+      padding: 20px;
+      border-radius: 15px;
+      text-align: center;
+      color: #fff;
+    }
+    
+    .stat-value {
+      font-size: 2em;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      font-weight: bold;
+      font-size: 0.9em;
     }
   </style>
 </head>
@@ -587,7 +602,6 @@
       <div class="toolbar">
         <div class="record-count" id="recordCount">載入中...</div>
         <div class="toolbar-buttons">
-          <!-- 已移除匯出資料按鈕 -->
           <button id="logoutBtn">登出</button>
         </div>
       </div>
@@ -596,8 +610,6 @@
 
     <div class="card">
       <h2 id="formTitle">新增演唱會紀錄</h2>
-     
-      <!-- 已移除草稿提示 -->
      
       <form id="recordForm">
         <input type="text" name="artist" placeholder="表演者/活動名稱" required>
@@ -899,10 +911,9 @@ function filterRecords(searchTerm) {
 }
 
 // ======================
-// 5. 已移除：匯出資料功能
+// 5. 獲取貨幣符號
 // ======================
 
-// 獲取貨幣符號
 function getCurrencySymbol(currencyCode) {
   const symbols = {
     'TWD': 'NT$',
@@ -1154,21 +1165,25 @@ async function loadRecords(uid) {
 function updateStats(records) {
   const totalCount = records.length;
   
-  // 計算各幣別總花費
-  const currencyTotals = {};
+  // 計算各幣別總花費和平均花費
+  const currencyStats = {};
   
   records.forEach(r => {
     const priceStr = r.data.price || "";
     const currency = r.data.currency || "TWD";
     
-    if (!currencyTotals[currency]) {
-      currencyTotals[currency] = 0;
+    if (!currencyStats[currency]) {
+      currencyStats[currency] = {
+        total: 0,
+        count: 0
+      };
     }
     
     try {
       const calculated = eval(priceStr.replace(/[^0-9+\-*/().]/g, ''));
       if (!isNaN(calculated)) {
-        currencyTotals[currency] += calculated;
+        currencyStats[currency].total += calculated;
+        currencyStats[currency].count++;
       }
     } catch(e) {
       // 忽略計算錯誤
@@ -1176,34 +1191,78 @@ function updateStats(records) {
   });
 
   const statsDiv = document.getElementById('statsDiv');
+  
+  // 如果沒有紀錄
+  if (totalCount === 0) {
+    statsDiv.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card" style="background: linear-gradient(135deg, #ffb3d9 0%, #ff80bf 100%);">
+          <div class="stat-value">0</div>
+          <div class="stat-label">🎤 總場次</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #ff80bf 0%, #ff1493 100%);">
+          <div class="stat-value">NT$ 0</div>
+          <div class="stat-label">💰 總花費</div>
+        </div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);">
+          <div class="stat-value">NT$ 0</div>
+          <div class="stat-label">💵 平均票價</div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  // 計算主要幣別（使用次數最多的幣別）
+  let mainCurrency = 'TWD';
+  let maxCount = 0;
+  for (const currency in currencyStats) {
+    if (currencyStats[currency].count > maxCount) {
+      maxCount = currencyStats[currency].count;
+      mainCurrency = currency;
+    }
+  }
+  
+  const mainSymbol = getCurrencySymbol(mainCurrency);
+  const mainTotal = currencyStats[mainCurrency] ? Math.round(currencyStats[mainCurrency].total) : 0;
+  const mainAvg = currencyStats[mainCurrency] && currencyStats[mainCurrency].count > 0 
+    ? Math.round(currencyStats[mainCurrency].total / currencyStats[mainCurrency].count) 
+    : 0;
+  
+  // 計算所有幣別轉換成台幣的總花費（如果未來有匯率功能）
+  let totalTWD = 0;
+  for (const currency in currencyStats) {
+    if (currency === 'TWD') {
+      totalTWD += currencyStats[currency].total;
+    }
+    // 這裡可以加入匯率轉換邏輯
+  }
+  
+  const totalAvg = totalCount > 0 ? Math.round(totalTWD / totalCount) : 0;
+  
   let statsHTML = `
-    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-      <div style="background: linear-gradient(135deg, #ffb3d9 0%, #ff80bf 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 2em; font-weight: bold; color: #fff;">${totalCount}</div>
-        <div style="color: #fff; font-weight: bold;">🎤 總場次</div>
+    <div class="stats-grid">
+      <div class="stat-card" style="background: linear-gradient(135deg, #ffb3d9 0%, #ff80bf 100%);">
+        <div class="stat-value">${totalCount}</div>
+        <div class="stat-label">🎤 總場次</div>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #ff80bf 0%, #ff1493 100%);">
+        <div class="stat-value">${mainSymbol} ${mainTotal.toLocaleString()}</div>
+        <div class="stat-label">💰 ${mainCurrency}總花費</div>
+      </div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #ff1493 0%, #c71585 100%);">
+        <div class="stat-value">${mainSymbol} ${mainAvg.toLocaleString()}</div>
+        <div class="stat-label">💵 ${mainCurrency}平均票價</div>
       </div>
   `;
   
-  // 顯示各幣別總花費
-  const currencies = Object.keys(currencyTotals);
-  currencies.forEach((currency, index) => {
-    if (index < 2) { // 只顯示前兩種幣別（避免太多）
-      const symbol = getCurrencySymbol(currency);
-      statsHTML += `
-        <div style="background: linear-gradient(135deg, ${index === 0 ? '#ff80bf' : '#ff1493'} 0%, ${index === 0 ? '#ff1493' : '#c71585'} 100%); padding: 20px; border-radius: 15px; text-align: center;">
-          <div style="font-size: 2em; font-weight: bold; color: #fff;">${symbol} ${Math.round(currencyTotals[currency]).toLocaleString()}</div>
-          <div style="color: #fff; font-weight: bold;">💰 ${currency}總花費</div>
-        </div>
-      `;
-    }
-  });
-  
-  // 如果超過兩種幣別，顯示一個匯總
-  if (currencies.length > 2) {
+  // 如果有超過一種幣別，顯示幣別數量
+  const currencyCount = Object.keys(currencyStats).length;
+  if (currencyCount > 1) {
     statsHTML += `
-      <div style="background: linear-gradient(135deg, #c71585 0%, #8b008b 100%); padding: 20px; border-radius: 15px; text-align: center;">
-        <div style="font-size: 1.5em; font-weight: bold; color: #fff;">${currencies.length}種幣別</div>
-        <div style="color: #fff; font-weight: bold;">🌍 使用多國貨幣</div>
+      <div class="stat-card" style="background: linear-gradient(135deg, #c71585 0%, #8b008b 100%);">
+        <div class="stat-value">${currencyCount}</div>
+        <div class="stat-label">🌍 使用幣別數</div>
       </div>
     `;
   }
