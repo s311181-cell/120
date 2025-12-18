@@ -670,12 +670,11 @@ let allRecords = [];
 let currentUserId = null;
 
 // ======================
-// 密碼顯示/隱藏功能 - 使用事件委託
+// 1. 密碼顯示/隱藏功能 - 修正版本
 // ======================
 
-// 全域事件監聽器，處理所有密碼顯示/隱藏按鈕
+// 使用事件委託來處理所有密碼顯示/隱藏按鈕
 document.addEventListener('click', function(e) {
-  // 檢查點擊的是否為 toggle-password 按鈕
   if (e.target && e.target.classList.contains('toggle-password')) {
     const button = e.target;
     const targetId = button.getAttribute('data-target');
@@ -693,11 +692,32 @@ document.addEventListener('click', function(e) {
   }
 });
 
+// 保持原有的 initPasswordToggles 函數，但修正事件監聽
+function initPasswordToggles() {
+  // 為所有密碼顯示切換按鈕添加事件
+  document.querySelectorAll('.toggle-password').forEach(button => {
+    button.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-target');
+      const passwordInput = document.getElementById(targetId);
+     
+      if (passwordInput) {
+        if (passwordInput.type === 'password') {
+          passwordInput.type = 'text';
+          this.textContent = '🙈';
+        } else {
+          passwordInput.type = 'password';
+          this.textContent = '👁️';
+        }
+      }
+    });
+  });
+}
+
 // ======================
-// 密碼強度檢查功能
+// 2. 密碼強度檢查功能 - 修正版本
 // ======================
 
-// 監聽註冊密碼輸入
+// 使用事件委託監聽密碼輸入
 document.addEventListener('input', function(e) {
   if (e.target.id === 'signupPassword') {
     checkPasswordStrength(e.target.value);
@@ -752,7 +772,7 @@ function checkPasswordStrength(password) {
 }
 
 // ======================
-// 草稿自動儲存功能
+// 3. 草稿自動儲存功能
 // ======================
 
 function saveDraft() {
@@ -810,7 +830,7 @@ function clearDraft() {
 }
 
 // ======================
-// 搜尋功能
+// 4. 搜尋功能
 // ======================
 
 function initSearch() {
@@ -844,7 +864,7 @@ function filterRecords(searchTerm) {
 }
 
 // ======================
-// 資料匯出功能
+// 5. 資料匯出功能
 // ======================
 
 window.exportData = function() {
@@ -986,11 +1006,13 @@ onAuthStateChanged(auth, user => {
     currentUserId = user.uid;
     loadRecords(user.uid);
     checkDraft();
+    initPasswordToggles();
     initSearch();
   } else {
     loginDiv.style.display = "block";
     appDiv.style.display = "none";
     currentUserId = null;
+    initPasswordToggles();
   }
 });
 
@@ -1330,8 +1352,8 @@ function startEdit(id, data) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 初始化搜尋功能
-initSearch();
+// 初始化密碼顯示功能
+initPasswordToggles();
 </script>
 </body>
 </html>
