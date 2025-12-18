@@ -375,7 +375,6 @@
       font-size: 4em;
     }
 
-    /* 新增的樣式 */
     .password-container {
       position: relative;
     }
@@ -477,7 +476,6 @@
       font-size: 14px;
     }
 
-    /* 幣別選擇器樣式 */
     .currency-input-group {
       display: flex;
       gap: 10px;
@@ -500,7 +498,6 @@
       font-weight: bold;
     }
 
-    /* 清除按鈕樣式 */
     .clear-form-btn {
       background: linear-gradient(135deg, #ff9999 0%, #ff6666 100%);
       margin-left: 10px;
@@ -514,7 +511,6 @@
       gap: 10px;
     }
     
-    /* 統計區塊樣式 */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -578,10 +574,8 @@
               <button type="button" class="toggle-password" data-target="signupPassword">👁️</button>
             </div>
            
-            <!-- 密碼強度指示器 -->
             <div id="passwordStrength" class="password-strength" style="display: none;"></div>
            
-            <!-- 密碼提示 -->
             <div id="passwordHints" style="margin-bottom: 10px;">
               <div class="password-hint" id="lengthHint">至少6個字元</div>
               <div class="password-hint" id="strengthHint">包含大小寫字母和數字</div>
@@ -615,7 +609,6 @@
         <input type="text" name="artist" placeholder="表演者/活動名稱" required>
         <input type="datetime-local" name="datetime" required>
         
-        <!-- 修改：票價與幣別選擇 -->
         <div class="currency-input-group">
           <input type="text" name="price" placeholder="票價 (例如: 1500 或 1500*2)" required>
           <select name="currency" class="currency-select" id="currencySelect">
@@ -731,14 +724,12 @@ let currentUserId = null;
 
 // 使用事件委託（最可靠的方式）
 document.addEventListener('click', function(e) {
-  // 檢查點擊的是否為 toggle-password 按鈕
   if (e.target && e.target.classList.contains('toggle-password')) {
     const button = e.target;
     const targetId = button.getAttribute('data-target');
     const passwordInput = document.getElementById(targetId);
     
     if (passwordInput) {
-      // 切換密碼顯示/隱藏
       if (passwordInput.type === 'password') {
         passwordInput.type = 'text';
         button.textContent = '🙈';
@@ -747,23 +738,18 @@ document.addEventListener('click', function(e) {
         button.textContent = '👁️';
       }
       
-      // 防止表單提交
       e.preventDefault();
       e.stopPropagation();
     }
   }
 });
 
-// 方法二：在頁面加載完成後初始化所有現有的按鈕
+// 初始化密碼按鈕
 function initPasswordToggles() {
-  console.log('初始化密碼切換按鈕...');
-  
   document.querySelectorAll('.toggle-password').forEach(button => {
-    // 移除舊的事件監聽器（如果有的話）
     const newButton = button.cloneNode(true);
     button.parentNode.replaceChild(newButton, button);
     
-    // 添加新的事件監聽器
     newButton.addEventListener('click', function(e) {
       const targetId = this.getAttribute('data-target');
       const passwordInput = document.getElementById(targetId);
@@ -777,21 +763,17 @@ function initPasswordToggles() {
           this.textContent = '👁️';
         }
         
-        // 防止表單提交
         e.preventDefault();
         e.stopPropagation();
       }
     });
   });
-  
-  console.log('密碼切換按鈕初始化完成');
 }
 
 // ======================
 // 2. 密碼強度檢查功能
 // ======================
 
-// 使用事件委託監聽密碼輸入
 document.addEventListener('input', function(e) {
   if (e.target.id === 'signupPassword') {
     checkPasswordStrength(e.target.value);
@@ -804,7 +786,7 @@ function checkPasswordStrength(password) {
   const strengthHint = document.getElementById('strengthHint');
   
   if (!strengthBar || !lengthHint || !strengthHint) {
-    return; // 元素可能不存在
+    return;
   }
   
   if (password.length === 0) {
@@ -817,19 +799,16 @@ function checkPasswordStrength(password) {
   
   strengthBar.style.display = 'block';
   
-  // 檢查密碼長度
   const hasMinLength = password.length >= 6;
   lengthHint.className = hasMinLength ? 'password-hint valid' : 'password-hint invalid';
   
-  // 檢查密碼強度
   let strength = 0;
   if (password.length >= 8) strength++;
-  if (/[a-z]/.test(password)) strength++; // 小寫字母
-  if (/[A-Z]/.test(password)) strength++; // 大寫字母
-  if (/[0-9]/.test(password)) strength++; // 數字
-  if (/[^A-Za-z0-9]/.test(password)) strength++; // 特殊符號
+  if (/[a-z]/.test(password)) strength++;
+  if (/[A-Z]/.test(password)) strength++;
+  if (/[0-9]/.test(password)) strength++;
+  if (/[^A-Za-z0-9]/.test(password)) strength++;
   
-  // 更新強度提示
   if (strength >= 4) {
     strengthHint.textContent = '密碼強度：強';
     strengthHint.className = 'password-hint valid';
@@ -849,7 +828,6 @@ function checkPasswordStrength(password) {
 // 3. 清除表單功能
 // ======================
 
-// 清除表單按鈕事件
 clearBtn.addEventListener("click", function() {
   if (confirm('確定要清除表單中的所有內容嗎？')) {
     clearForm();
@@ -857,18 +835,12 @@ clearBtn.addEventListener("click", function() {
 });
 
 function clearForm() {
-  // 重置所有表單欄位
   recordForm.reset();
-  
-  // 重置幣別選擇器為預設值
   document.getElementById('currencySelect').value = 'TWD';
-  
-  // 清除照片預覽
   photoInput.value = '';
   photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
   
-  // 如果是編輯模式，切換回新增模式
   if (editingId) {
     cancelEdit();
   }
@@ -905,8 +877,6 @@ function filterRecords(searchTerm) {
   });
  
   displayRecords(filtered, currentUserId);
- 
-  // 更新紀錄計數
   recordCount.textContent = `找到 ${filtered.length} 筆紀錄`;
 }
 
@@ -931,7 +901,7 @@ function getCurrencySymbol(currencyCode) {
 }
 
 // ======================
-// 其他功能
+// 6. 其他功能
 // ======================
 
 window.toggleMode = function() {
@@ -985,13 +955,13 @@ onAuthStateChanged(auth, user => {
     appDiv.style.display = "block";
     currentUserId = user.uid;
     loadRecords(user.uid);
-    initPasswordToggles(); // 初始化密碼按鈕
+    initPasswordToggles();
     initSearch();
   } else {
     loginDiv.style.display = "block";
     appDiv.style.display = "none";
     currentUserId = null;
-    initPasswordToggles(); // 初始化密碼按鈕
+    initPasswordToggles();
   }
 });
 
@@ -1111,7 +1081,11 @@ recordForm.addEventListener("submit", async e => {
     } else {
       await addDoc(collection(db, "concerts"), data);
       alert("✅ 新增成功!");
-      clearForm(); // 使用清除表單功能
+      recordForm.reset();
+      document.getElementById('currencySelect').value = 'TWD';
+      photoInput.value = '';
+      photoPreview.innerHTML = '';
+      currentPhotoBase64 = null;
     }
     loadRecords(user.uid);
   } catch(err) {
@@ -1123,7 +1097,6 @@ recordForm.addEventListener("submit", async e => {
 function cancelEdit() {
   editingId = null;
   recordForm.reset();
-  // 重置幣別選擇器為預設值
   document.getElementById('currencySelect').value = 'TWD';
   photoInput.value = '';
   photoPreview.innerHTML = '';
@@ -1153,8 +1126,6 @@ async function loadRecords(uid) {
 
     updateStats(allRecords);
     displayRecords(allRecords, uid);
-   
-    // 更新紀錄計數
     recordCount.textContent = `共 ${allRecords.length} 筆紀錄`;
   } catch(err) {
     console.error("載入錯誤:", err);
@@ -1164,8 +1135,6 @@ async function loadRecords(uid) {
 
 function updateStats(records) {
   const totalCount = records.length;
-  
-  // 計算各幣別總花費和平均花費
   const currencyStats = {};
   
   records.forEach(r => {
@@ -1185,14 +1154,11 @@ function updateStats(records) {
         currencyStats[currency].total += calculated;
         currencyStats[currency].count++;
       }
-    } catch(e) {
-      // 忽略計算錯誤
-    }
+    } catch(e) {}
   });
 
   const statsDiv = document.getElementById('statsDiv');
   
-  // 如果沒有紀錄
   if (totalCount === 0) {
     statsDiv.innerHTML = `
       <div class="stats-grid">
@@ -1213,7 +1179,6 @@ function updateStats(records) {
     return;
   }
 
-  // 計算主要幣別（使用次數最多的幣別）
   let mainCurrency = 'TWD';
   let maxCount = 0;
   for (const currency in currencyStats) {
@@ -1229,16 +1194,7 @@ function updateStats(records) {
     ? Math.round(currencyStats[mainCurrency].total / currencyStats[mainCurrency].count) 
     : 0;
   
-  // 計算所有幣別轉換成台幣的總花費（如果未來有匯率功能）
-  let totalTWD = 0;
-  for (const currency in currencyStats) {
-    if (currency === 'TWD') {
-      totalTWD += currencyStats[currency].total;
-    }
-    // 這裡可以加入匯率轉換邏輯
-  }
-  
-  const totalAvg = totalCount > 0 ? Math.round(totalTWD / totalCount) : 0;
+  const currencyCount = Object.keys(currencyStats).length;
   
   let statsHTML = `
     <div class="stats-grid">
@@ -1256,8 +1212,6 @@ function updateStats(records) {
       </div>
   `;
   
-  // 如果有超過一種幣別，顯示幣別數量
-  const currencyCount = Object.keys(currencyStats).length;
   if (currencyCount > 1) {
     statsHTML += `
       <div class="stat-card" style="background: linear-gradient(135deg, #c71585 0%, #8b008b 100%);">
@@ -1307,7 +1261,6 @@ function displayRecords(records, uid) {
       </div>
     `;
     
-    // 獲取貨幣符號
     const currency = d.currency || 'TWD';
     const currencySymbol = getCurrencySymbol(currency);
 
@@ -1385,15 +1338,12 @@ function startEdit(id, data) {
   formTitle.textContent = "編輯演唱會紀錄";
   submitBtn.textContent = "💾 更新紀錄";
   cancelBtn.style.display = "inline-block";
-  clearBtn.style.display = "none"; // 編輯模式隱藏清除按鈕
+  clearBtn.style.display = "none";
 
   recordForm["artist"].value = data.artist || "";
   recordForm["datetime"].value = data.datetime || "";
   recordForm["price"].value = data.price || "";
-  
-  // 設定幣別
   document.getElementById('currencySelect').value = data.currency || "TWD";
-  
   recordForm["seat"].value = data.seat || "";
   recordForm["venue"].value = data.venue || "";
   recordForm["notes"].value = data.notes || "";
@@ -1412,7 +1362,6 @@ function startEdit(id, data) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// 初始化密碼顯示功能
 initPasswordToggles();
 </script>
 </body>
