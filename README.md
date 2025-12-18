@@ -1036,4 +1036,302 @@ loginForm.addEventListener("submit", async e => {
   }
 });
 
-logoutBtn.addEventListener("click
+logoutBtn.addEventListener("click", async () => {
+  try {
+    await signOut(auth);
+    alert("✅ 已登出");
+  } catch(err) {
+    alert("❌ 登出失敗: " + err.message);
+  }
+});
+
+forgotPasswordBtn.addEventListener("click", async () => {
+  const email = prompt("請輸入您的註冊 Email，我們將發送密碼重設連結：");
+ 
+  if (!email) {
+    return;
+  }
+ 
+  if (!email.includes('@')) {
+    alert("❌ 請輸入有效的 Email 地址");
+    return;
+  }
+ 
+  try {
+    await sendPasswordResetEmail(auth, email);
+    alert("✅ 密碼重設郵件已發送！\n\n請檢查您的信箱（包括垃圾郵件），點擊郵件中的連結來重設密碼。");
+  } catch(err) {
+    let errorMsg = "發送失敗";
+    if (err.code === 'auth/user-not-found') {
+      errorMsg = "找不到此 Email 的帳號";
+    } else if (err.code === 'auth/invalid-email') {
+      errorMsg = "Email 格式不正確";
+    } else if (err.code === 'auth/too-many-requests') {
+      errorMsg = "請求次數過多，請稍後再試";
+    }
+    alert("❌ " + errorMsg);
+  }
+});
+
+cancelBtn.addEventListener("click", () => {
+  cancelEdit();
+});
+
+recordForm.addEventListener("submit", async e => {
+  e.preventDefault();
+  const user = auth.currentUser;
+  if(!user) {
+    alert("請先登入");
+    return;
+  }
+
+  const data = {
+    uid: user.uid,
+    artist: recordForm["artist"].value.trim(),
+    datetime: recordForm["datetime"].value,
+    price: recordForm["price"].value.trim() || "",
+    seat: recordForm["seat"].value.trim(),
+    venue: recordForm["venue"].value.trim(),
+    notes: recordForm["notes"].value.trim(),
+    photo: currentPhotoBase64 || "",
+    updatedAt: new Date().toISOString()
+  };
+
+  if (!editingId) {
+    data.createdAt = new Date().toISOString();
+  }
+
+  try {
+    if(editingId) {
+      await updateDoc(doc(db, "concerts", editingId), data);
+      alert("✅ 更新成功!");
+      cancelEdit();
+    } else {
+      await addDoc(collection(db, "concerts"), data);
+      alert("✅ 新增成功!");
+      recordForm.reset();
+      photoInput.value = '';
+      photoPreview.innerHTML = '';
+      currentPhotoBase64 = null;
+      // 清除草稿
+      localStorage.removeItem('concertDraft');
+      draftNotice.style.display = 'none';
+    }
+    loadRecords(user.uid);
+  } catch(err) {
+    console.error("儲存錯誤:", err);
+    alert("❌ 儲存失敗: " + err.message);
+  }
+});
+
+function cancelEdit() {
+  editingId = null;
+  recordForm.reset();
+  photoInput.value = '';
+  photoPreview.innerHTML = '';
+  currentPhotoBase64 = null;
+  formTitle.textContent = "新增演唱會紀錄";
+  submitBtn.textContent = "💾 儲存紀錄";
+  cancelBtn.style.display = "none";
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // 清除草稿
+  localStorage.removeItem('concertDraft');
+  draftNotice.style.display = 'none';
+}
+
+async function loadRecords(uid) {
+  recordsList.innerHTML = '<li class="loading">載入中...</li>';
+
+  try {
+    const q = query(collection(db, "concerts"), where("uid", "==", uid));
+    const snap = await getDocs(q);
+
+    allRecords = snap.docs.map(docSnap => ({
+      id: docSnap.id,
+      data: docSnap.data()
+    })).sort((a, b) => {
+      const t1 = new Date(a.data.datetime).getTime();
+      const t2 = new Date(b.data.datetime).getTime();
+      return t2 - t1;
+    });
+
+    updateStats(allRecords);
+    displayRecords(allRecords, uid);
+   
+    // 更新紀錄計數
+    recordCount.textContent = `共 ${allRecords.length} 筆紀錄`;
+  } catch(err) {
+    console.error("載入錯誤:", err);
+    recordsList.innerHTML = '<li class="error">❌ 載入失敗,請重新整理頁面</li>';
+  }
+}
+
+function updateStats(records) {
+  const totalCount = records.length;
+  let totalSpent = 0;
+ 
+  records.forEach(r => {
+    const priceStr = r.data.price || "";
+    try {
+      const calculated = eval(priceStr.replace(/[^0-9+\-*/().]/g, ''));
+      if (!isNaN(calculated)) {
+        totalSpent += calculated;
+      }
+    } catch(e) {
+    }
+  });
+ 
+  const avgPrice = totalCount > 0 ? Math.round(totalSpent / totalCount) : 0;
+
+  const statsDiv = document.getElementById('statsDiv');
+  statsDiv.innerHTML = `
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
+      <div style="background: linear-gradient(135deg, #ffb3d9 0%, #ff80bf 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #fff;">${totalCount}</div>
+        <div style="color: #fff; font-weight: bold;">🎤 總場次</div>
+      </div>
+      <div style="background: linear-gradient(135deg, #ff80bf 0%, #ff1493 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${Math.round(totalSpent).toLocaleString()}</div>
+        <div style="color: #fff; font-weight: bold;">💰 總花費</div>
+      </div>
+      <div style="background: linear-gradient(135deg, #ff1493 0%, #c71585 100%); padding: 20px; border-radius: 15px; text-align: center;">
+        <div style="font-size: 2em; font-weight: bold; color: #fff;">$${avgPrice.toLocaleString()}</div>
+        <div style="color: #fff; font-weight: bold;">💵 平均票價</div>
+      </div>
+    </div>
+  `;
+}
+
+function displayRecords(records, uid) {
+  recordsList.innerHTML = "";
+
+  if (records.length === 0) {
+    const searchTerm = searchInput ? searchInput.value.trim() : '';
+    if (searchTerm) {
+      recordsList.innerHTML = `
+        <li style="text-align: center; padding: 40px; color: #ff1493;">
+          🔍 沒有找到符合「${searchTerm}」的紀錄
+        </li>
+      `;
+    }
+    return;
+  }
+
+  records.forEach(r => {
+    const d = r.data;
+    const li = document.createElement("li");
+    li.className = "record-item";
+
+    const datetime = new Date(d.datetime);
+    const dateStr = datetime.toLocaleDateString('zh-TW', { year: 'numeric', month: 'long', day: 'numeric' });
+    const timeStr = datetime.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' });
+
+    const photoHTML = d.photo ? `
+      <div class="record-photo-container">
+        <div class="record-photo">
+          <img src="${d.photo}" alt="${d.artist}" onclick="window.open(this.src)">
+        </div>
+      </div>
+    ` : `
+      <div class="record-photo-container">
+        <div class="no-photo-placeholder">📷</div>
+      </div>
+    `;
+
+    li.innerHTML = `
+      ${photoHTML}
+      <div>
+        <div class="record-header">
+          🎤 ${d.artist}
+        </div>
+        <div class="record-info">
+          <div class="info-row">
+            <span class="info-label">📅 日期:</span>
+            <span class="info-value">${dateStr}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">🕐 時間:</span>
+            <span class="info-value">${timeStr}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">💰 票價:</span>
+            <span class="info-value">${d.price || '未填寫'}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">💺 座位:</span>
+            <span class="info-value">${d.seat || '未填寫'}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">📍 場地:</span>
+            <span class="info-value">${d.venue || '未填寫'}</span>
+          </div>
+          ${d.notes ? `<div class="info-row">
+            <span class="info-label">📝 備註:</span>
+            <span class="info-value">${d.notes}</span>
+          </div>` : ''}
+        </div>
+      </div>
+    `;
+
+    const buttonGroup = document.createElement("div");
+    buttonGroup.className = "button-group";
+
+    const editBtn = document.createElement("button");
+    editBtn.className = "edit-btn";
+    editBtn.textContent = "✏️ 編輯";
+    editBtn.onclick = () => startEdit(r.id, d);
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "delete-btn";
+    delBtn.textContent = "🗑️ 刪除";
+    delBtn.onclick = async () => {
+      if(confirm(`確定要刪除「${d.artist}」的紀錄嗎?`)) {
+        try {
+          await deleteDoc(doc(db, "concerts", r.id));
+          alert("✅ 刪除成功");
+          loadRecords(uid);
+        } catch(err) {
+          alert("❌ 刪除失敗: " + err.message);
+        }
+      }
+    };
+
+    buttonGroup.appendChild(editBtn);
+    buttonGroup.appendChild(delBtn);
+    li.appendChild(buttonGroup);
+    recordsList.appendChild(li);
+  });
+}
+
+function startEdit(id, data) {
+  editingId = id;
+  formTitle.textContent = "編輯演唱會紀錄";
+  submitBtn.textContent = "💾 更新紀錄";
+  cancelBtn.style.display = "inline-block";
+
+  recordForm["artist"].value = data.artist || "";
+  recordForm["datetime"].value = data.datetime || "";
+  recordForm["price"].value = data.price || "";
+  recordForm["seat"].value = data.seat || "";
+  recordForm["venue"].value = data.venue || "";
+  recordForm["notes"].value = data.notes || "";
+ 
+  currentPhotoBase64 = data.photo || null;
+  if (data.photo) {
+    photoPreview.innerHTML = `
+      <img src="${data.photo}" alt="預覽">
+      <br>
+      <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
+    `;
+  } else {
+    photoPreview.innerHTML = '';
+  }
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// 初始化搜尋功能
+initSearch();
+</script>
+</body>
+</html>
