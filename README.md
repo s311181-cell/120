@@ -626,8 +626,17 @@
       <div style="clear: both;"></div>
     </div>
 
-    <!-- Profile / Invite / Friends -->
-    <div id="profileCard" class="card">
+    <div class="card">
+      <!-- heading has id so JS can change it safely -->
+      <h2 id="recordsHeading" style="margin: 0; border: none;">我的演唱會紀錄</h2>
+      <div class="search-bar" style="margin-bottom:12px;">
+        <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋表演者、場地或備註...">
+        <span class="search-icon">🔍</span>
+      </div>
+      <ul id="recordsList"></ul>
+    </div>
+
+    <div id="profileCard" class="card" style="display:none;">
       <h2>個人檔案</h2>
       <div style="display:flex; gap:16px; align-items:flex-start;">
         <div style="width:90px;">
@@ -669,65 +678,6 @@
       </div>
     </div>
 
-    <div class="card">
-      <h2 id="formTitle">新增演唱會紀錄</h2>
-     
-      <form id="recordForm">
-        <input type="text" name="artist" placeholder="表演者/活動名稱" required>
-        <input type="datetime-local" name="datetime" required>
-        
-        <div class="currency-input-group">
-          <input type="text" name="price" placeholder="票價 (例如: 1500 或 1500*2)" required>
-          <select name="currency" class="currency-select" id="currencySelect">
-            <option value="TWD">新台幣 (TWD)</option>
-            <option value="KRW">韓元 (KRW)</option>
-            <option value="JPY">日圓 (JPY)</option>
-            <option value="USD">美元 (USD)</option>
-            <option value="EUR">歐元 (EUR)</option>
-            <option value="HKD">港幣 (HKD)</option>
-            <option value="CNY">人民幣 (CNY)</option>
-            <option value="THB">泰銖 (THB)</option>
-            <option value="SGD">新加坡幣 (SGD)</option>
-            <option value="MYR">馬來西亞令吉 (MYR)</option>
-          </select>
-        </div>
-        
-        <input type="text" name="seat" placeholder="座位/區域">
-        <input type="text" name="venue" placeholder="場地">
-        <textarea name="notes" placeholder="備註 (心得、歌單、感想...)"></textarea>
-       
-        <div class="photo-upload">
-          <label style="display: block; font-weight: bold; color: #ff1493; margin-bottom: 8px;">📷 上傳照片 (選填)</label>
-          <input type="file" id="photoInput" accept="image/*" style="padding: 8px;">
-          <div class="image-size-warning">💡 建議照片小於 2MB，以確保儲存順暢</div>
-          <div id="photoPreview" class="photo-preview"></div>
-        </div>
-
-        <div class="form-buttons">
-          <button type="submit" id="submitBtn">💾 儲存紀錄</button>
-          <button type="button" id="clearBtn" class="clear-form-btn">🗑️ 清除表單</button>
-          <button type="button" id="cancelBtn" style="display:none; background: #999;">✖️ 取消編輯</button>
-        </div>
-      </form>
-    </div>
-
-    <div class="card">
-      <h2>📊 我的追星統計</h2>
-      <div id="statsDiv">
-        <div class="loading">載入中...</div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="toolbar">
-        <h2 style="margin: 0; border: none;">我的演唱會紀錄</h2>
-        <div class="search-bar">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋表演者、場地或備註...">
-          <span class="search-icon">🔍</span>
-        </div>
-      </div>
-      <ul id="recordsList"></ul>
-    </div>
   </div>
 </div>
 
@@ -796,6 +746,7 @@ const saveProfileBtn = document.getElementById('saveProfileBtn');
 const closeProfileBtn = document.getElementById('closeProfileBtn');
 
 const backToMyRecordsBtn = document.getElementById('backToMyRecordsBtn');
+const recordsHeading = document.getElementById('recordsHeading');
 
 // 全域變數
 let editingId = null;
@@ -1289,34 +1240,40 @@ async function viewUserProfile(uid) {
   }
 }
 
+// --- 1) 顯示好友紀錄並把標題改成好友的名字 ---
 async function displayFriendRecords(friendUid) {
   recordsList.innerHTML = '<li class="loading">載入中...</li>';
   viewingFriendUid = friendUid;
-  backToMyRecordsBtn.style.display = 'inline-block';
+  if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'inline-block';
+
   try {
-    // fetch friend profile and my alias for them
+    // 取得好友 profile（displayName）
     const uSnap = await getDoc(doc(db, 'users', friendUid));
     const friendName = uSnap.exists() && uSnap.data().displayName ? uSnap.data().displayName : friendUid;
-    // check alias in my friend doc
+
+    // 取得我對這個好友的 alias（有的話用 alias 顯示）
     let displayName = friendName;
     try {
-      const myFriendSnap = await getDoc(doc(db, 'users', currentUserId, 'friends', friendUid));
-      if (myFriendSnap.exists()) {
-        const myF = myFriendSnap.data();
-        if (myF.alias && myF.alias.trim().length > 0) {
-          displayName = myF.alias;
+      if (currentUserId) {
+        const myFriendSnap = await getDoc(doc(db, 'users', currentUserId, 'friends', friendUid));
+        if (myFriendSnap.exists()) {
+          const myF = myFriendSnap.data();
+          if (myF.alias && myF.alias.trim().length > 0) {
+            displayName = myF.alias;
+          }
         }
       }
-    } catch(_) {}
+    } catch (_) { /* 忽略 alias 讀取錯誤 */ }
+
+    // 將頁面上方的 heading 改為「XXX 的演唱會紀錄」
+    if (recordsHeading) recordsHeading.textContent = `${displayName} 的演唱會紀錄`;
+
     recordCount.textContent = `載入 ${displayName} 的紀錄...`;
     const q = query(collection(db, "concerts"), where("uid", "==", friendUid));
     const snap = await getDocs(q);
-    const arr = snap.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() })).sort((a,b)=>{
-      const t1 = new Date(a.data.datetime).getTime();
-      const t2 = new Date(b.data.datetime).getTime();
-      return t2 - t1;
-    });
-    allRecords = arr; // show these in UI (search will filter this array)
+    const arr = snap.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() }))
+                        .sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
+    allRecords = arr;
     displayRecords(allRecords, friendUid);
     recordCount.textContent = `共 ${allRecords.length} 筆紀錄 (來自 ${displayName})`;
   } catch (err) {
@@ -1325,11 +1282,12 @@ async function displayFriendRecords(friendUid) {
   }
 }
 
-backToMyRecordsBtn.addEventListener('click', backToMyRecords);
+// --- 2) 回到我的紀錄並還原標題 ---
 function backToMyRecords() {
   viewingFriendUid = null;
-  backToMyRecordsBtn.style.display = 'none';
-  profileCard.style.display = 'none';
+  if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'none';
+  if (profileCard) profileCard.style.display = 'none';
+  if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
   if (currentUserId) {
     loadRecords(currentUserId);
   } else {
@@ -1349,6 +1307,8 @@ onAuthStateChanged(auth, user => {
     currentUserId = user.uid;
     // ensure user profile doc exists
     setDoc(doc(db, 'users', user.uid), { email: user.email || '', createdAt: serverTimestamp() }, { merge: true }).catch(()=>{});
+    // safely set heading if element exists
+    if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
     loadRecords(user.uid);
     initPasswordToggles();
     initSearch();
@@ -1361,6 +1321,8 @@ onAuthStateChanged(auth, user => {
     viewingFriendUid = null;
     backToMyRecordsBtn.style.display = 'none';
     profileCard.style.display = 'none';
+    // restore default heading safely
+    if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
     initPasswordToggles();
   }
 });
@@ -1499,6 +1461,7 @@ recordForm.addEventListener("submit", async e => {
       photoPreview.innerHTML = '';
       currentPhotoBase64 = null;
     }
+    // if user created/updated a record while viewing someone else, keep heading as is (no automatic navigation)
     loadRecords(user.uid);
   } catch(err) {
     console.error("儲存錯誤:", err);
@@ -1524,6 +1487,8 @@ async function loadRecords(uid) {
   // when loading own records, hide back button and reset viewingFriendUid
   viewingFriendUid = null;
   backToMyRecordsBtn.style.display = 'none';
+  // restore heading to user's own records
+  if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
 
   recordsList.innerHTML = '<li class="loading">載入中...</li>';
 
