@@ -691,12 +691,6 @@
             <option value="MYR">馬來西亞令吉 (MYR)</option>
           </select>
         </div>
-
-        <select name="visibility" id="visibilitySelect" style="margin-top:8px;">
-          <option value="private">僅自己可見</option>
-          <option value="friends">好友可見</option>
-          <option value="public">公開</option>
-        </select>
         
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
@@ -929,7 +923,6 @@ clearBtn.addEventListener("click", function() {
 function clearForm() {
   recordForm.reset();
   document.getElementById('currencySelect').value = 'TWD';
-  document.getElementById('visibilitySelect').value = 'private';
   photoInput.value = '';
   photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
@@ -1473,8 +1466,7 @@ recordForm.addEventListener("submit", async e => {
     return;
   }
 
-  const visibility = document.getElementById('visibilitySelect').value || 'private';
-
+  // visibility removed — all records are public
   const data = {
     uid: user.uid,
     artist: recordForm["artist"].value.trim(),
@@ -1485,7 +1477,7 @@ recordForm.addEventListener("submit", async e => {
     venue: recordForm["venue"].value.trim(),
     notes: recordForm["notes"].value.trim(),
     photo: currentPhotoBase64 || "",
-    visibility,
+    visibility: 'public',
     updatedAt: new Date().toISOString()
   };
 
@@ -1503,7 +1495,6 @@ recordForm.addEventListener("submit", async e => {
       alert("✅ 新增成功!");
       recordForm.reset();
       document.getElementById('currencySelect').value = 'TWD';
-      document.getElementById('visibilitySelect').value = 'private';
       photoInput.value = '';
       photoPreview.innerHTML = '';
       currentPhotoBase64 = null;
@@ -1519,7 +1510,6 @@ function cancelEdit() {
   editingId = null;
   recordForm.reset();
   document.getElementById('currencySelect').value = 'TWD';
-  document.getElementById('visibilitySelect').value = 'private';
   photoInput.value = '';
   photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
@@ -1725,10 +1715,6 @@ function displayRecords(records, uid) {
             <span class="info-label">📝 備註:</span>
             <span class="info-value">${d.notes}</span>
           </div>` : ''}
-          <div class="info-row">
-            <span class="info-label">🔒 可見性:</span>
-            <span class="info-value">${d.visibility || 'private'}</span>
-          </div>
         </div>
       </div>
     `;
@@ -1783,7 +1769,6 @@ function startEdit(id, data) {
   recordForm["datetime"].value = data.datetime || "";
   recordForm["price"].value = data.price || "";
   document.getElementById('currencySelect').value = data.currency || "TWD";
-  document.getElementById('visibilitySelect').value = data.visibility || "private";
   recordForm["seat"].value = data.seat || "";
   recordForm["venue"].value = data.venue || "";
   recordForm["notes"].value = data.notes || "";
