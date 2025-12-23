@@ -642,16 +642,17 @@
               <option value="en">English</option>
             </select>
             <button id="saveProfileBtn">儲存個人資料</button>
+            <button id="closeProfileBtn" style="display:none;background:#999;">關閉</button>
           </div>
           <hr style="margin:12px 0;">
-          <div>
+          <div id="inviteArea">
             <label>邀請碼 (分享給朋友，對方輸入即可加入好友)</label>
             <div style="display:flex; gap:8px; margin-top:8px;">
               <input id="inviteCodeInput" placeholder="自訂邀請碼或按產生" />
               <button id="generateInviteBtn">產生</button>
               <button id="saveInviteBtn">儲存</button>
             </div>
-            <div style="margin-top:8px;">
+            <div style="margin-top:8px;" id="joinArea">
               <label>輸入別人的邀請碼加入好友</label>
               <div style="display:flex; gap:8px; margin-top:8px;">
                 <input id="joinInviteInput" placeholder="輸入邀請碼">
@@ -798,6 +799,7 @@ const joinInviteInput = document.getElementById('joinInviteInput');
 const joinByCodeBtn = document.getElementById('joinByCodeBtn');
 const friendsList = document.getElementById('friendsList');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
+const closeProfileBtn = document.getElementById('closeProfileBtn');
 
 const backToMyRecordsBtn = document.getElementById('backToMyRecordsBtn');
 
@@ -1042,7 +1044,7 @@ photoInput.addEventListener('change', async (e) => {
 });
 
 // ======================
-// 7. Profile / Invite / Friends functions (with alias support)
+// 7. Profile / Invite / Friends functions (with alias and view profile support)
 // ======================
 
 function generateInviteCode(prefix = '') {
@@ -1124,9 +1126,27 @@ async function saveProfile() {
 
 saveProfileBtn.addEventListener('click', saveProfile);
 
+// helper to toggle profile editability and UI
+function setProfileEditable(editable) {
+  displayNameInput.disabled = !editable;
+  bioInput.disabled = !editable;
+  preferredLang.disabled = !editable;
+  profilePhoto.style.opacity = editable ? '1' : '0.8';
+  // toggle invite/join controls
+  document.getElementById('inviteArea').style.display = editable ? 'block' : 'none';
+  document.getElementById('joinArea').style.display = editable ? 'block' : 'none';
+  saveProfileBtn.style.display = editable ? 'inline-block' : 'none';
+  generateInviteBtn.style.display = editable ? 'inline-block' : 'none';
+  saveInviteBtn.style.display = editable ? 'inline-block' : 'none';
+  joinByCodeBtn.style.display = editable ? 'inline-block' : 'none';
+  closeProfileBtn.style.display = editable ? 'none' : 'inline-block';
+}
+
 profileToggleBtn.addEventListener('click', () => {
   if (profileCard.style.display === 'none' || profileCard.style.display === '') {
     profileCard.style.display = 'block';
+    // open own profile in editable mode
+    setProfileEditable(true);
     loadProfile();
     loadFriends();
   } else {
@@ -1134,6 +1154,14 @@ profileToggleBtn.addEventListener('click', () => {
   }
 });
 
+closeProfileBtn.addEventListener('click', () => {
+  // close viewing-other's profile and return to friend list / previous state
+  profileCard.style.display = 'none';
+  // keep friends list up to date
+  loadFriends();
+});
+
+// load own profile into UI (editable)
 async function loadProfile() {
   if (!currentUserId) return;
   try {
@@ -1145,11 +1173,13 @@ async function loadProfile() {
     preferredLang.value = data.preferredLang || 'zh';
     inviteCodeInput.value = data.inviteCode || '';
     profilePhoto.src = data.photoURL || '';
+    setProfileEditable(true);
   } catch (err) {
     console.error('載入個人資料錯誤', err);
   }
 }
 
+// load friends list; show alias (no id) and add view-profile button
 async function loadFriends() {
   friendsList.innerHTML = '<li class="loading">載入中...</li>';
   if (!currentUserId) return;
@@ -1164,24 +1194,25 @@ async function loadFriends() {
     for (const fSnap of snaps.docs) {
       const fid = fSnap.id;
       const fData = fSnap.data() || {};
-      // try to fetch friend profile
+      // fetch friend's displayName if any
       let display = fid;
       try {
         const pSnap = await getDoc(doc(db, 'users', fid));
         if (pSnap.exists()) {
           const d = pSnap.data();
-          if (d.displayName) display = d.displayName + ` (${fid.slice(0,6)})`;
+          if (d.displayName) display = d.displayName;
         }
       } catch(_) {}
-      // prefer alias if set in current user's friend doc
-      const alias = fData.alias || null;
-      const displayText = alias ? `${alias} (${fid.slice(0,6)})` : display;
+      // use alias if set
+      const alias = fData.alias || '';
+      const displayText = alias && alias.trim().length > 0 ? alias : display;
 
       const li = document.createElement('li');
       li.className = 'friend-item';
       li.innerHTML = `<div>${displayText}</div>
         <div class="friend-actions">
           <button data-fid="${fid}" class="view-friend-btn">看紀錄</button>
+          <button data-fid="${fid}" class="view-profile-btn" style="background:linear-gradient(135deg,#66b3ff 0%,#4da6ff 100%);">查看個人檔案</button>
           <button data-fid="${fid}" class="edit-alias-btn" style="background:linear-gradient(135deg,#ffd966 0%,#ffb74d 100%);">編輯暱稱</button>
           <button data-fid="${fid}" class="remove-friend-btn" style="background:linear-gradient(135deg,#ff9999 0%,#ff6666 100%);">移除</button>
         </div>`;
@@ -1194,6 +1225,12 @@ async function loadFriends() {
         displayFriendRecords(fid);
       });
     });
+    document.querySelectorAll('.view-profile-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const fid = e.currentTarget.getAttribute('data-fid');
+        viewUserProfile(fid);
+      });
+    });
     document.querySelectorAll('.edit-alias-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         const fid = e.currentTarget.getAttribute('data-fid');
@@ -1202,15 +1239,7 @@ async function loadFriends() {
         const alias = prompt('請輸入此好友的暱稱 (留空表示移除暱稱)：', currentAlias);
         if (alias === null) return;
         try {
-          if (alias.trim() === '') {
-            // remove alias
-            await updateDoc(doc(db, 'users', currentUserId, 'friends', fid), { alias: serverTimestamp ? undefined : null });
-            // using merge with null can be tricky; use setDoc to remove field by merging object without alias via server-side would be ideal.
-            // Simpler: set alias to empty string to indicate no alias
-            await setDoc(doc(db, 'users', currentUserId, 'friends', fid), { alias: '' }, { merge: true });
-          } else {
-            await setDoc(doc(db, 'users', currentUserId, 'friends', fid), { alias: alias.trim() }, { merge: true });
-          }
+          await setDoc(doc(db, 'users', currentUserId, 'friends', fid), { alias: alias.trim() }, { merge: true });
           alert('✅ 暱稱已更新');
           loadFriends();
         } catch (err) {
@@ -1228,7 +1257,6 @@ async function loadFriends() {
           await deleteDoc(doc(db, 'users', fid, 'friends', currentUserId));
           alert('✅ 已移除好友');
           loadFriends();
-          // if currently viewing this friend, go back to my records
           if (viewingFriendUid === fid) {
             backToMyRecords();
           }
@@ -1241,6 +1269,30 @@ async function loadFriends() {
   } catch (err) {
     console.error('載入好友錯誤', err);
     friendsList.innerHTML = '<li class="error">載入好友失敗</li>';
+  }
+}
+
+// view another user's profile in read-only mode
+async function viewUserProfile(uid) {
+  if (!uid) return;
+  try {
+    const snap = await getDoc(doc(db, 'users', uid));
+    if (!snap.exists()) {
+      alert('找不到此使用者的資料');
+      return;
+    }
+    const data = snap.data();
+    displayNameInput.value = data.displayName || '';
+    bioInput.value = data.bio || '';
+    preferredLang.value = data.preferredLang || 'zh';
+    profilePhoto.src = data.photoURL || '';
+    inviteCodeInput.value = data.inviteCode || '';
+    // open profile card in read-only mode
+    profileCard.style.display = 'block';
+    setProfileEditable(false);
+  } catch (err) {
+    console.error('載入使用者檔案失敗', err);
+    alert('載入使用者檔案失敗');
   }
 }
 
@@ -1284,10 +1336,10 @@ backToMyRecordsBtn.addEventListener('click', backToMyRecords);
 function backToMyRecords() {
   viewingFriendUid = null;
   backToMyRecordsBtn.style.display = 'none';
+  profileCard.style.display = 'none';
   if (currentUserId) {
     loadRecords(currentUserId);
   } else {
-    // fallback: hide friend records
     recordsList.innerHTML = '';
     recordCount.textContent = '';
   }
@@ -1315,6 +1367,7 @@ onAuthStateChanged(auth, user => {
     currentUserId = null;
     viewingFriendUid = null;
     backToMyRecordsBtn.style.display = 'none';
+    profileCard.style.display = 'none';
     initPasswordToggles();
   }
 });
@@ -1454,13 +1507,6 @@ recordForm.addEventListener("submit", async e => {
       photoInput.value = '';
       photoPreview.innerHTML = '';
       currentPhotoBase64 = null;
-    }
-    // if user just created/updated and was viewing a friend's page, we should return to own records
-    if (viewingFriendUid && user.uid !== viewingFriendUid) {
-      // remain viewing friend (no change) — but if owner updated, reload their own records instead
-      if (user.uid === currentUserId) {
-        // do nothing special
-      }
     }
     loadRecords(user.uid);
   } catch(err) {
