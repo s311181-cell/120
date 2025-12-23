@@ -534,6 +534,26 @@
       font-weight: bold;
       font-size: 0.9em;
     }
+
+    /* small profile styles */
+    #profileCard {
+      display: none;
+    }
+
+    .friend-item {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:8px 0;
+      border-bottom:1px solid #f0f0f0;
+    }
+
+    .friend-actions button {
+      margin-left: 8px;
+      padding:6px 10px;
+      border-radius:8px;
+      font-size:14px;
+    }
   </style>
 </head>
 <body>
@@ -594,12 +614,57 @@
   <div id="appDiv" style="display:none">
     <div class="card" style="margin-bottom: 20px;">
       <div class="toolbar">
-        <div class="record-count" id="recordCount">載入中...</div>
+        <div>
+          <div class="record-count" id="recordCount">載入中...</div>
+        </div>
         <div class="toolbar-buttons">
+          <button id="profileToggleBtn">個人檔案</button>
           <button id="logoutBtn">登出</button>
         </div>
       </div>
       <div style="clear: both;"></div>
+    </div>
+
+    <!-- Profile / Invite / Friends -->
+    <div id="profileCard" class="card">
+      <h2>個人檔案</h2>
+      <div style="display:flex; gap:16px; align-items:flex-start;">
+        <div style="width:90px;">
+          <img id="profilePhoto" src="" alt="photo" style="width:80px;border-radius:40px;">
+        </div>
+        <div style="flex:1;">
+          <input id="displayNameInput" placeholder="暱稱">
+          <textarea id="bioInput" placeholder="關於我 (簡短自我介紹)"></textarea>
+          <div style="display:flex; gap:8px;">
+            <select id="preferredLang">
+              <option value="zh">中文</option>
+              <option value="en">English</option>
+            </select>
+            <button id="saveProfileBtn">儲存個人資料</button>
+          </div>
+          <hr style="margin:12px 0;">
+          <div>
+            <label>邀請碼 (分享給朋友，對方輸入即可加入好友)</label>
+            <div style="display:flex; gap:8px; margin-top:8px;">
+              <input id="inviteCodeInput" placeholder="自訂邀請碼或按產生" />
+              <button id="generateInviteBtn">產生</button>
+              <button id="saveInviteBtn">儲存</button>
+            </div>
+            <div style="margin-top:8px;">
+              <label>輸入別人的邀請碼加入好友</label>
+              <div style="display:flex; gap:8px; margin-top:8px;">
+                <input id="joinInviteInput" placeholder="輸入邀請碼">
+                <button id="joinByCodeBtn">加入好友</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;">
+        <h3>好友清單</h3>
+        <ul id="friendsList"></ul>
+      </div>
     </div>
 
     <div class="card">
@@ -624,6 +689,12 @@
             <option value="MYR">馬來西亞令吉 (MYR)</option>
           </select>
         </div>
+
+        <select name="visibility" id="visibilitySelect" style="margin-top:8px;">
+          <option value="private">僅自己可見</option>
+          <option value="friends">好友可見</option>
+          <option value="public">公開</option>
+        </select>
         
         <input type="text" name="seat" placeholder="座位/區域">
         <input type="text" name="venue" placeholder="場地">
@@ -667,7 +738,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, sendPasswordResetEmail, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, query, where, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
@@ -711,6 +782,21 @@ const photoPreview = document.getElementById("photoPreview");
 const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 const searchInput = document.getElementById("searchInput");
 const recordCount = document.getElementById("recordCount");
+
+const profileToggleBtn = document.getElementById('profileToggleBtn');
+const profileCard = document.getElementById('profileCard');
+const displayNameInput = document.getElementById('displayNameInput');
+const bioInput = document.getElementById('bioInput');
+const preferredLang = document.getElementById('preferredLang');
+const profilePhoto = document.getElementById('profilePhoto');
+
+const inviteCodeInput = document.getElementById('inviteCodeInput');
+const generateInviteBtn = document.getElementById('generateInviteBtn');
+const saveInviteBtn = document.getElementById('saveInviteBtn');
+const joinInviteInput = document.getElementById('joinInviteInput');
+const joinByCodeBtn = document.getElementById('joinByCodeBtn');
+const friendsList = document.getElementById('friendsList');
+const saveProfileBtn = document.getElementById('saveProfileBtn');
 
 // 全域變數
 let editingId = null;
@@ -837,6 +923,7 @@ clearBtn.addEventListener("click", function() {
 function clearForm() {
   recordForm.reset();
   document.getElementById('currencySelect').value = 'TWD';
+  document.getElementById('visibilitySelect').value = 'private';
   photoInput.value = '';
   photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
@@ -863,6 +950,7 @@ function initSearch() {
 function filterRecords(searchTerm) {
   if (!searchTerm) {
     displayRecords(allRecords, currentUserId);
+    recordCount.textContent = `共 ${allRecords.length} 筆紀錄`;
     return;
   }
  
@@ -949,14 +1037,212 @@ photoInput.addEventListener('change', async (e) => {
   reader.readAsDataURL(file);
 });
 
+// ======================
+// 7. Profile / Invite / Friends functions
+// ======================
+
+function generateInviteCode(prefix = '') {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = '';
+  for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
+  return (prefix ? prefix + '-' : '') + code;
+}
+
+generateInviteBtn.addEventListener('click', () => {
+  inviteCodeInput.value = generateInviteCode();
+});
+
+saveInviteBtn.addEventListener('click', async () => {
+  if (!currentUserId) return alert('請先登入');
+  const code = (inviteCodeInput.value || '').trim();
+  if (!code) return alert('請輸入邀請碼或按「產生」');
+  // basic validation
+  if (!/^[A-Za-z0-9\-]{4,20}$/.test(code)) {
+    return alert('邀請碼只能包含英數與 - ，長度 4-20');
+  }
+  try {
+    const codeRef = doc(db, 'inviteCodes', code);
+    await setDoc(codeRef, { ownerUid: currentUserId, createdAt: serverTimestamp(), singleUse: false });
+    // also save to user's profile
+    const userRef = doc(db, 'users', currentUserId);
+    await setDoc(userRef, { inviteCode: code }, { merge: true });
+    alert('✅ 邀請碼已儲存: ' + code);
+    loadFriends(); // refresh if needed
+  } catch (err) {
+    console.error(err);
+    alert('❌ 儲存邀請碼失敗（可能已被使用）: ' + err.message);
+  }
+});
+
+joinByCodeBtn.addEventListener('click', async () => {
+  if (!currentUserId) return alert('請先登入');
+  const code = (joinInviteInput.value || '').trim();
+  if (!code) return alert('請輸入邀請碼');
+  try {
+    const codeRef = doc(db, 'inviteCodes', code);
+    const snap = await getDoc(codeRef);
+    if (!snap.exists()) throw new Error('找不到此邀請碼');
+    const { ownerUid, singleUse } = snap.data();
+    if (ownerUid === currentUserId) throw new Error('不能加入自己為好友');
+    // create bidirectional friend docs
+    const myFriendRef = doc(db, 'users', currentUserId, 'friends', ownerUid);
+    const otherFriendRef = doc(db, 'users', ownerUid, 'friends', currentUserId);
+    await setDoc(myFriendRef, { createdAt: serverTimestamp() });
+    await setDoc(otherFriendRef, { createdAt: serverTimestamp() });
+    if (singleUse) {
+      await deleteDoc(codeRef);
+    }
+    alert('✅ 已加入好友！');
+    loadFriends();
+  } catch (err) {
+    console.error(err);
+    alert('❌ 加入好友失敗: ' + err.message);
+  }
+});
+
+async function saveProfile() {
+  if (!currentUserId) return alert('請先登入');
+  const data = {
+    displayName: displayNameInput.value.trim() || '',
+    bio: bioInput.value.trim() || '',
+    preferredLang: preferredLang.value || 'zh',
+    updatedAt: serverTimestamp()
+  };
+  try {
+    await setDoc(doc(db, 'users', currentUserId), data, { merge: true });
+    alert('✅ 個人資料已儲存');
+    loadProfile();
+  } catch (err) {
+    console.error(err);
+    alert('❌ 儲存個人資料失敗: ' + err.message);
+  }
+}
+
+saveProfileBtn.addEventListener('click', saveProfile);
+
+profileToggleBtn.addEventListener('click', () => {
+  if (profileCard.style.display === 'none' || profileCard.style.display === '') {
+    profileCard.style.display = 'block';
+    loadProfile();
+    loadFriends();
+  } else {
+    profileCard.style.display = 'none';
+  }
+});
+
+async function loadProfile() {
+  if (!currentUserId) return;
+  try {
+    const uRef = doc(db, 'users', currentUserId);
+    const snap = await getDoc(uRef);
+    const data = snap.exists() ? snap.data() : {};
+    displayNameInput.value = data.displayName || '';
+    bioInput.value = data.bio || '';
+    preferredLang.value = data.preferredLang || 'zh';
+    inviteCodeInput.value = data.inviteCode || '';
+    profilePhoto.src = data.photoURL || '';
+  } catch (err) {
+    console.error('載入個人資料錯誤', err);
+  }
+}
+
+async function loadFriends() {
+  friendsList.innerHTML = '<li class="loading">載入中...</li>';
+  if (!currentUserId) return;
+  try {
+    const colRef = collection(db, 'users', currentUserId, 'friends');
+    const snaps = await getDocs(colRef);
+    if (snaps.empty) {
+      friendsList.innerHTML = '<li>目前沒有好友</li>';
+      return;
+    }
+    friendsList.innerHTML = '';
+    for (const f of snaps.docs) {
+      const fid = f.id;
+      // try to fetch friend profile
+      let display = fid;
+      try {
+        const fSnap = await getDoc(doc(db, 'users', fid));
+        if (fSnap.exists()) {
+          const d = fSnap.data();
+          if (d.displayName) display = d.displayName + ` (${fid.slice(0,6)})`;
+        }
+      } catch(_){}
+      const li = document.createElement('li');
+      li.className = 'friend-item';
+      li.innerHTML = `<div>${display}</div>
+        <div class="friend-actions">
+          <button data-fid="${fid}" class="view-friend-btn">看紀錄</button>
+          <button data-fid="${fid}" class="remove-friend-btn" style="background:linear-gradient(135deg,#ff9999 0%,#ff6666 100%);">移除</button>
+        </div>`;
+      friendsList.appendChild(li);
+    }
+    // attach events
+    document.querySelectorAll('.view-friend-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const fid = e.currentTarget.getAttribute('data-fid');
+        displayFriendRecords(fid);
+      });
+    });
+    document.querySelectorAll('.remove-friend-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const fid = e.currentTarget.getAttribute('data-fid');
+        if (!confirm('確定要移除該好友嗎？')) return;
+        try {
+          await deleteDoc(doc(db, 'users', currentUserId, 'friends', fid));
+          await deleteDoc(doc(db, 'users', fid, 'friends', currentUserId));
+          alert('✅ 已移除好友');
+          loadFriends();
+        } catch (err) {
+          console.error(err);
+          alert('❌ 移除好友失敗: ' + err.message);
+        }
+      });
+    });
+  } catch (err) {
+    console.error('載入好友錯誤', err);
+    friendsList.innerHTML = '<li class="error">載入好友失敗</li>';
+  }
+}
+
+async function displayFriendRecords(friendUid) {
+  recordsList.innerHTML = '<li class="loading">載入中...</li>';
+  try {
+    const uSnap = await getDoc(doc(db, 'users', friendUid));
+    const friendName = uSnap.exists() && uSnap.data().displayName ? uSnap.data().displayName : friendUid;
+    recordCount.textContent = `載入 ${friendName} 的紀錄...`;
+    const q = query(collection(db, "concerts"), where("uid", "==", friendUid));
+    const snap = await getDocs(q);
+    const arr = snap.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() })).sort((a,b)=>{
+      const t1 = new Date(a.data.datetime).getTime();
+      const t2 = new Date(b.data.datetime).getTime();
+      return t2 - t1;
+    });
+    allRecords = arr; // show these in UI (search will filter this array)
+    displayRecords(allRecords, friendUid);
+    recordCount.textContent = `共 ${allRecords.length} 筆紀錄 (來自 ${friendName})`;
+  } catch (err) {
+    console.error(err);
+    recordsList.innerHTML = '<li class="error">載入好友紀錄失敗（可能沒有權限或無紀錄）</li>';
+  }
+}
+
+// ======================
+// 8. Auth / Records flow
+// ======================
+
 onAuthStateChanged(auth, user => {
   if(user){
     loginDiv.style.display = "none";
     appDiv.style.display = "block";
     currentUserId = user.uid;
+    // ensure user profile doc exists
+    setDoc(doc(db, 'users', user.uid), { email: user.email || '', createdAt: serverTimestamp() }, { merge: true }).catch(()=>{});
     loadRecords(user.uid);
     initPasswordToggles();
     initSearch();
+    loadProfile();
+    loadFriends();
   } else {
     loginDiv.style.display = "block";
     appDiv.style.display = "none";
@@ -971,7 +1257,17 @@ signupForm.addEventListener("submit", async e => {
   const password = signupForm["password"].value;
 
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
+    const cred = await createUserWithEmailAndPassword(auth, email, password);
+    // create user profile doc
+    const uid = cred.user.uid;
+    await setDoc(doc(db, 'users', uid), {
+      email,
+      displayName: '',
+      bio: '',
+      preferredLang: 'zh',
+      allowFriendsViewAll: true,
+      createdAt: serverTimestamp()
+    });
     alert("✅ 註冊成功!");
     signupForm.reset();
     document.getElementById('passwordStrength').style.display = 'none';
@@ -1056,6 +1352,8 @@ recordForm.addEventListener("submit", async e => {
     return;
   }
 
+  const visibility = document.getElementById('visibilitySelect').value || 'private';
+
   const data = {
     uid: user.uid,
     artist: recordForm["artist"].value.trim(),
@@ -1066,6 +1364,7 @@ recordForm.addEventListener("submit", async e => {
     venue: recordForm["venue"].value.trim(),
     notes: recordForm["notes"].value.trim(),
     photo: currentPhotoBase64 || "",
+    visibility,
     updatedAt: new Date().toISOString()
   };
 
@@ -1083,6 +1382,7 @@ recordForm.addEventListener("submit", async e => {
       alert("✅ 新增成功!");
       recordForm.reset();
       document.getElementById('currencySelect').value = 'TWD';
+      document.getElementById('visibilitySelect').value = 'private';
       photoInput.value = '';
       photoPreview.innerHTML = '';
       currentPhotoBase64 = null;
@@ -1098,6 +1398,7 @@ function cancelEdit() {
   editingId = null;
   recordForm.reset();
   document.getElementById('currencySelect').value = 'TWD';
+  document.getElementById('visibilitySelect').value = 'private';
   photoInput.value = '';
   photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
@@ -1299,6 +1600,10 @@ function displayRecords(records, uid) {
             <span class="info-label">📝 備註:</span>
             <span class="info-value">${d.notes}</span>
           </div>` : ''}
+          <div class="info-row">
+            <span class="info-label">🔒 可見性:</span>
+            <span class="info-value">${d.visibility || 'private'}</span>
+          </div>
         </div>
       </div>
     `;
@@ -1306,28 +1611,32 @@ function displayRecords(records, uid) {
     const buttonGroup = document.createElement("div");
     buttonGroup.className = "button-group";
 
-    const editBtn = document.createElement("button");
-    editBtn.className = "edit-btn";
-    editBtn.textContent = "✏️ 編輯";
-    editBtn.onclick = () => startEdit(r.id, d);
+    // Only show edit/delete if current user is owner
+    if (currentUserId && ((d.uid && d.uid === currentUserId) || (d.ownerId && d.ownerId === currentUserId))) {
+      const editBtn = document.createElement("button");
+      editBtn.className = "edit-btn";
+      editBtn.textContent = "✏️ 編輯";
+      editBtn.onclick = () => startEdit(r.id, d);
 
-    const delBtn = document.createElement("button");
-    delBtn.className = "delete-btn";
-    delBtn.textContent = "🗑️ 刪除";
-    delBtn.onclick = async () => {
-      if(confirm(`確定要刪除「${d.artist}」的紀錄嗎?`)) {
-        try {
-          await deleteDoc(doc(db, "concerts", r.id));
-          alert("✅ 刪除成功");
-          loadRecords(uid);
-        } catch(err) {
-          alert("❌ 刪除失敗: " + err.message);
+      const delBtn = document.createElement("button");
+      delBtn.className = "delete-btn";
+      delBtn.textContent = "🗑️ 刪除";
+      delBtn.onclick = async () => {
+        if(confirm(`確定要刪除「${d.artist}」的紀錄嗎?`)) {
+          try {
+            await deleteDoc(doc(db, "concerts", r.id));
+            alert("✅ 刪除成功");
+            loadRecords(currentUserId);
+          } catch(err) {
+            alert("❌ 刪除失敗: " + err.message);
+          }
         }
-      }
-    };
+      };
 
-    buttonGroup.appendChild(editBtn);
-    buttonGroup.appendChild(delBtn);
+      buttonGroup.appendChild(editBtn);
+      buttonGroup.appendChild(delBtn);
+    }
+
     li.appendChild(buttonGroup);
     recordsList.appendChild(li);
   });
@@ -1344,6 +1653,7 @@ function startEdit(id, data) {
   recordForm["datetime"].value = data.datetime || "";
   recordForm["price"].value = data.price || "";
   document.getElementById('currencySelect').value = data.currency || "TWD";
+  document.getElementById('visibilitySelect').value = data.visibility || "private";
   recordForm["seat"].value = data.seat || "";
   recordForm["venue"].value = data.venue || "";
   recordForm["notes"].value = data.notes || "";
