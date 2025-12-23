@@ -627,7 +627,7 @@
     </div>
 
     <div class="card">
-      <!-- heading has id so JS can change it safely -->
+      <!-- changed: give this heading an id so we can change it when viewing friends -->
       <h2 id="recordsHeading" style="margin: 0; border: none;">我的演唱會紀錄</h2>
       <div class="search-bar" style="margin-bottom:12px;">
         <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋表演者、場地或備註...">
@@ -1240,40 +1240,36 @@ async function viewUserProfile(uid) {
   }
 }
 
-// --- 1) 顯示好友紀錄並把標題改成好友的名字 ---
 async function displayFriendRecords(friendUid) {
   recordsList.innerHTML = '<li class="loading">載入中...</li>';
   viewingFriendUid = friendUid;
-  if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'inline-block';
-
+  backToMyRecordsBtn.style.display = 'inline-block';
   try {
-    // 取得好友 profile（displayName）
+    // fetch friend profile and my alias for them
     const uSnap = await getDoc(doc(db, 'users', friendUid));
     const friendName = uSnap.exists() && uSnap.data().displayName ? uSnap.data().displayName : friendUid;
-
-    // 取得我對這個好友的 alias（有的話用 alias 顯示）
+    // check alias in my friend doc
     let displayName = friendName;
     try {
-      if (currentUserId) {
-        const myFriendSnap = await getDoc(doc(db, 'users', currentUserId, 'friends', friendUid));
-        if (myFriendSnap.exists()) {
-          const myF = myFriendSnap.data();
-          if (myF.alias && myF.alias.trim().length > 0) {
-            displayName = myF.alias;
-          }
+      const myFriendSnap = await getDoc(doc(db, 'users', currentUserId, 'friends', friendUid));
+      if (myFriendSnap.exists()) {
+        const myF = myFriendSnap.data();
+        if (myF.alias && myF.alias.trim().length > 0) {
+          displayName = myF.alias;
         }
       }
-    } catch (_) { /* 忽略 alias 讀取錯誤 */ }
-
-    // 將頁面上方的 heading 改為「XXX 的演唱會紀錄」
-    if (recordsHeading) recordsHeading.textContent = `${displayName} 的演唱會紀錄`;
-
+    } catch(_) {}
+    // update the section heading to show whose records we're viewing
+    recordsHeading.textContent = `${displayName} 的演唱會紀錄`;
     recordCount.textContent = `載入 ${displayName} 的紀錄...`;
     const q = query(collection(db, "concerts"), where("uid", "==", friendUid));
     const snap = await getDocs(q);
-    const arr = snap.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() }))
-                        .sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
-    allRecords = arr;
+    const arr = snap.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() })).sort((a,b)=>{
+      const t1 = new Date(a.data.datetime).getTime();
+      const t2 = new Date(b.data.datetime).getTime();
+      return t2 - t1;
+    });
+    allRecords = arr; // show these in UI (search will filter this array)
     displayRecords(allRecords, friendUid);
     recordCount.textContent = `共 ${allRecords.length} 筆紀錄 (來自 ${displayName})`;
   } catch (err) {
@@ -1282,12 +1278,13 @@ async function displayFriendRecords(friendUid) {
   }
 }
 
-// --- 2) 回到我的紀錄並還原標題 ---
+backToMyRecordsBtn.addEventListener('click', backToMyRecords);
 function backToMyRecords() {
   viewingFriendUid = null;
-  if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'none';
-  if (profileCard) profileCard.style.display = 'none';
-  if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
+  backToMyRecordsBtn.style.display = 'none';
+  profileCard.style.display = 'none';
+  // restore heading
+  recordsHeading.textContent = '我的演唱會紀錄';
   if (currentUserId) {
     loadRecords(currentUserId);
   } else {
@@ -1307,8 +1304,8 @@ onAuthStateChanged(auth, user => {
     currentUserId = user.uid;
     // ensure user profile doc exists
     setDoc(doc(db, 'users', user.uid), { email: user.email || '', createdAt: serverTimestamp() }, { merge: true }).catch(()=>{});
-    // safely set heading if element exists
-    if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
+    // ensure heading shows own records
+    recordsHeading.textContent = '我的演唱會紀錄';
     loadRecords(user.uid);
     initPasswordToggles();
     initSearch();
@@ -1321,8 +1318,8 @@ onAuthStateChanged(auth, user => {
     viewingFriendUid = null;
     backToMyRecordsBtn.style.display = 'none';
     profileCard.style.display = 'none';
-    // restore default heading safely
-    if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
+    // restore default heading
+    recordsHeading.textContent = '我的演唱會紀錄';
     initPasswordToggles();
   }
 });
@@ -1488,7 +1485,7 @@ async function loadRecords(uid) {
   viewingFriendUid = null;
   backToMyRecordsBtn.style.display = 'none';
   // restore heading to user's own records
-  if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
+  recordsHeading.textContent = '我的演唱會紀錄';
 
   recordsList.innerHTML = '<li class="loading">載入中...</li>';
 
