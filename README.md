@@ -717,14 +717,14 @@ const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
 const signupForm = document.getElementById("signupForm");
 const logoutBtn = document.getElementById("logoutBtn");
-const recordForm = document.getElementById("recordForm");
+const recordForm = document.getElementById("recordForm"); // may be null in this version
 const recordsList = document.getElementById("recordsList");
-const formTitle = document.getElementById("formTitle");
-const submitBtn = document.getElementById("submitBtn");
-const cancelBtn = document.getElementById("cancelBtn");
-const clearBtn = document.getElementById("clearBtn");
-const photoInput = document.getElementById("photoInput");
-const photoPreview = document.getElementById("photoPreview");
+const formTitle = document.getElementById("formTitle"); // may be null
+const submitBtn = document.getElementById("submitBtn"); // may be null
+const cancelBtn = document.getElementById("cancelBtn"); // may be null
+const clearBtn = document.getElementById("clearBtn"); // may be null
+const photoInput = document.getElementById("photoInput"); // may be null
+const photoPreview = document.getElementById("photoPreview"); // may be null
 const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 const searchInput = document.getElementById("searchInput");
 const recordCount = document.getElementById("recordCount");
@@ -865,17 +865,22 @@ function checkPasswordStrength(password) {
 // 3. 清除表單功能
 // ======================
 
-clearBtn.addEventListener("click", function() {
-  if (confirm('確定要清除表單中的所有內容嗎？')) {
-    clearForm();
-  }
-});
+if (clearBtn) {
+  clearBtn.addEventListener("click", function() {
+    if (confirm('確定要清除表單中的所有內容嗎？')) {
+      clearForm();
+    }
+  });
+}
 
 function clearForm() {
-  recordForm.reset();
-  document.getElementById('currencySelect').value = 'TWD';
-  photoInput.value = '';
-  photoPreview.innerHTML = '';
+  if (recordForm) {
+    try { recordForm.reset(); } catch(e){/* ignore */ }
+  }
+  const currencySelect = document.getElementById('currencySelect');
+  if (currencySelect) currencySelect.value = 'TWD';
+  if (photoInput) photoInput.value = '';
+  if (photoPreview) photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
   
   if (editingId) {
@@ -900,7 +905,7 @@ function initSearch() {
 function filterRecords(searchTerm) {
   if (!searchTerm) {
     displayRecords(allRecords, viewingFriendUid || currentUserId);
-    recordCount.textContent = viewingFriendUid ? `共 ${allRecords.length} 筆紀錄 (好友)` : `共 ${allRecords.length} 筆紀錄`;
+    if (recordCount) recordCount.textContent = viewingFriendUid ? `共 ${allRecords.length} 筆紀錄 (好友)` : `共 ${allRecords.length} 筆紀錄`;
     return;
   }
  
@@ -915,7 +920,7 @@ function filterRecords(searchTerm) {
   });
  
   displayRecords(filtered, viewingFriendUid || currentUserId);
-  recordCount.textContent = `找到 ${filtered.length} 筆紀錄`;
+  if (recordCount) recordCount.textContent = `找到 ${filtered.length} 筆紀錄`;
 }
 
 // ======================
@@ -957,35 +962,39 @@ window.toggleMode = function() {
 
 window.removePhoto = function() {
   currentPhotoBase64 = null;
-  photoInput.value = '';
-  photoPreview.innerHTML = '';
+  if (photoInput) photoInput.value = '';
+  if (photoPreview) photoPreview.innerHTML = '';
 }
 
-photoInput.addEventListener('change', async (e) => {
-  const file = e.target.files[0];
-  if (!file) {
-    currentPhotoBase64 = null;
-    photoPreview.innerHTML = '';
-    return;
-  }
+if (photoInput) {
+  photoInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      currentPhotoBase64 = null;
+      if (photoPreview) photoPreview.innerHTML = '';
+      return;
+    }
 
-  if (file.size > 2 * 1024 * 1024) {
-    alert('⚠️ 照片太大了！請選擇小於 2MB 的照片');
-    photoInput.value = '';
-    return;
-  }
+    if (file.size > 2 * 1024 * 1024) {
+      alert('⚠️ 照片太大了！請選擇小於 2MB 的照片');
+      photoInput.value = '';
+      return;
+    }
 
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    currentPhotoBase64 = event.target.result;
-    photoPreview.innerHTML = `
-      <img src="${currentPhotoBase64}" alt="預覽">
-      <br>
-      <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
-    `;
-  };
-  reader.readAsDataURL(file);
-});
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      currentPhotoBase64 = event.target.result;
+      if (photoPreview) {
+        photoPreview.innerHTML = `
+          <img src="${currentPhotoBase64}" alt="預覽">
+          <br>
+          <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
+        `;
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
 
 // ======================
 // 7. Profile / Invite / Friends functions (with alias and view profile support)
@@ -998,64 +1007,70 @@ function generateInviteCode(prefix = '') {
   return (prefix ? prefix + '-' : '') + code;
 }
 
-generateInviteBtn.addEventListener('click', () => {
-  inviteCodeInput.value = generateInviteCode();
-});
+if (generateInviteBtn) {
+  generateInviteBtn.addEventListener('click', () => {
+    if (inviteCodeInput) inviteCodeInput.value = generateInviteCode();
+  });
+}
 
-saveInviteBtn.addEventListener('click', async () => {
-  if (!currentUserId) return alert('請先登入');
-  const code = (inviteCodeInput.value || '').trim();
-  if (!code) return alert('請輸入邀請碼或按「產生」');
-  // basic validation
-  if (!/^[A-Za-z0-9\-]{4,20}$/.test(code)) {
-    return alert('邀請碼只能包含英數與 - ，長度 4-20');
-  }
-  try {
-    const codeRef = doc(db, 'inviteCodes', code);
-    await setDoc(codeRef, { ownerUid: currentUserId, createdAt: serverTimestamp(), singleUse: false });
-    // also save to user's profile
-    const userRef = doc(db, 'users', currentUserId);
-    await setDoc(userRef, { inviteCode: code }, { merge: true });
-    alert('✅ 邀請碼已儲存: ' + code);
-    loadFriends(); // refresh if needed
-  } catch (err) {
-    console.error(err);
-    alert('❌ 儲存邀請碼失敗（可能已被使用）: ' + err.message);
-  }
-});
-
-joinByCodeBtn.addEventListener('click', async () => {
-  if (!currentUserId) return alert('請先登入');
-  const code = (joinInviteInput.value || '').trim();
-  if (!code) return alert('請輸入邀請碼');
-  try {
-    const codeRef = doc(db, 'inviteCodes', code);
-    const snap = await getDoc(codeRef);
-    if (!snap.exists()) throw new Error('找不到此邀請碼');
-    const { ownerUid, singleUse } = snap.data();
-    if (ownerUid === currentUserId) throw new Error('不能加入自己為好友');
-    // create bidirectional friend docs
-    const myFriendRef = doc(db, 'users', currentUserId, 'friends', ownerUid);
-    const otherFriendRef = doc(db, 'users', ownerUid, 'friends', currentUserId);
-    await setDoc(myFriendRef, { createdAt: serverTimestamp() }, { merge: true });
-    await setDoc(otherFriendRef, { createdAt: serverTimestamp() }, { merge: true });
-    if (singleUse) {
-      await deleteDoc(codeRef);
+if (saveInviteBtn) {
+  saveInviteBtn.addEventListener('click', async () => {
+    if (!currentUserId) return alert('請先登入');
+    const code = (inviteCodeInput && inviteCodeInput.value || '').trim();
+    if (!code) return alert('請輸入邀請碼或按「產生」');
+    // basic validation
+    if (!/^[A-Za-z0-9\-]{4,20}$/.test(code)) {
+      return alert('邀請碼只能包含英數與 - ，長度 4-20');
     }
-    alert('✅ 已加入好友！');
-    loadFriends();
-  } catch (err) {
-    console.error(err);
-    alert('❌ 加入好友失敗: ' + err.message);
-  }
-});
+    try {
+      const codeRef = doc(db, 'inviteCodes', code);
+      await setDoc(codeRef, { ownerUid: currentUserId, createdAt: serverTimestamp(), singleUse: false });
+      // also save to user's profile
+      const userRef = doc(db, 'users', currentUserId);
+      await setDoc(userRef, { inviteCode: code }, { merge: true });
+      alert('✅ 邀請碼已儲存: ' + code);
+      loadFriends(); // refresh if needed
+    } catch (err) {
+      console.error(err);
+      alert('❌ 儲存邀請碼失敗（可能已被使用）: ' + err.message);
+    }
+  });
+}
+
+if (joinByCodeBtn) {
+  joinByCodeBtn.addEventListener('click', async () => {
+    if (!currentUserId) return alert('請先登入');
+    const code = (joinInviteInput && joinInviteInput.value || '').trim();
+    if (!code) return alert('請輸入邀請碼');
+    try {
+      const codeRef = doc(db, 'inviteCodes', code);
+      const snap = await getDoc(codeRef);
+      if (!snap.exists()) throw new Error('找不到此邀請碼');
+      const { ownerUid, singleUse } = snap.data();
+      if (ownerUid === currentUserId) throw new Error('不能加入自己為好友');
+      // create bidirectional friend docs
+      const myFriendRef = doc(db, 'users', currentUserId, 'friends', ownerUid);
+      const otherFriendRef = doc(db, 'users', ownerUid, 'friends', currentUserId);
+      await setDoc(myFriendRef, { createdAt: serverTimestamp() }, { merge: true });
+      await setDoc(otherFriendRef, { createdAt: serverTimestamp() }, { merge: true });
+      if (singleUse) {
+        await deleteDoc(codeRef);
+      }
+      alert('✅ 已加入好友！');
+      loadFriends();
+    } catch (err) {
+      console.error(err);
+      alert('❌ 加入好友失敗: ' + err.message);
+    }
+  });
+}
 
 async function saveProfile() {
   if (!currentUserId) return alert('請先登入');
   const data = {
-    displayName: displayNameInput.value.trim() || '',
-    bio: bioInput.value.trim() || '',
-    preferredLang: preferredLang.value || 'zh',
+    displayName: (displayNameInput && displayNameInput.value.trim()) || '',
+    bio: (bioInput && bioInput.value.trim()) || '',
+    preferredLang: (preferredLang && preferredLang.value) || 'zh',
     updatedAt: serverTimestamp()
   };
   try {
@@ -1068,42 +1083,47 @@ async function saveProfile() {
   }
 }
 
-saveProfileBtn.addEventListener('click', saveProfile);
+if (saveProfileBtn) saveProfileBtn.addEventListener('click', saveProfile);
 
 // helper to toggle profile editability and UI
 function setProfileEditable(editable) {
-  displayNameInput.disabled = !editable;
-  bioInput.disabled = !editable;
-  preferredLang.disabled = !editable;
-  profilePhoto.style.opacity = editable ? '1' : '0.8';
+  if (displayNameInput) displayNameInput.disabled = !editable;
+  if (bioInput) bioInput.disabled = !editable;
+  if (preferredLang) preferredLang.disabled = !editable;
+  if (profilePhoto) profilePhoto.style.opacity = editable ? '1' : '0.8';
   // toggle invite/join controls
-  document.getElementById('inviteArea').style.display = editable ? 'block' : 'none';
-  document.getElementById('joinArea').style.display = editable ? 'block' : 'none';
-  saveProfileBtn.style.display = editable ? 'inline-block' : 'none';
-  generateInviteBtn.style.display = editable ? 'inline-block' : 'none';
-  saveInviteBtn.style.display = editable ? 'inline-block' : 'none';
-  joinByCodeBtn.style.display = editable ? 'inline-block' : 'none';
-  closeProfileBtn.style.display = editable ? 'none' : 'inline-block';
+  const inviteArea = document.getElementById('inviteArea');
+  const joinArea = document.getElementById('joinArea');
+  if (inviteArea) inviteArea.style.display = editable ? 'block' : 'none';
+  if (joinArea) joinArea.style.display = editable ? 'block' : 'none';
+  if (saveProfileBtn) saveProfileBtn.style.display = editable ? 'inline-block' : 'none';
+  if (generateInviteBtn) generateInviteBtn.style.display = editable ? 'inline-block' : 'none';
+  if (saveInviteBtn) saveInviteBtn.style.display = editable ? 'inline-block' : 'none';
+  if (joinByCodeBtn) joinByCodeBtn.style.display = editable ? 'inline-block' : 'none';
+  if (closeProfileBtn) closeProfileBtn.style.display = editable ? 'none' : 'inline-block';
 }
 
-profileToggleBtn.addEventListener('click', () => {
-  if (profileCard.style.display === 'none' || profileCard.style.display === '') {
-    profileCard.style.display = 'block';
-    // open own profile in editable mode
-    setProfileEditable(true);
-    loadProfile();
-    loadFriends();
-  } else {
-    profileCard.style.display = 'none';
-  }
-});
+if (profileToggleBtn) {
+  profileToggleBtn.addEventListener('click', () => {
+    if (!profileCard) return;
+    if (profileCard.style.display === 'none' || profileCard.style.display === '') {
+      profileCard.style.display = 'block';
+      // open own profile in editable mode
+      setProfileEditable(true);
+      loadProfile();
+      loadFriends();
+    } else {
+      profileCard.style.display = 'none';
+    }
+  });
+}
 
-closeProfileBtn.addEventListener('click', () => {
-  // close viewing-other's profile and return to friend list / previous state
-  profileCard.style.display = 'none';
-  // keep friends list up to date
-  loadFriends();
-});
+if (closeProfileBtn) {
+  closeProfileBtn.addEventListener('click', () => {
+    if (profileCard) profileCard.style.display = 'none';
+    loadFriends();
+  });
+}
 
 // load own profile into UI (editable)
 async function loadProfile() {
@@ -1112,11 +1132,11 @@ async function loadProfile() {
     const uRef = doc(db, 'users', currentUserId);
     const snap = await getDoc(uRef);
     const data = snap.exists() ? snap.data() : {};
-    displayNameInput.value = data.displayName || '';
-    bioInput.value = data.bio || '';
-    preferredLang.value = data.preferredLang || 'zh';
-    inviteCodeInput.value = data.inviteCode || '';
-    profilePhoto.src = data.photoURL || '';
+    if (displayNameInput) displayNameInput.value = data.displayName || '';
+    if (bioInput) bioInput.value = data.bio || '';
+    if (preferredLang) preferredLang.value = data.preferredLang || 'zh';
+    if (inviteCodeInput) inviteCodeInput.value = data.inviteCode || '';
+    if (profilePhoto) profilePhoto.src = data.photoURL || '';
     setProfileEditable(true);
   } catch (err) {
     console.error('載入個人資料錯誤', err);
@@ -1125,6 +1145,7 @@ async function loadProfile() {
 
 // load friends list; show alias (no id) and add view-profile button
 async function loadFriends() {
+  if (!friendsList) return;
   friendsList.innerHTML = '<li class="loading">載入中...</li>';
   if (!currentUserId) return;
   try {
@@ -1226,13 +1247,13 @@ async function viewUserProfile(uid) {
       return;
     }
     const data = snap.data();
-    displayNameInput.value = data.displayName || '';
-    bioInput.value = data.bio || '';
-    preferredLang.value = data.preferredLang || 'zh';
-    profilePhoto.src = data.photoURL || '';
-    inviteCodeInput.value = data.inviteCode || '';
+    if (displayNameInput) displayNameInput.value = data.displayName || '';
+    if (bioInput) bioInput.value = data.bio || '';
+    if (preferredLang) preferredLang.value = data.preferredLang || 'zh';
+    if (profilePhoto) profilePhoto.src = data.photoURL || '';
+    if (inviteCodeInput) inviteCodeInput.value = data.inviteCode || '';
     // open profile card in read-only mode
-    profileCard.style.display = 'block';
+    if (profileCard) profileCard.style.display = 'block';
     setProfileEditable(false);
   } catch (err) {
     console.error('載入使用者檔案失敗', err);
@@ -1240,28 +1261,30 @@ async function viewUserProfile(uid) {
   }
 }
 
+// --- display friend's records and change heading safely ---
 async function displayFriendRecords(friendUid) {
-  recordsList.innerHTML = '<li class="loading">載入中...</li>';
+  if (recordsList) recordsList.innerHTML = '<li class="loading">載入中...</li>';
   viewingFriendUid = friendUid;
-  backToMyRecordsBtn.style.display = 'inline-block';
+  if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'inline-block';
   try {
-    // fetch friend profile and my alias for them
     const uSnap = await getDoc(doc(db, 'users', friendUid));
     const friendName = uSnap.exists() && uSnap.data().displayName ? uSnap.data().displayName : friendUid;
     // check alias in my friend doc
     let displayName = friendName;
     try {
-      const myFriendSnap = await getDoc(doc(db, 'users', currentUserId, 'friends', friendUid));
-      if (myFriendSnap.exists()) {
-        const myF = myFriendSnap.data();
-        if (myF.alias && myF.alias.trim().length > 0) {
-          displayName = myF.alias;
+      if (currentUserId) {
+        const myFriendSnap = await getDoc(doc(db, 'users', currentUserId, 'friends', friendUid));
+        if (myFriendSnap.exists()) {
+          const myF = myFriendSnap.data();
+          if (myF.alias && myF.alias.trim().length > 0) {
+            displayName = myF.alias;
+          }
         }
       }
     } catch(_) {}
-    // update the section heading to show whose records we're viewing
-    recordsHeading.textContent = `${displayName} 的演唱會紀錄`;
-    recordCount.textContent = `載入 ${displayName} 的紀錄...`;
+    // update the section heading to show whose records we're viewing (safe)
+    if (recordsHeading) recordsHeading.textContent = `${displayName} 的演唱會紀錄`;
+    if (recordCount) recordCount.textContent = `載入 ${displayName} 的紀錄...`;
     const q = query(collection(db, "concerts"), where("uid", "==", friendUid));
     const snap = await getDocs(q);
     const arr = snap.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() })).sort((a,b)=>{
@@ -1271,25 +1294,25 @@ async function displayFriendRecords(friendUid) {
     });
     allRecords = arr; // show these in UI (search will filter this array)
     displayRecords(allRecords, friendUid);
-    recordCount.textContent = `共 ${allRecords.length} 筆紀錄 (來自 ${displayName})`;
+    if (recordCount) recordCount.textContent = `共 ${allRecords.length} 筆紀錄 (來自 ${displayName})`;
   } catch (err) {
     console.error(err);
-    recordsList.innerHTML = '<li class="error">載入好友紀錄失敗（可能沒有權限或無紀錄）</li>';
+    if (recordsList) recordsList.innerHTML = '<li class="error">載入好友紀錄失敗（可能沒有權限或無紀錄）</li>';
   }
 }
 
-backToMyRecordsBtn.addEventListener('click', backToMyRecords);
+if (backToMyRecordsBtn) backToMyRecordsBtn.addEventListener('click', backToMyRecords);
 function backToMyRecords() {
   viewingFriendUid = null;
-  backToMyRecordsBtn.style.display = 'none';
-  profileCard.style.display = 'none';
-  // restore heading
-  recordsHeading.textContent = '我的演唱會紀錄';
+  if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'none';
+  if (profileCard) profileCard.style.display = 'none';
+  // restore heading safely
+  if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
   if (currentUserId) {
     loadRecords(currentUserId);
   } else {
-    recordsList.innerHTML = '';
-    recordCount.textContent = '';
+    if (recordsList) recordsList.innerHTML = '';
+    if (recordCount) recordCount.textContent = '';
   }
 }
 
@@ -1299,195 +1322,212 @@ function backToMyRecords() {
 
 onAuthStateChanged(auth, user => {
   if(user){
-    loginDiv.style.display = "none";
-    appDiv.style.display = "block";
+    if (loginDiv) loginDiv.style.display = "none";
+    if (appDiv) appDiv.style.display = "block";
     currentUserId = user.uid;
     // ensure user profile doc exists
     setDoc(doc(db, 'users', user.uid), { email: user.email || '', createdAt: serverTimestamp() }, { merge: true }).catch(()=>{});
-    // ensure heading shows own records
-    recordsHeading.textContent = '我的演唱會紀錄';
+    // ensure heading shows own records (safe)
+    if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
     loadRecords(user.uid);
     initPasswordToggles();
     initSearch();
     loadProfile();
     loadFriends();
   } else {
-    loginDiv.style.display = "block";
-    appDiv.style.display = "none";
+    if (loginDiv) loginDiv.style.display = "block";
+    if (appDiv) appDiv.style.display = "none";
     currentUserId = null;
     viewingFriendUid = null;
-    backToMyRecordsBtn.style.display = 'none';
-    profileCard.style.display = 'none';
-    // restore default heading
-    recordsHeading.textContent = '我的演唱會紀錄';
+    if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'none';
+    if (profileCard) profileCard.style.display = 'none';
+    // restore default heading safely
+    if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
     initPasswordToggles();
   }
 });
 
-signupForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const email = signupForm["email"].value.trim();
-  const password = signupForm["password"].value;
+if (signupForm) {
+  signupForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const email = signupForm["email"].value.trim();
+    const password = signupForm["password"].value;
 
-  try {
-    const cred = await createUserWithEmailAndPassword(auth, email, password);
-    // create user profile doc
-    const uid = cred.user.uid;
-    await setDoc(doc(db, 'users', uid), {
-      email,
-      displayName: '',
-      bio: '',
-      preferredLang: 'zh',
-      allowFriendsViewAll: true,
-      createdAt: serverTimestamp()
-    });
-    alert("✅ 註冊成功!");
-    signupForm.reset();
-    document.getElementById('passwordStrength').style.display = 'none';
-  } catch(err) {
-    let errorMsg = "註冊失敗";
-    if (err.code === 'auth/email-already-in-use') {
-      errorMsg = "此 Email 已被註冊";
-    } else if (err.code === 'auth/invalid-email') {
-      errorMsg = "Email 格式不正確";
-    } else if (err.code === 'auth/weak-password') {
-      errorMsg = "密碼強度不足(至少6個字元)";
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      // create user profile doc
+      const uid = cred.user.uid;
+      await setDoc(doc(db, 'users', uid), {
+        email,
+        displayName: '',
+        bio: '',
+        preferredLang: 'zh',
+        allowFriendsViewAll: true,
+        createdAt: serverTimestamp()
+      });
+      alert("✅ 註冊成功!");
+      signupForm.reset();
+      const pwStr = document.getElementById('passwordStrength');
+      if (pwStr) pwStr.style.display = 'none';
+    } catch(err) {
+      let errorMsg = "註冊失敗";
+      if (err.code === 'auth/email-already-in-use') {
+        errorMsg = "此 Email 已被註冊";
+      } else if (err.code === 'auth/invalid-email') {
+        errorMsg = "Email 格式不正確";
+      } else if (err.code === 'auth/weak-password') {
+        errorMsg = "密碼強度不足(至少6個字元)";
+      }
+      alert("❌ " + errorMsg);
     }
-    alert("❌ " + errorMsg);
-  }
-});
+  });
+}
 
-loginForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const email = loginForm["email"].value.trim();
-  const password = loginForm["password"].value;
+if (loginForm) {
+  loginForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const email = loginForm["email"].value.trim();
+    const password = loginForm["password"].value;
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    loginForm.reset();
-  } catch(err) {
-    let errorMsg = "登入失敗";
-    if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
-      errorMsg = "Email 或密碼錯誤";
-    } else if (err.code === 'auth/invalid-email') {
-      errorMsg = "Email 格式不正確";
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      loginForm.reset();
+    } catch(err) {
+      let errorMsg = "登入失敗";
+      if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password' || err.code === 'auth/invalid-credential') {
+        errorMsg = "Email 或密碼錯誤";
+      } else if (err.code === 'auth/invalid-email') {
+        errorMsg = "Email 格式不正確";
+      }
+      alert("❌ " + errorMsg);
     }
-    alert("❌ " + errorMsg);
-  }
-});
+  });
+}
 
-logoutBtn.addEventListener("click", async () => {
-  try {
-    await signOut(auth);
-    alert("✅ 已登出");
-  } catch(err) {
-    alert("❌ 登出失敗: " + err.message);
-  }
-});
-
-forgotPasswordBtn.addEventListener("click", async () => {
-  const email = prompt("請輸入您的註冊 Email，我們將發送密碼重設連結：");
- 
-  if (!email) {
-    return;
-  }
- 
-  if (!email.includes('@')) {
-    alert("❌ 請輸入有效的 Email 地址");
-    return;
-  }
- 
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("✅ 密碼重設郵件已發送！\n\n請檢查您的信箱（包括垃圾郵件），點擊郵件中的連結來重設密碼。");
-  } catch(err) {
-    let errorMsg = "發送失敗";
-    if (err.code === 'auth/user-not-found') {
-      errorMsg = "找不到此 Email 的帳號";
-    } else if (err.code === 'auth/invalid-email') {
-      errorMsg = "Email 格式不正確";
-    } else if (err.code === 'auth/too-many-requests') {
-      errorMsg = "請求次數過多，請稍後再試";
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      alert("✅ 已登出");
+    } catch(err) {
+      alert("❌ 登出失敗: " + err.message);
     }
-    alert("❌ " + errorMsg);
-  }
-});
+  });
+}
 
-cancelBtn.addEventListener("click", () => {
-  cancelEdit();
-});
-
-recordForm.addEventListener("submit", async e => {
-  e.preventDefault();
-  const user = auth.currentUser;
-  if(!user) {
-    alert("請先登入");
-    return;
-  }
-
-  // visibility removed — all records are public
-  const data = {
-    uid: user.uid,
-    artist: recordForm["artist"].value.trim(),
-    datetime: recordForm["datetime"].value,
-    price: recordForm["price"].value.trim() || "",
-    currency: document.getElementById('currencySelect').value,
-    seat: recordForm["seat"].value.trim(),
-    venue: recordForm["venue"].value.trim(),
-    notes: recordForm["notes"].value.trim(),
-    photo: currentPhotoBase64 || "",
-    visibility: 'public',
-    updatedAt: new Date().toISOString()
-  };
-
-  if (!editingId) {
-    data.createdAt = new Date().toISOString();
-  }
-
-  try {
-    if(editingId) {
-      await updateDoc(doc(db, "concerts", editingId), data);
-      alert("✅ 更新成功!");
-      cancelEdit();
-    } else {
-      await addDoc(collection(db, "concerts"), data);
-      alert("✅ 新增成功!");
-      recordForm.reset();
-      document.getElementById('currencySelect').value = 'TWD';
-      photoInput.value = '';
-      photoPreview.innerHTML = '';
-      currentPhotoBase64 = null;
+if (forgotPasswordBtn) {
+  forgotPasswordBtn.addEventListener("click", async () => {
+    const email = prompt("請輸入您的註冊 Email，我們將發送密碼重設連結：");
+   
+    if (!email) {
+      return;
     }
-    // if user created/updated a record while viewing someone else, keep heading as is (no automatic navigation)
-    loadRecords(user.uid);
-  } catch(err) {
-    console.error("儲存錯誤:", err);
-    alert("❌ 儲存失敗: " + err.message);
-  }
-});
+   
+    if (!email.includes('@')) {
+      alert("❌ 請輸入有效的 Email 地址");
+      return;
+    }
+   
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("✅ 密碼重設郵件已發送！\n\n請檢查您的信箱（包括垃圾郵件），點擊郵件中的連結來重設密碼。");
+    } catch(err) {
+      let errorMsg = "發送失敗";
+      if (err.code === 'auth/user-not-found') {
+        errorMsg = "找不到此 Email 的帳號";
+      } else if (err.code === 'auth/invalid-email') {
+        errorMsg = "Email 格式不正確";
+      } else if (err.code === 'auth/too-many-requests') {
+        errorMsg = "請求次數過多，請稍後再試";
+      }
+      alert("❌ " + errorMsg);
+    }
+  });
+}
+
+if (cancelBtn) {
+  cancelBtn.addEventListener("click", () => {
+    cancelEdit();
+  });
+}
+
+if (recordForm) {
+  recordForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const user = auth.currentUser;
+    if(!user) {
+      alert("請先登入");
+      return;
+    }
+
+    // visibility removed — all records are public
+    const currencySelect = document.getElementById('currencySelect');
+    const data = {
+      uid: user.uid,
+      artist: recordForm["artist"].value.trim(),
+      datetime: recordForm["datetime"].value,
+      price: recordForm["price"].value.trim() || "",
+      currency: currencySelect ? currencySelect.value : 'TWD',
+      seat: recordForm["seat"].value.trim(),
+      venue: recordForm["venue"].value.trim(),
+      notes: recordForm["notes"].value.trim(),
+      photo: currentPhotoBase64 || "",
+      visibility: 'public',
+      updatedAt: new Date().toISOString()
+    };
+
+    if (!editingId) {
+      data.createdAt = new Date().toISOString();
+    }
+
+    try {
+      if(editingId) {
+        await updateDoc(doc(db, "concerts", editingId), data);
+        alert("✅ 更新成功!");
+        cancelEdit();
+      } else {
+        await addDoc(collection(db, "concerts"), data);
+        alert("✅ 新增成功!");
+        recordForm.reset();
+        if (currencySelect) currencySelect.value = 'TWD';
+        if (photoInput) photoInput.value = '';
+        if (photoPreview) photoPreview.innerHTML = '';
+        currentPhotoBase64 = null;
+      }
+      // if user created/updated a record while viewing someone else, keep heading as is (no automatic navigation)
+      loadRecords(user.uid);
+    } catch(err) {
+      console.error("儲存錯誤:", err);
+      alert("❌ 儲存失敗: " + err.message);
+    }
+  });
+}
 
 function cancelEdit() {
   editingId = null;
-  recordForm.reset();
-  document.getElementById('currencySelect').value = 'TWD';
-  photoInput.value = '';
-  photoPreview.innerHTML = '';
+  if (recordForm) {
+    try { recordForm.reset(); } catch(e){/*ignore*/ }
+  }
+  const currencySelect = document.getElementById('currencySelect');
+  if (currencySelect) currencySelect.value = 'TWD';
+  if (photoInput) photoInput.value = '';
+  if (photoPreview) photoPreview.innerHTML = '';
   currentPhotoBase64 = null;
-  formTitle.textContent = "新增演唱會紀錄";
-  submitBtn.textContent = "💾 儲存紀錄";
-  cancelBtn.style.display = "none";
-  clearBtn.style.display = "inline-block";
+  if (formTitle) formTitle.textContent = "新增演唱會紀錄";
+  if (submitBtn) submitBtn.textContent = "💾 儲存紀錄";
+  if (cancelBtn) cancelBtn.style.display = "none";
+  if (clearBtn) clearBtn.style.display = "inline-block";
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 async function loadRecords(uid) {
   // when loading own records, hide back button and reset viewingFriendUid
   viewingFriendUid = null;
-  backToMyRecordsBtn.style.display = 'none';
-  // restore heading to user's own records
-  recordsHeading.textContent = '我的演唱會紀錄';
+  if (backToMyRecordsBtn) backToMyRecordsBtn.style.display = 'none';
+  // restore heading to user's own records safely
+  if (recordsHeading) recordsHeading.textContent = '我的演唱會紀錄';
 
-  recordsList.innerHTML = '<li class="loading">載入中...</li>';
+  if (recordsList) recordsList.innerHTML = '<li class="loading">載入中...</li>';
 
   try {
     const q = query(collection(db, "concerts"), where("uid", "==", uid));
@@ -1504,10 +1544,10 @@ async function loadRecords(uid) {
 
     updateStats(allRecords);
     displayRecords(allRecords, uid);
-    recordCount.textContent = `共 ${allRecords.length} 筆紀錄`;
+    if (recordCount) recordCount.textContent = `共 ${allRecords.length} 筆紀錄`;
   } catch(err) {
     console.error("載入錯誤:", err);
-    recordsList.innerHTML = '<li class="error">❌ 載入失敗,請重新整理頁面</li>';
+    if (recordsList) recordsList.innerHTML = '<li class="error">❌ 載入失敗,請重新整理頁面</li>';
   }
 }
 
@@ -1537,6 +1577,8 @@ function updateStats(records) {
 
   const statsDiv = document.getElementById('statsDiv');
   
+  if (!statsDiv) return;
+
   if (totalCount === 0) {
     statsDiv.innerHTML = `
       <div class="stats-grid">
@@ -1604,6 +1646,7 @@ function updateStats(records) {
 }
 
 function displayRecords(records, uid) {
+  if (!recordsList) return;
   recordsList.innerHTML = "";
 
   if (records.length === 0) {
@@ -1722,27 +1765,32 @@ function displayRecords(records, uid) {
 
 function startEdit(id, data) {
   editingId = id;
-  formTitle.textContent = "編輯演唱會紀錄";
-  submitBtn.textContent = "💾 更新紀錄";
-  cancelBtn.style.display = "inline-block";
-  clearBtn.style.display = "none";
+  if (formTitle) formTitle.textContent = "編輯演唱會紀錄";
+  if (submitBtn) submitBtn.textContent = "💾 更新紀錄";
+  if (cancelBtn) cancelBtn.style.display = "inline-block";
+  if (clearBtn) clearBtn.style.display = "none";
 
-  recordForm["artist"].value = data.artist || "";
-  recordForm["datetime"].value = data.datetime || "";
-  recordForm["price"].value = data.price || "";
-  document.getElementById('currencySelect').value = data.currency || "TWD";
-  recordForm["seat"].value = data.seat || "";
-  recordForm["venue"].value = data.venue || "";
-  recordForm["notes"].value = data.notes || "";
+  if (recordForm) {
+    try {
+      recordForm["artist"].value = data.artist || "";
+      recordForm["datetime"].value = data.datetime || "";
+      recordForm["price"].value = data.price || "";
+      const currencySelect = document.getElementById('currencySelect');
+      if (currencySelect) currencySelect.value = data.currency || "TWD";
+      recordForm["seat"].value = data.seat || "";
+      recordForm["venue"].value = data.venue || "";
+      recordForm["notes"].value = data.notes || "";
+    } catch(e) { /* ignore if fields missing */ }
+  }
  
   currentPhotoBase64 = data.photo || null;
-  if (data.photo) {
+  if (photoPreview && data.photo) {
     photoPreview.innerHTML = `
       <img src="${data.photo}" alt="預覽">
       <br>
       <button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑️ 移除照片</button>
     `;
-  } else {
+  } else if (photoPreview) {
     photoPreview.innerHTML = '';
   }
 
