@@ -618,6 +618,7 @@
           <div class="record-count" id="recordCount">載入中...</div>
         </div>
         <div class="toolbar-buttons">
+          <button id="backToMyRecordsBtn" style="display:none;">回到我的紀錄</button>
           <button id="profileToggleBtn">個人檔案</button>
           <button id="logoutBtn">登出</button>
         </div>
@@ -798,11 +799,14 @@ const joinByCodeBtn = document.getElementById('joinByCodeBtn');
 const friendsList = document.getElementById('friendsList');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
 
+const backToMyRecordsBtn = document.getElementById('backToMyRecordsBtn');
+
 // 全域變數
 let editingId = null;
 let currentPhotoBase64 = null;
 let allRecords = [];
 let currentUserId = null;
+let viewingFriendUid = null;
 
 // ======================
 // 1. 密碼顯示/隱藏功能 - 完全修復版
@@ -949,8 +953,8 @@ function initSearch() {
 
 function filterRecords(searchTerm) {
   if (!searchTerm) {
-    displayRecords(allRecords, currentUserId);
-    recordCount.textContent = `共 ${allRecords.length} 筆紀錄`;
+    displayRecords(allRecords, viewingFriendUid || currentUserId);
+    recordCount.textContent = viewingFriendUid ? `共 ${allRecords.length} 筆紀錄 (好友)` : `共 ${allRecords.length} 筆紀錄`;
     return;
   }
  
@@ -964,7 +968,7 @@ function filterRecords(searchTerm) {
     );
   });
  
-  displayRecords(filtered, currentUserId);
+  displayRecords(filtered, viewingFriendUid || currentUserId);
   recordCount.textContent = `找到 ${filtered.length} 筆紀錄`;
 }
 
@@ -1038,7 +1042,7 @@ photoInput.addEventListener('change', async (e) => {
 });
 
 // ======================
-// 7. Profile / Invite / Friends functions
+// 7. Profile / Invite / Friends functions (with alias support)
 // ======================
 
 function generateInviteCode(prefix = '') {
@@ -1087,8 +1091,8 @@ joinByCodeBtn.addEventListener('click', async () => {
     // create bidirectional friend docs
     const myFriendRef = doc(db, 'users', currentUserId, 'friends', ownerUid);
     const otherFriendRef = doc(db, 'users', ownerUid, 'friends', currentUserId);
-    await setDoc(myFriendRef, { createdAt: serverTimestamp() });
-    await setDoc(otherFriendRef, { createdAt: serverTimestamp() });
+    await setDoc(myFriendRef, { createdAt: serverTimestamp() }, { merge: true });
+    await setDoc(otherFriendRef, { createdAt: serverTimestamp() }, { merge: true });
     if (singleUse) {
       await deleteDoc(codeRef);
     }
@@ -1157,22 +1161,28 @@ async function loadFriends() {
       return;
     }
     friendsList.innerHTML = '';
-    for (const f of snaps.docs) {
-      const fid = f.id;
+    for (const fSnap of snaps.docs) {
+      const fid = fSnap.id;
+      const fData = fSnap.data() || {};
       // try to fetch friend profile
       let display = fid;
       try {
-        const fSnap = await getDoc(doc(db, 'users', fid));
-        if (fSnap.exists()) {
-          const d = fSnap.data();
+        const pSnap = await getDoc(doc(db, 'users', fid));
+        if (pSnap.exists()) {
+          const d = pSnap.data();
           if (d.displayName) display = d.displayName + ` (${fid.slice(0,6)})`;
         }
-      } catch(_){}
+      } catch(_) {}
+      // prefer alias if set in current user's friend doc
+      const alias = fData.alias || null;
+      const displayText = alias ? `${alias} (${fid.slice(0,6)})` : display;
+
       const li = document.createElement('li');
       li.className = 'friend-item';
-      li.innerHTML = `<div>${display}</div>
+      li.innerHTML = `<div>${displayText}</div>
         <div class="friend-actions">
           <button data-fid="${fid}" class="view-friend-btn">看紀錄</button>
+          <button data-fid="${fid}" class="edit-alias-btn" style="background:linear-gradient(135deg,#ffd966 0%,#ffb74d 100%);">編輯暱稱</button>
           <button data-fid="${fid}" class="remove-friend-btn" style="background:linear-gradient(135deg,#ff9999 0%,#ff6666 100%);">移除</button>
         </div>`;
       friendsList.appendChild(li);
@@ -1184,6 +1194,31 @@ async function loadFriends() {
         displayFriendRecords(fid);
       });
     });
+    document.querySelectorAll('.edit-alias-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        const fid = e.currentTarget.getAttribute('data-fid');
+        const current = (await getDoc(doc(db, 'users', currentUserId, 'friends', fid))).data() || {};
+        const currentAlias = current.alias || '';
+        const alias = prompt('請輸入此好友的暱稱 (留空表示移除暱稱)：', currentAlias);
+        if (alias === null) return;
+        try {
+          if (alias.trim() === '') {
+            // remove alias
+            await updateDoc(doc(db, 'users', currentUserId, 'friends', fid), { alias: serverTimestamp ? undefined : null });
+            // using merge with null can be tricky; use setDoc to remove field by merging object without alias via server-side would be ideal.
+            // Simpler: set alias to empty string to indicate no alias
+            await setDoc(doc(db, 'users', currentUserId, 'friends', fid), { alias: '' }, { merge: true });
+          } else {
+            await setDoc(doc(db, 'users', currentUserId, 'friends', fid), { alias: alias.trim() }, { merge: true });
+          }
+          alert('✅ 暱稱已更新');
+          loadFriends();
+        } catch (err) {
+          console.error(err);
+          alert('❌ 更新暱稱失敗: ' + err.message);
+        }
+      });
+    });
     document.querySelectorAll('.remove-friend-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         const fid = e.currentTarget.getAttribute('data-fid');
@@ -1193,6 +1228,10 @@ async function loadFriends() {
           await deleteDoc(doc(db, 'users', fid, 'friends', currentUserId));
           alert('✅ 已移除好友');
           loadFriends();
+          // if currently viewing this friend, go back to my records
+          if (viewingFriendUid === fid) {
+            backToMyRecords();
+          }
         } catch (err) {
           console.error(err);
           alert('❌ 移除好友失敗: ' + err.message);
@@ -1207,10 +1246,24 @@ async function loadFriends() {
 
 async function displayFriendRecords(friendUid) {
   recordsList.innerHTML = '<li class="loading">載入中...</li>';
+  viewingFriendUid = friendUid;
+  backToMyRecordsBtn.style.display = 'inline-block';
   try {
+    // fetch friend profile and my alias for them
     const uSnap = await getDoc(doc(db, 'users', friendUid));
     const friendName = uSnap.exists() && uSnap.data().displayName ? uSnap.data().displayName : friendUid;
-    recordCount.textContent = `載入 ${friendName} 的紀錄...`;
+    // check alias in my friend doc
+    let displayName = friendName;
+    try {
+      const myFriendSnap = await getDoc(doc(db, 'users', currentUserId, 'friends', friendUid));
+      if (myFriendSnap.exists()) {
+        const myF = myFriendSnap.data();
+        if (myF.alias && myF.alias.trim().length > 0) {
+          displayName = myF.alias;
+        }
+      }
+    } catch(_) {}
+    recordCount.textContent = `載入 ${displayName} 的紀錄...`;
     const q = query(collection(db, "concerts"), where("uid", "==", friendUid));
     const snap = await getDocs(q);
     const arr = snap.docs.map(docSnap => ({ id: docSnap.id, data: docSnap.data() })).sort((a,b)=>{
@@ -1220,10 +1273,23 @@ async function displayFriendRecords(friendUid) {
     });
     allRecords = arr; // show these in UI (search will filter this array)
     displayRecords(allRecords, friendUid);
-    recordCount.textContent = `共 ${allRecords.length} 筆紀錄 (來自 ${friendName})`;
+    recordCount.textContent = `共 ${allRecords.length} 筆紀錄 (來自 ${displayName})`;
   } catch (err) {
     console.error(err);
     recordsList.innerHTML = '<li class="error">載入好友紀錄失敗（可能沒有權限或無紀錄）</li>';
+  }
+}
+
+backToMyRecordsBtn.addEventListener('click', backToMyRecords);
+function backToMyRecords() {
+  viewingFriendUid = null;
+  backToMyRecordsBtn.style.display = 'none';
+  if (currentUserId) {
+    loadRecords(currentUserId);
+  } else {
+    // fallback: hide friend records
+    recordsList.innerHTML = '';
+    recordCount.textContent = '';
   }
 }
 
@@ -1247,6 +1313,8 @@ onAuthStateChanged(auth, user => {
     loginDiv.style.display = "block";
     appDiv.style.display = "none";
     currentUserId = null;
+    viewingFriendUid = null;
+    backToMyRecordsBtn.style.display = 'none';
     initPasswordToggles();
   }
 });
@@ -1387,6 +1455,13 @@ recordForm.addEventListener("submit", async e => {
       photoPreview.innerHTML = '';
       currentPhotoBase64 = null;
     }
+    // if user just created/updated and was viewing a friend's page, we should return to own records
+    if (viewingFriendUid && user.uid !== viewingFriendUid) {
+      // remain viewing friend (no change) — but if owner updated, reload their own records instead
+      if (user.uid === currentUserId) {
+        // do nothing special
+      }
+    }
     loadRecords(user.uid);
   } catch(err) {
     console.error("儲存錯誤:", err);
@@ -1410,6 +1485,10 @@ function cancelEdit() {
 }
 
 async function loadRecords(uid) {
+  // when loading own records, hide back button and reset viewingFriendUid
+  viewingFriendUid = null;
+  backToMyRecordsBtn.style.display = 'none';
+
   recordsList.innerHTML = '<li class="loading">載入中...</li>';
 
   try {
@@ -1626,7 +1705,12 @@ function displayRecords(records, uid) {
           try {
             await deleteDoc(doc(db, "concerts", r.id));
             alert("✅ 刪除成功");
-            loadRecords(currentUserId);
+            // If viewing friend's records, reload friend's records; otherwise reload own
+            if (viewingFriendUid) {
+              displayFriendRecords(viewingFriendUid);
+            } else {
+              loadRecords(currentUserId);
+            }
           } catch(err) {
             alert("❌ 刪除失敗: " + err.message);
           }
