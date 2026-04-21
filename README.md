@@ -243,9 +243,10 @@
     }
     .record-item:hover { background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.18); transform:translateX(4px); }
     .record-item:hover::before { opacity:1; }
-
-    /* friend mode: purple accent */
     .record-item.friend-record::before { background:linear-gradient(180deg,#7b2fff,#3388ff); }
+
+    /* NEW: highlight when has reactions */
+    .record-item.has-reactions { border-color:rgba(232,80,122,0.25); }
 
     .record-inner { display:flex; flex-direction:column; gap:14px; }
     body.desktop-mode .record-inner.has-photo {
@@ -282,6 +283,24 @@
     .reaction-btn.reacted { background:rgba(232,80,122,0.2); border-color:var(--p); color:var(--p2); }
     .reaction-btn .r-count { font-family:'Space Mono',monospace; font-size:11px; }
     .reaction-label { font-size:11px; color:var(--text3); margin-right:2px; }
+
+    /* NEW: received reaction display (read-only own records) */
+    .reaction-received {
+      display:flex; align-items:center; gap:6px; margin-top:12px; flex-wrap:wrap;
+      padding:10px 14px;
+      background:rgba(232,80,122,0.08);
+      border:1px solid rgba(232,80,122,0.2);
+      border-radius:var(--radius-sm);
+    }
+    .reaction-received-label { font-size:11px; color:var(--p2); letter-spacing:1px; margin-right:4px; }
+    .reaction-received-pill {
+      background:rgba(232,80,122,0.18); border:1px solid rgba(232,80,122,0.35);
+      color:var(--p2); padding:4px 12px; border-radius:20px;
+      font-size:13px; display:flex; align-items:center; gap:5px;
+      animation:popIn .3s ease both;
+    }
+    .reaction-received-pill .r-count { font-family:'Space Mono',monospace; font-size:11px; color:white; font-weight:500; }
+    @keyframes popIn { from{transform:scale(0.7);opacity:0} to{transform:scale(1);opacity:1} }
 
     /* ── STARS ── */
     .star-rating { display:flex; gap:4px; margin-top:6px; }
@@ -363,6 +382,33 @@
     .cal-event-item:last-child { border-bottom:none; }
     .cal-event-artist { color:white; font-weight:500; margin-bottom:2px; }
 
+    /* ── WISH LIST ── */
+    #wishlistCard { display:none; }
+    .wishlist-item {
+      background:var(--glass); border:1px solid var(--glass-border); border-radius:var(--radius-sm);
+      padding:14px 16px; margin:8px 0; display:flex; justify-content:space-between;
+      align-items:center; gap:10px; flex-wrap:wrap; font-size:13px; transition:all .2s;
+    }
+    .wishlist-item:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.2); }
+    .wishlist-item-info { display:flex; flex-direction:column; gap:3px; flex:1; min-width:0; }
+    .wishlist-artist { color:white; font-weight:500; font-size:14px; }
+    .wishlist-note { color:var(--text3); font-size:12px; }
+    .wishlist-priority { padding:3px 10px; border-radius:12px; font-size:11px; letter-spacing:.5px; }
+    .priority-high { background:rgba(232,80,122,0.2); border:1px solid rgba(232,80,122,0.4); color:var(--p2); }
+    .priority-mid  { background:rgba(255,170,0,0.15); border:1px solid rgba(255,170,0,0.3); color:#ffcc66; }
+    .priority-low  { background:rgba(100,100,100,0.15); border:1px solid rgba(100,100,100,0.3); color:var(--text3); }
+
+    /* ── STREAK / NOTIFICATION BADGE ── */
+    .streak-banner {
+      background:linear-gradient(135deg,rgba(255,180,0,0.15),rgba(255,100,0,0.1));
+      border:1px solid rgba(255,170,0,0.3);
+      border-radius:var(--radius-sm); padding:12px 18px;
+      display:flex; align-items:center; gap:12px; margin-bottom:12px;
+      font-size:13px; color:#ffcc66;
+    }
+    .streak-icon { font-size:22px; }
+    .streak-text strong { color:white; }
+
     /* ── MISC ── */
     .loading { text-align:center; color:var(--text3); font-style:italic; font-size:13px; padding:20px; letter-spacing:1px; }
     .loading::after { content:'...'; animation:dots 1.4s infinite; }
@@ -423,6 +469,16 @@
     .sort-btn { background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); color:var(--text3); padding:5px 14px; border-radius:20px; font-size:11px; letter-spacing:.5px; cursor:pointer; transition:all .2s; }
     .sort-btn.active { background:rgba(232,80,122,0.15); border-color:var(--p); color:var(--p2); }
     .sort-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.2); box-shadow:none; transform:none; }
+
+    /* ── PHOTO LIGHTBOX ── */
+    #lightbox {
+      display:none; position:fixed; inset:0; z-index:99998;
+      background:rgba(0,0,0,0.92); backdrop-filter:blur(12px);
+      align-items:center; justify-content:center; padding:20px;
+    }
+    #lightbox.open { display:flex; }
+    #lightbox img { max-width:100%; max-height:90vh; border-radius:var(--radius-sm); object-fit:contain; }
+    #lightboxClose { position:absolute; top:20px; right:24px; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); color:white; padding:8px 18px; border-radius:30px; font-size:13px; }
   </style>
 </head>
 <body>
@@ -430,6 +486,12 @@
 <div class="orb orb2"></div>
 <div class="orb orb3"></div>
 <div id="toast"></div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lightboxClose" onclick="closeLightbox()">✕ 關閉</button>
+  <img id="lightboxImg" src="" alt="照片">
+</div>
 
 <button class="mode-toggle" onclick="toggleMode()">💻 電腦模式</button>
 
@@ -499,13 +561,14 @@
         <div class="record-count" id="recordCount">載入中…</div>
         <div class="toolbar-buttons">
           <button id="backToMyRecordsBtn" class="btn-ghost" style="display:none">← 我的紀錄</button>
+          <button id="wishlistToggleBtn" class="btn-ghost">🎯 願望清單</button>
           <button id="profileToggleBtn" class="btn-ghost">個人檔案</button>
           <button id="logoutBtn">登出</button>
         </div>
       </div>
     </div>
 
-    <!-- ── FRIEND BANNER (shows when viewing friend) ── -->
+    <!-- FRIEND BANNER -->
     <div id="friendBanner">
       <div class="friend-banner-inner">
         <img class="friend-avatar-lg" id="friendBannerAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23281035'/%3E%3Ccircle cx='40' cy='30' r='14' fill='%237b2fff'/%3E%3Cellipse cx='40' cy='70' rx='22' ry='16' fill='%237b2fff'/%3E%3C/svg%3E" alt="friend">
@@ -521,7 +584,7 @@
       </div>
     </div>
 
-    <!-- ── COMPARE PANEL ── -->
+    <!-- COMPARE PANEL -->
     <div id="comparePanel">
       <div class="section-label">Compare</div>
       <h2>📊 追星對比</h2>
@@ -562,6 +625,25 @@
       <hr class="divider">
       <div class="section-label" style="margin-bottom:8px">Friends</div>
       <ul id="friendsList"></ul>
+    </div>
+
+    <!-- WISHLIST CARD -->
+    <div id="wishlistCard" class="card">
+      <div class="section-label">Bucket List</div>
+      <h2>🎯 願望清單</h2>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">記錄你想看的演唱會，實現後可以轉換為正式紀錄！</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
+        <input id="wishArtistInput" placeholder="藝人／活動名稱" style="flex:1;min-width:0;margin-bottom:0">
+        <select id="wishPrioritySelect" style="width:auto;min-width:100px;margin-bottom:0">
+          <option value="high">🔥 超想看</option>
+          <option value="mid">⭐ 想看</option>
+          <option value="low">👀 有機會</option>
+        </select>
+      </div>
+      <input id="wishNoteInput" placeholder="備註（例：期待的場地、城市）" style="margin-bottom:8px">
+      <button id="addWishBtn" style="width:100%">✚ 加入願望清單</button>
+      <hr class="divider">
+      <ul id="wishlistItems" style="list-style:none"></ul>
     </div>
 
     <!-- 2-column layout -->
@@ -655,7 +737,6 @@
               <span class="search-icon">🔍</span>
             </div>
           </div>
-          <!-- Sort Bar -->
           <div class="sort-bar" id="sortBar">
             <span class="sort-label">排序：</span>
             <button class="sort-btn active" data-sort="date-desc">最新</button>
@@ -744,6 +825,8 @@ const recordsTitle = document.getElementById('recordsTitle');
 const archiveLabel = document.getElementById('archiveLabel');
 const statsTitle = document.getElementById('statsTitle');
 const bannerBackBtn = document.getElementById('bannerBackBtn');
+const wishlistToggleBtn = document.getElementById('wishlistToggleBtn');
+const wishlistCard = document.getElementById('wishlistCard');
 
 let editingId = null;
 let currentPhotoBase64 = null;
@@ -764,6 +847,18 @@ function showToast(msg, duration = 2500) {
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), duration);
 }
+
+// ── LIGHTBOX ──
+window.openLightbox = function(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+};
+window.closeLightbox = function() {
+  document.getElementById('lightbox').classList.remove('open');
+};
+document.getElementById('lightbox').addEventListener('click', e => {
+  if (e.target === document.getElementById('lightbox')) closeLightbox();
+});
 
 // ── MODULES ──
 const MODULES = [
@@ -965,12 +1060,38 @@ function countBy(arr, fn) {
   return map;
 }
 
+// ── STREAK DETECTION ──
+function checkStreak(records) {
+  if (records.length < 2) return null;
+  const sorted = [...records]
+    .filter(r => r.data.datetime)
+    .sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
+  const years = {};
+  sorted.forEach(r => {
+    const y = new Date(r.data.datetime).getFullYear();
+    years[y] = (years[y]||0) + 1;
+  });
+  const yearList = Object.keys(years).map(Number).sort((a,b) => b-a);
+  let streak = 1;
+  for (let i = 1; i < yearList.length; i++) {
+    if (yearList[i-1] - yearList[i] === 1) streak++;
+    else break;
+  }
+  return streak >= 2 ? streak : null;
+}
+
 // ── STATS ──
 function updateStats(records) {
   const div = document.getElementById('statsDiv');
   if (records.length === 0) { div.innerHTML = '<div class="empty-state">✦ 還沒有任何紀錄 ✦</div>'; return; }
   const active = getActiveModules();
   let html = '';
+
+  // Streak banner
+  const streak = checkStreak(records);
+  if (streak) {
+    html += `<div class="streak-banner"><span class="streak-icon">🔥</span><span>連續 <strong>${streak} 年</strong>都有去演唱會！繼續保持追星熱情 ✦</span></div>`;
+  }
 
   const curMap = {};
   records.forEach(r => {
@@ -1241,6 +1362,78 @@ window.calShowDay = function(day) {
   </div>`;
 };
 
+// ── WISHLIST ──
+wishlistToggleBtn.addEventListener('click', () => {
+  const open = wishlistCard.style.display !== 'none';
+  wishlistCard.style.display = open ? 'none' : 'block';
+  if (!open) renderWishlist();
+});
+
+document.getElementById('addWishBtn').addEventListener('click', () => {
+  const artist = document.getElementById('wishArtistInput').value.trim();
+  if (!artist) return showToast('請輸入藝人名稱');
+  const priority = document.getElementById('wishPrioritySelect').value;
+  const note = document.getElementById('wishNoteInput').value.trim();
+  const wishlist = getWishlist();
+  wishlist.unshift({ id: Date.now(), artist, priority, note, createdAt: new Date().toISOString() });
+  saveWishlist(wishlist);
+  document.getElementById('wishArtistInput').value = '';
+  document.getElementById('wishNoteInput').value = '';
+  renderWishlist();
+  showToast('✓ 已加入願望清單！');
+});
+
+function getWishlist() {
+  try { return JSON.parse(localStorage.getItem('wishlist_' + currentUserId) || '[]'); } catch(e) { return []; }
+}
+function saveWishlist(list) {
+  localStorage.setItem('wishlist_' + currentUserId, JSON.stringify(list));
+}
+function renderWishlist() {
+  const ul = document.getElementById('wishlistItems');
+  const list = getWishlist();
+  if (list.length === 0) { ul.innerHTML = '<li class="empty-state" style="padding:20px">✦ 還沒有願望，加入你想看的演唱會吧 ✦</li>'; return; }
+  const labelMap = { high:'🔥 超想看', mid:'⭐ 想看', low:'👀 有機會' };
+  const clsMap = { high:'priority-high', mid:'priority-mid', low:'priority-low' };
+  ul.innerHTML = list.map(item => `
+    <li class="wishlist-item" data-wid="${item.id}">
+      <div class="wishlist-item-info">
+        <div class="wishlist-artist">${item.artist}</div>
+        ${item.note ? `<div class="wishlist-note">${item.note}</div>` : ''}
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <span class="wishlist-priority ${clsMap[item.priority]}">${labelMap[item.priority]}</span>
+        <button class="wish-convert-btn btn-ghost btn-sm" data-wid="${item.id}" data-artist="${item.artist}">✚ 轉為紀錄</button>
+        <button class="wish-del-btn btn-danger btn-sm" data-wid="${item.id}">✕</button>
+      </div>
+    </li>`).join('');
+
+  ul.querySelectorAll('.wish-del-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = parseInt(btn.getAttribute('data-wid'));
+      const updated = getWishlist().filter(w => w.id !== id);
+      saveWishlist(updated);
+      renderWishlist();
+      showToast('已移除');
+    });
+  });
+  ul.querySelectorAll('.wish-convert-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const artist = btn.getAttribute('data-artist');
+      const wid = parseInt(btn.getAttribute('data-wid'));
+      // Pre-fill form
+      recordForm.artist.value = artist;
+      wishlistCard.style.display = 'none';
+      document.getElementById('formCard').scrollIntoView({ behavior:'smooth' });
+      showToast(`✓ 已帶入「${artist}」，填寫其他資料後儲存！`);
+      // Remove from wishlist after convert
+      const updated = getWishlist().filter(w => w.id !== wid);
+      saveWishlist(updated);
+      renderWishlist();
+    });
+  });
+}
+
 // ── LOAD / DISPLAY RECORDS ──
 async function loadRecords(uid) {
   viewingFriendUid = null;
@@ -1248,13 +1441,10 @@ async function loadRecords(uid) {
   backToMyRecordsBtn.style.display = 'none';
   friendBanner.style.display = 'none';
   comparePanel.style.display = 'none';
-
-  // Reset title to "我的演唱會紀錄"
   recordsTitle.textContent = '我的演唱會紀錄';
   archiveLabel.textContent = 'Archive';
   statsTitle.textContent = '📊 追星統計';
   document.getElementById('formCard').style.display = '';
-
   recordsList.innerHTML = '<li class="loading">載入中</li>';
   const q = query(collection(db,'concerts'), where('uid','==',uid));
   const snap = await getDocs(q);
@@ -1279,7 +1469,17 @@ function displayRecords(records, ownerId) {
   records.forEach((r, i) => {
     const d = r.data;
     const li = document.createElement('li');
-    li.className = 'record-item' + (isFriendView ? ' friend-record' : '');
+
+    const reactions = d.reactions || {};
+    const fire    = reactions.fire    || 0;
+    const heart   = reactions.heart   || 0;
+    const sparkle = reactions.sparkle || 0;
+    const crown   = reactions.crown   || 0;
+    const totalReactions = fire + heart + sparkle + crown;
+
+    li.className = 'record-item'
+      + (isFriendView ? ' friend-record' : '')
+      + (!isFriendView && totalReactions > 0 ? ' has-reactions' : '');
     li.style.animationDelay = `${i*0.04}s`;
 
     const date = new Date(d.datetime);
@@ -1297,12 +1497,11 @@ function displayRecords(records, ownerId) {
     const photoHTML = hasPhoto
       ? `<div class="record-photo-side">
            <div class="record-photo-container">
-             <img src="${d.photo}" onclick="window.open(this.src)" alt="演唱會照片" loading="lazy">
+             <img src="${d.photo}" onclick="openLightbox('${d.photo.replace(/'/g,"\\'")}');" alt="演唱會照片" loading="lazy">
            </div>
          </div>`
       : '';
 
-    // Edit/Delete only for own records
     const editDelHTML = (!isFriendView && currentUserId && d.uid === currentUserId)
       ? `<div class="button-group">
            <button class="edit-btn">✏️ 編輯</button>
@@ -1310,16 +1509,27 @@ function displayRecords(records, ownerId) {
          </div>`
       : '';
 
-    // Reaction bar for friend records
-    const reactionHTML = isFriendView
-      ? `<div class="reaction-bar">
-           <span class="reaction-label">送出：</span>
-           <button class="reaction-btn" data-emoji="🔥" data-rid="${r.id}"><span>🔥</span><span class="r-count">${d.reactions?.fire||0}</span></button>
-           <button class="reaction-btn" data-emoji="💜" data-rid="${r.id}"><span>💜</span><span class="r-count">${d.reactions?.heart||0}</span></button>
-           <button class="reaction-btn" data-emoji="✨" data-rid="${r.id}"><span>✨</span><span class="r-count">${d.reactions?.sparkle||0}</span></button>
-           <button class="reaction-btn" data-emoji="👑" data-rid="${r.id}"><span>👑</span><span class="r-count">${d.reactions?.crown||0}</span></button>
-         </div>`
-      : '';
+    // ── REACTION SECTION ──
+    let reactionHTML = '';
+    if (isFriendView) {
+      // Friend's records: can send reactions
+      reactionHTML = `<div class="reaction-bar">
+        <span class="reaction-label">送出：</span>
+        <button class="reaction-btn" data-emoji="🔥" data-rid="${r.id}"><span>🔥</span><span class="r-count">${fire}</span></button>
+        <button class="reaction-btn" data-emoji="💜" data-rid="${r.id}"><span>💜</span><span class="r-count">${heart}</span></button>
+        <button class="reaction-btn" data-emoji="✨" data-rid="${r.id}"><span>✨</span><span class="r-count">${sparkle}</span></button>
+        <button class="reaction-btn" data-emoji="👑" data-rid="${r.id}"><span>👑</span><span class="r-count">${crown}</span></button>
+      </div>`;
+    } else if (totalReactions > 0) {
+      // Own records: show received reactions as read-only display
+      reactionHTML = `<div class="reaction-received">
+        <span class="reaction-received-label">✦ 收到</span>
+        ${fire    > 0 ? `<span class="reaction-received-pill">🔥 <span class="r-count">${fire}</span></span>` : ''}
+        ${heart   > 0 ? `<span class="reaction-received-pill">💜 <span class="r-count">${heart}</span></span>` : ''}
+        ${sparkle > 0 ? `<span class="reaction-received-pill">✨ <span class="r-count">${sparkle}</span></span>` : ''}
+        ${crown   > 0 ? `<span class="reaction-received-pill">👑 <span class="r-count">${crown}</span></span>` : ''}
+      </div>`;
+    }
 
     li.innerHTML = `
       <div class="record-inner ${hasPhoto ? 'has-photo' : ''}">
@@ -1340,7 +1550,6 @@ function displayRecords(records, ownerId) {
         </div>
       </div>`;
 
-    // Own record buttons
     if (!isFriendView && currentUserId && d.uid === currentUserId) {
       li.querySelector('.edit-btn')?.addEventListener('click', () => startEdit(r.id, d));
       li.querySelector('.del-btn')?.addEventListener('click', async () => {
@@ -1352,7 +1561,6 @@ function displayRecords(records, ownerId) {
       });
     }
 
-    // Reaction buttons
     if (isFriendView) {
       li.querySelectorAll('.reaction-btn').forEach(btn => {
         btn.addEventListener('click', async () => {
@@ -1362,11 +1570,7 @@ function displayRecords(records, ownerId) {
           const emojiMap = { '🔥':'fire', '💜':'heart', '✨':'sparkle', '👑':'crown' };
           const key = emojiMap[emoji] || emoji;
           const sessionKey = `reacted_${rid}_${key}`;
-
-          if (sessionStorage.getItem(sessionKey)) {
-            showToast('已經送出過囉！'); return;
-          }
-
+          if (sessionStorage.getItem(sessionKey)) { showToast('已經送出過囉！'); return; }
           try {
             const docRef = doc(db,'concerts',rid);
             const snap = await getDoc(docRef);
@@ -1558,24 +1762,15 @@ async function displayFriendRecords(fid, friendName) {
   backToMyRecordsBtn.style.display = 'inline-block';
   comparePanel.style.display = 'none';
   toggleCompareBtn.textContent = '📊 對比統計';
-
-  // Update titles to show friend's name
   recordsTitle.textContent = `${viewingFriendName} 的演唱會紀錄`;
   archiveLabel.textContent = "Friend's Archive";
   statsTitle.textContent = `📊 ${viewingFriendName} 的統計`;
-
-  // Hide add form when viewing friend
   document.getElementById('formCard').style.display = 'none';
-
-  // Show friend banner
   friendBanner.style.display = 'block';
   friendBannerName.textContent = viewingFriendName;
-
   const q = query(collection(db,'concerts'), where('uid','==',fid));
   const snap = await getDocs(q);
   allRecords = snap.docs.map(d => ({ id:d.id, data:d.data() })).sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
-
-  // Build quick stats for banner
   const artists = Object.keys(countBy(allRecords, r => r.data.artist)).length;
   const rated = allRecords.filter(r => r.data.rating > 0);
   const avgRating = rated.length ? (rated.reduce((s,r) => s+r.data.rating,0)/rated.length).toFixed(1) : '—';
@@ -1583,13 +1778,10 @@ async function displayFriendRecords(fid, friendName) {
     <div class="friend-stat-pill"><strong>${allRecords.length}</strong> 場次</div>
     <div class="friend-stat-pill"><strong>${artists}</strong> 位藝人</div>
     <div class="friend-stat-pill">⭐ <strong>${avgRating}</strong></div>`;
-
   displayRecords(sortRecords(allRecords), fid);
   updateStats(allRecords);
   renderCalendar();
   recordCount.textContent = `${allRecords.length} 筆（${viewingFriendName}）`;
-
-  // Scroll to banner
   friendBanner.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 
