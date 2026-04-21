@@ -35,21 +35,16 @@
       position:relative;
     }
 
-    /* ── Orbs ── */
     .orb { position:fixed; border-radius:50%; filter:blur(80px); opacity:0.22; pointer-events:none; animation:drift 18s ease-in-out infinite alternate; z-index:0; }
     .orb1 { width:500px;height:500px;background:radial-gradient(circle,var(--p),transparent);top:-100px;left:-100px;animation-duration:20s; }
     .orb2 { width:400px;height:400px;background:radial-gradient(circle,#7b2fff,transparent);bottom:-80px;right:-80px;animation-duration:25s;animation-direction:alternate-reverse; }
     .orb3 { width:300px;height:300px;background:radial-gradient(circle,#ff6b35,transparent);top:40%;left:60%;animation-duration:15s; }
     @keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,30px) scale(1.1)} }
 
-    /* ── Container ── */
     .container { max-width:600px; margin:0 auto; position:relative; z-index:1; transition:max-width .3s; }
-
-    /* ── Desktop Mode ── */
     body.desktop-mode { padding:32px 32px 80px; }
     body.desktop-mode .container { max-width:1320px; }
 
-    /* ── Mode Toggle ── */
     .mode-toggle {
       position:fixed; top:18px; right:18px; z-index:9999;
       background:rgba(10,5,16,0.85); backdrop-filter:blur(16px);
@@ -60,7 +55,6 @@
     }
     .mode-toggle:hover { color:var(--text); border-color:var(--p); background:rgba(232,80,122,0.12); }
 
-    /* ── Header ── */
     .site-header { text-align:center; padding:20px 0 8px; margin-bottom:6px; }
     .site-title {
       font-family:'Cormorant Garamond',serif; font-size:3.4em; font-weight:300;
@@ -76,7 +70,6 @@
     .site-subtitle { font-family:'Cormorant Garamond',serif; font-size:1em; font-weight:300; letter-spacing:4px; color:var(--text3); font-style:italic; margin-top:4px; }
     .title-line { width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--p),transparent); margin:16px auto; }
 
-    /* ── Theme Palette ── */
     .theme-palette {
       display:flex; justify-content:center; gap:14px; margin:0 auto 28px;
       flex-wrap:wrap; background:var(--glass); backdrop-filter:blur(20px);
@@ -92,7 +85,6 @@
     .color-red   { background:linear-gradient(135deg,#cc2200,#ff6644); }
     .color-pink  { background:linear-gradient(135deg,#cc0066,#ff44aa); }
 
-    /* ── Card ── */
     .card {
       background:var(--glass); backdrop-filter:blur(24px);
       border:1px solid var(--glass-border); border-radius:var(--radius);
@@ -102,9 +94,6 @@
     .card:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.16); }
     body.desktop-mode .card { padding:36px; }
 
-    /* ── Desktop App Layout ── */
-    .app-toolbar { margin-bottom:16px; }
-
     .app-layout { display:block; }
     body.desktop-mode .app-layout {
       display:grid;
@@ -112,23 +101,18 @@
       gap:20px;
       align-items:start;
     }
-    .app-left { }
     body.desktop-mode .app-left {
-      position:sticky;
-      top:32px;
+      position:sticky; top:32px;
       max-height:calc(100vh - 64px);
-      overflow-y:auto;
-      overflow-x:hidden;
+      overflow-y:auto; overflow-x:hidden;
       scrollbar-width:thin;
       scrollbar-color:rgba(232,80,122,0.3) transparent;
       border-radius:var(--radius);
     }
     body.desktop-mode .app-left::-webkit-scrollbar { width:5px; }
     body.desktop-mode .app-left::-webkit-scrollbar-thumb { background:rgba(232,80,122,0.3); border-radius:3px; }
-
     .app-right { min-width:0; }
 
-    /* ── Typography ── */
     .section-label { font-family:'Cormorant Garamond',serif; font-size:.7em; letter-spacing:4px; text-transform:uppercase; color:var(--p2); font-weight:400; margin-bottom:4px; }
     h2 {
       font-family:'Cormorant Garamond',serif; color:white !important; font-size:1.6em;
@@ -138,13 +122,11 @@
     h2::after { content:''; display:block; width:40px; height:2px; background:linear-gradient(90deg,var(--p),transparent); margin-top:8px; transition:width .3s; }
     .card:hover h2::after { width:70px; }
 
-    /* ── Auth Forms ── */
     .auth-forms { display:grid; grid-template-columns:1fr; gap:24px; }
     @media(min-width:900px) {
       body.desktop-mode .auth-forms { grid-template-columns:1fr 1fr; gap:32px; }
     }
 
-    /* ── Inputs ── */
     input[type=text], input[type=email], input[type=password],
     input[type=datetime-local], textarea, select {
       width:100%; background:rgba(255,255,255,0.05);
@@ -181,7 +163,6 @@
     .password-hint.valid   { color:#00cc88; }
     .password-hint.invalid { color:#ff6666; }
 
-    /* ── Buttons ── */
     button {
       background:linear-gradient(135deg,var(--p),#c0306a);
       color:white; border:none; padding:12px 28px; border-radius:40px;
@@ -202,14 +183,12 @@
     .btn-sm { padding:8px 18px; font-size:12px; }
     .form-buttons { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:8px; }
 
-    /* ── Toolbar ── */
     .toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
     .toolbar-buttons { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
     .record-count { font-family:'Space Mono',monospace; font-size:11px; color:var(--text3); letter-spacing:1px; }
     #logoutBtn { background:rgba(255,255,255,0.08); color:var(--text2); border:1px solid var(--glass-border); }
     #logoutBtn:hover { background:rgba(204,60,60,0.2); border-color:#cc3c3c; color:white; }
 
-    /* ── Photo Upload ── */
     .photo-upload label { font-size:13px; color:var(--p2); letter-spacing:1px; text-transform:uppercase; font-weight:500; display:block; margin-bottom:8px; }
     input[type=file] { background:rgba(255,255,255,0.04); border:1px dashed rgba(255,255,255,0.18); border-radius:var(--radius-sm); padding:10px; font-size:13px; color:var(--text2); cursor:pointer; width:100%; }
     .image-size-warning { font-size:11px; color:var(--text3); margin-top:4px; letter-spacing:.5px; }
@@ -217,6 +196,38 @@
     .photo-preview img { border-radius:var(--radius-sm); max-width:100%; }
     .remove-photo-btn { margin-top:8px; font-size:12px; background:rgba(255,80,80,0.2); border:1px solid rgba(255,80,80,0.3); color:#ff8080; padding:6px 14px; }
     .remove-photo-btn:hover { background:rgba(255,80,80,0.35); }
+
+    /* ── FRIEND BANNER ── */
+    #friendBanner {
+      display:none;
+      background:linear-gradient(135deg,rgba(123,47,255,0.18),rgba(232,80,122,0.12));
+      border:1px solid rgba(123,47,255,0.35);
+      border-radius:var(--radius);
+      padding:20px 24px;
+      margin-bottom:16px;
+      animation:fadeUp .35s ease both;
+      position:relative;
+      overflow:hidden;
+    }
+    #friendBanner::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,#7b2fff,var(--p),#7b2fff);
+    }
+    .friend-banner-inner { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
+    .friend-avatar-lg {
+      width:56px; height:56px; border-radius:50%; object-fit:cover;
+      border:2px solid rgba(123,47,255,0.5); flex-shrink:0;
+    }
+    .friend-banner-info { flex:1; min-width:0; }
+    .friend-banner-name { font-family:'Cormorant Garamond',serif; font-size:1.5em; font-weight:400; color:white; letter-spacing:.5px; }
+    .friend-banner-sub { font-size:12px; color:var(--text3); letter-spacing:1.5px; margin-top:2px; }
+    .friend-banner-stats { display:flex; gap:20px; margin-top:10px; flex-wrap:wrap; }
+    .friend-stat-pill {
+      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+      border-radius:30px; padding:5px 14px; font-size:12px; color:var(--text2);
+    }
+    .friend-stat-pill strong { color:white; font-weight:500; }
+    .friend-banner-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 
     /* ── RECORD ITEM ── */
     .record-item {
@@ -233,95 +244,62 @@
     .record-item:hover { background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.18); transform:translateX(4px); }
     .record-item:hover::before { opacity:1; }
 
-    /* ── Record Inner Layout ── */
-    .record-inner {
-      display:flex;
-      flex-direction:column;
-      gap:14px;
-    }
+    /* friend mode: purple accent */
+    .record-item.friend-record::before { background:linear-gradient(180deg,#7b2fff,#3388ff); }
 
-    /* Desktop: photo left, content right */
+    .record-inner { display:flex; flex-direction:column; gap:14px; }
     body.desktop-mode .record-inner.has-photo {
-      flex-direction:row;
-      align-items:flex-start;
-      gap:24px;
+      flex-direction:row; align-items:flex-start; gap:24px;
     }
-    body.desktop-mode .record-inner.has-photo .record-photo-side {
-      flex:0 0 240px;
-      width:240px;
-    }
-    body.desktop-mode .record-inner.has-photo .record-text-side {
-      flex:1;
-      min-width:0; /* CRITICAL: prevent text overflow */
-    }
+    body.desktop-mode .record-inner.has-photo .record-photo-side { flex:0 0 240px; width:240px; }
+    body.desktop-mode .record-inner.has-photo .record-text-side { flex:1; min-width:0; }
 
-    /* Photo container */
-    .record-photo-side {
-      width:100%;
-    }
-    .record-photo-container {
-      width:100%; overflow:hidden; border-radius:var(--radius-sm);
-      background:rgba(0,0,0,0.2);
-    }
-    .record-photo-container img {
-      width:100%; height:auto; max-height:300px;
-      object-fit:cover; cursor:pointer;
-      transition:transform .3s; display:block;
-      border-radius:var(--radius-sm);
-    }
+    .record-photo-side { width:100%; }
+    .record-photo-container { width:100%; overflow:hidden; border-radius:var(--radius-sm); background:rgba(0,0,0,0.2); }
+    .record-photo-container img { width:100%; height:auto; max-height:300px; object-fit:cover; cursor:pointer; transition:transform .3s; display:block; border-radius:var(--radius-sm); }
     .record-photo-container img:hover { transform:scale(1.02); }
+    body.desktop-mode .record-photo-container img { max-height:240px; object-fit:cover; }
 
-    body.desktop-mode .record-photo-container img {
-      max-height:240px;
-      object-fit:cover;
-    }
-
-    /* Record text */
-    .record-text-side {
-      min-width:0;
-      flex:1;
-    }
-    .record-header {
-      font-family:'Cormorant Garamond',serif; font-size:1.35em; font-weight:400;
-      color:white; letter-spacing:.5px; margin-bottom:10px;
-      word-break:break-word;
-    }
+    .record-text-side { min-width:0; flex:1; }
+    .record-header { font-family:'Cormorant Garamond',serif; font-size:1.35em; font-weight:400; color:white; letter-spacing:.5px; margin-bottom:10px; word-break:break-word; }
     .record-info { display:grid; gap:5px; }
-    .record-info div {
-      font-size:13px; color:var(--text2); display:flex;
-      align-items:flex-start; gap:6px; letter-spacing:.3px;
-      word-break:break-word; overflow-wrap:anywhere;
-    }
+    .record-info div { font-size:13px; color:var(--text2); display:flex; align-items:flex-start; gap:6px; letter-spacing:.3px; word-break:break-word; overflow-wrap:anywhere; }
     .info-icon { color:var(--p); font-size:12px; min-width:16px; flex-shrink:0; margin-top:1px; }
     .button-group { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
     .button-group button { padding:8px 18px; font-size:12px; }
 
-    /* ── Stars ── */
+    /* ── REACTION BAR ── */
+    .reaction-bar {
+      display:flex; align-items:center; gap:6px; margin-top:12px; flex-wrap:wrap;
+    }
+    .reaction-btn {
+      background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.1);
+      color:var(--text2); padding:5px 12px; border-radius:20px;
+      font-size:13px; cursor:pointer; transition:all .2s;
+      display:flex; align-items:center; gap:5px;
+    }
+    .reaction-btn:hover { background:rgba(232,80,122,0.15); border-color:var(--p); color:white; transform:scale(1.05); box-shadow:none; }
+    .reaction-btn.reacted { background:rgba(232,80,122,0.2); border-color:var(--p); color:var(--p2); }
+    .reaction-btn .r-count { font-family:'Space Mono',monospace; font-size:11px; }
+    .reaction-label { font-size:11px; color:var(--text3); margin-right:2px; }
+
+    /* ── STARS ── */
     .star-rating { display:flex; gap:4px; margin-top:6px; }
     .star { font-size:18px; cursor:pointer; color:var(--text3); transition:color .15s; }
     .star.filled { color:#ffcc00; }
     .star:hover, .star.hover { color:#ffcc00; }
     .record-stars { font-size:14px; letter-spacing:2px; margin-bottom:6px; }
 
-    /* ── Tags ── */
-    .tag-pill {
-      display:inline-block; background:rgba(232,80,122,0.15);
-      border:1px solid rgba(232,80,122,0.3); color:var(--p2);
-      border-radius:20px; padding:3px 10px; font-size:11px; letter-spacing:.5px; margin:2px;
-    }
+    .tag-pill { display:inline-block; background:rgba(232,80,122,0.15); border:1px solid rgba(232,80,122,0.3); color:var(--p2); border-radius:20px; padding:3px 10px; font-size:11px; letter-spacing:.5px; margin:2px; }
 
-    /* ── Search ── */
+    /* ── SEARCH ── */
     .search-bar { position:relative; }
     #searchInput { margin:0; padding-right:40px; font-size:13px; width:100%; max-width:300px; }
     .search-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none; color:var(--text3); }
 
-    /* ── Stats ── */
+    /* ── STATS ── */
     .stats-module-toggles { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
-    .module-toggle-btn {
-      background:rgba(255,255,255,0.06); border:1px solid var(--glass-border);
-      color:var(--text3); padding:7px 16px; border-radius:30px;
-      font-size:12px; letter-spacing:.5px; cursor:pointer; transition:all .2s;
-    }
+    .module-toggle-btn { background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:var(--text3); padding:7px 16px; border-radius:30px; font-size:12px; letter-spacing:.5px; cursor:pointer; transition:all .2s; }
     .module-toggle-btn.active { background:rgba(232,80,122,0.18); border-color:var(--p); color:var(--p2); }
     .module-toggle-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.25); }
     .stats-module { display:none; animation:fadeUp .3s ease both; }
@@ -329,11 +307,7 @@
     .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
     .stats-grid-4 { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:16px; }
     @media(min-width:600px) { .stats-grid-4 { grid-template-columns:repeat(4,1fr); } }
-    .stat-card {
-      background:linear-gradient(135deg,rgba(232,80,122,0.15),rgba(123,47,255,0.10));
-      border:1px solid rgba(232,80,122,0.25); border-radius:var(--radius-sm);
-      padding:20px 16px; text-align:center; transition:all .2s;
-    }
+    .stat-card { background:linear-gradient(135deg,rgba(232,80,122,0.15),rgba(123,47,255,0.10)); border:1px solid rgba(232,80,122,0.25); border-radius:var(--radius-sm); padding:20px 16px; text-align:center; transition:all .2s; }
     .stat-card:hover { border-color:var(--p); background:rgba(232,80,122,0.2); }
     .stat-card.blue { background:linear-gradient(135deg,rgba(51,136,255,0.15),rgba(0,200,255,0.08)); border-color:rgba(51,136,255,0.25); }
     .stat-card.blue:hover { border-color:#3388ff; }
@@ -353,33 +327,43 @@
     .trend-chart { width:100%; overflow:hidden; margin-top:8px; }
     .trend-chart svg { display:block; width:100%; }
 
-    /* ── Calendar ── */
+    /* ── COMPARE PANEL ── */
+    #comparePanel {
+      display:none;
+      background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
+      border:1px solid rgba(123,47,255,0.3);
+      border-radius:var(--radius); padding:24px; margin-bottom:16px;
+      animation:fadeUp .35s ease both;
+    }
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px; }
+    .compare-col { text-align:center; }
+    .compare-col-label { font-size:11px; color:var(--text3); letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
+    .compare-col-label.me { color:var(--p2); }
+    .compare-col-label.friend { color:#a78bfa; }
+    .compare-stat { margin-bottom:12px; }
+    .compare-val { font-family:'Cormorant Garamond',serif; font-size:1.8em; font-weight:300; color:white; }
+    .compare-desc { font-size:11px; color:var(--text3); letter-spacing:1px; margin-top:2px; }
+    .compare-vs { display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace; font-size:12px; color:var(--text3); letter-spacing:2px; }
+
+    /* ── CALENDAR ── */
     .cal-nav { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
     .cal-title { font-family:'Cormorant Garamond',serif; font-size:1.3em; font-weight:300; letter-spacing:2px; color:white; }
     .cal-nav button { background:rgba(255,255,255,0.08); border:1px solid var(--glass-border); color:var(--text2); padding:7px 16px; font-size:13px; border-radius:30px; }
     .cal-nav button:hover { background:rgba(255,255,255,0.14); box-shadow:none; transform:none; }
     .cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:4px; }
     .cal-weekday { text-align:center; font-size:11px; color:var(--text3); letter-spacing:1px; padding:6px 0; text-transform:uppercase; }
-    .cal-day {
-      aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
-      border-radius:8px; font-size:13px; color:var(--text2); cursor:default;
-      position:relative; transition:all .15s;
-    }
+    .cal-day { aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border-radius:8px; font-size:13px; color:var(--text2); cursor:default; position:relative; transition:all .15s; }
     .cal-day.today { background:rgba(255,255,255,0.08); color:white; font-weight:500; }
     .cal-day.has-event { cursor:pointer; color:white; }
     .cal-day.has-event::after { content:''; position:absolute; bottom:4px; left:50%; transform:translateX(-50%); width:5px; height:5px; border-radius:50%; background:var(--p); }
     .cal-day.has-event:hover { background:rgba(232,80,122,0.2); }
     .cal-day.other-month { color:var(--text3); }
-    .cal-events-popup {
-      background:rgba(20,10,30,0.95); backdrop-filter:blur(20px);
-      border:1px solid var(--glass-border); border-radius:var(--radius-sm);
-      padding:14px; margin-top:10px;
-    }
+    .cal-events-popup { background:rgba(20,10,30,0.95); backdrop-filter:blur(20px); border:1px solid var(--glass-border); border-radius:var(--radius-sm); padding:14px; margin-top:10px; }
     .cal-event-item { padding:8px 0; border-bottom:1px solid var(--glass-border); font-size:13px; color:var(--text2); }
     .cal-event-item:last-child { border-bottom:none; }
     .cal-event-artist { color:white; font-weight:500; margin-bottom:2px; }
 
-    /* ── Misc ── */
+    /* ── MISC ── */
     .loading { text-align:center; color:var(--text3); font-style:italic; font-size:13px; padding:20px; letter-spacing:1px; }
     .loading::after { content:'...'; animation:dots 1.4s infinite; }
     @keyframes dots { 0%{content:''} 33%{content:'.'} 66%{content:'..'} 100%{content:'...'} }
@@ -402,12 +386,13 @@
     }
     .friend-item:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.2); }
     .friend-item button { padding:6px 14px; font-size:11px; margin:0; }
+    .friend-item-left { display:flex; align-items:center; gap:10px; }
+    .friend-item-avatar { width:36px; height:36px; border-radius:50%; background:linear-gradient(135deg,#7b2fff,var(--p)); display:flex; align-items:center; justify-content:center; font-size:14px; flex-shrink:0; }
+    .friend-item-name { font-weight:500; color:var(--text); }
+    .friend-item-count { font-size:11px; color:var(--text3); margin-top:2px; }
+    .friend-badge { background:linear-gradient(135deg,rgba(123,47,255,0.3),rgba(232,80,122,0.2)); border:1px solid rgba(123,47,255,0.4); color:#c4b5fd; border-radius:12px; padding:2px 8px; font-size:10px; letter-spacing:1px; }
 
-    .forgot-password-note, .mode-switch-note {
-      background:rgba(232,80,122,0.08); border-left:3px solid var(--p);
-      border-radius:0 8px 8px 0; padding:10px 14px; margin-top:10px;
-      font-size:12px; color:var(--text2); line-height:1.6;
-    }
+    .forgot-password-note, .mode-switch-note { background:rgba(232,80,122,0.08); border-left:3px solid var(--p); border-radius:0 8px 8px 0; padding:10px 14px; margin-top:10px; font-size:12px; color:var(--text2); line-height:1.6; }
     .forgot-password-link { margin-top:12px; }
     .forgot-password-link button { background:none; border:none; color:var(--p2); font-size:13px; padding:0; text-decoration:underline; text-underline-offset:3px; }
     .forgot-password-link button:hover { color:white; box-shadow:none; transform:none; }
@@ -417,18 +402,34 @@
     ::-webkit-scrollbar-thumb { background:rgba(232,80,122,0.3); border-radius:3px; }
     ::-webkit-scrollbar-thumb:hover { background:rgba(232,80,122,0.55); }
 
-    /* ── Records list header in desktop ── */
-    .records-list-header {
-      display:flex; justify-content:space-between;
-      align-items:flex-end; flex-wrap:wrap; gap:14px; margin-bottom:20px;
-    }
+    .records-list-header { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
     .records-list-header h2 { margin-bottom:0; }
+    #recordsTitle { transition:all .3s; }
+
+    /* ── TOAST NOTIFICATION ── */
+    #toast {
+      position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px);
+      background:rgba(20,10,30,0.95); backdrop-filter:blur(20px);
+      border:1px solid var(--glass-border); border-radius:40px;
+      padding:12px 24px; font-size:13px; color:var(--text);
+      z-index:99999; opacity:0; transition:all .3s;
+      pointer-events:none; white-space:nowrap;
+    }
+    #toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+
+    /* ── SORT BAR ── */
+    .sort-bar { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
+    .sort-label { font-size:11px; color:var(--text3); letter-spacing:1px; }
+    .sort-btn { background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); color:var(--text3); padding:5px 14px; border-radius:20px; font-size:11px; letter-spacing:.5px; cursor:pointer; transition:all .2s; }
+    .sort-btn.active { background:rgba(232,80,122,0.15); border-color:var(--p); color:var(--p2); }
+    .sort-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.2); box-shadow:none; transform:none; }
   </style>
 </head>
 <body>
 <div class="orb orb1"></div>
 <div class="orb orb2"></div>
 <div class="orb orb3"></div>
+<div id="toast"></div>
 
 <button class="mode-toggle" onclick="toggleMode()">💻 電腦模式</button>
 
@@ -492,8 +493,8 @@
   <!-- APP -->
   <div id="appDiv" style="display:none">
 
-    <!-- Toolbar (full width) -->
-    <div class="card app-toolbar" style="padding:18px 28px">
+    <!-- Toolbar -->
+    <div class="card" style="padding:18px 28px;margin-bottom:16px">
       <div class="toolbar">
         <div class="record-count" id="recordCount">載入中…</div>
         <div class="toolbar-buttons">
@@ -504,7 +505,30 @@
       </div>
     </div>
 
-    <!-- Profile (full width) -->
+    <!-- ── FRIEND BANNER (shows when viewing friend) ── -->
+    <div id="friendBanner">
+      <div class="friend-banner-inner">
+        <img class="friend-avatar-lg" id="friendBannerAvatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 80'%3E%3Ccircle cx='40' cy='40' r='40' fill='%23281035'/%3E%3Ccircle cx='40' cy='30' r='14' fill='%237b2fff'/%3E%3Cellipse cx='40' cy='70' rx='22' ry='16' fill='%237b2fff'/%3E%3C/svg%3E" alt="friend">
+        <div class="friend-banner-info">
+          <div class="friend-banner-name" id="friendBannerName">好友</div>
+          <div class="friend-banner-sub">✦ 正在查看好友的演唱會紀錄 ✦</div>
+          <div class="friend-banner-stats" id="friendBannerStats"></div>
+        </div>
+        <div class="friend-banner-actions">
+          <button id="toggleCompareBtn" class="btn-ghost btn-sm">📊 對比統計</button>
+          <button id="bannerBackBtn" class="btn-ghost btn-sm">← 返回</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── COMPARE PANEL ── -->
+    <div id="comparePanel">
+      <div class="section-label">Compare</div>
+      <h2>📊 追星對比</h2>
+      <div id="compareContent"><div class="loading">載入中</div></div>
+    </div>
+
+    <!-- Profile -->
     <div id="profileCard" class="card" style="display:none">
       <div class="section-label">My Account</div>
       <h2>個人檔案</h2>
@@ -516,7 +540,6 @@
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
             <select id="preferredLang"><option value="zh">中文</option><option value="en">English</option></select>
             <button id="saveProfileBtn">儲存</button>
-            <button id="closeProfileBtn" class="btn-neutral" style="display:none">關閉</button>
           </div>
           <hr class="divider">
           <div id="inviteArea">
@@ -541,12 +564,12 @@
       <ul id="friendsList"></ul>
     </div>
 
-    <!-- ── 2-column app layout ── -->
+    <!-- 2-column layout -->
     <div class="app-layout">
 
-      <!-- LEFT: Form (sticky on desktop) -->
+      <!-- LEFT: Form -->
       <div class="app-left">
-        <div class="card" style="margin-bottom:0">
+        <div class="card" style="margin-bottom:0" id="formCard">
           <div class="section-label">New Entry</div>
           <h2 id="formTitle">新增演唱會紀錄</h2>
           <form id="recordForm">
@@ -603,8 +626,8 @@
         <div class="card" id="statsCard">
           <div class="section-label">Analytics</div>
           <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:8px">
-            <h2 style="margin-bottom:0">📊 追星統計</h2>
-            <button id="customiseStatsBtn" class="btn-ghost btn-sm" style="margin-top:4px">⚙ 自訂模組</button>
+            <h2 style="margin-bottom:0" id="statsTitle">📊 追星統計</h2>
+            <button id="customiseStatsBtn" class="btn-ghost btn-sm">⚙ 自訂模組</button>
           </div>
           <div id="moduleToggleBar" style="display:none;margin-bottom:16px">
             <div style="font-size:12px;color:var(--text3);margin-bottom:8px;letter-spacing:1px">勾選要顯示的統計模組：</div>
@@ -624,22 +647,30 @@
         <div class="card">
           <div class="records-list-header">
             <div>
-              <div class="section-label">Archive</div>
-              <h2 style="margin-bottom:0">我的演唱會紀錄</h2>
+              <div class="section-label" id="archiveLabel">Archive</div>
+              <h2 style="margin-bottom:0" id="recordsTitle">我的演唱會紀錄</h2>
             </div>
             <div class="search-bar">
               <input type="text" id="searchInput" placeholder="搜尋…" style="margin:0;width:220px">
               <span class="search-icon">🔍</span>
             </div>
           </div>
+          <!-- Sort Bar -->
+          <div class="sort-bar" id="sortBar">
+            <span class="sort-label">排序：</span>
+            <button class="sort-btn active" data-sort="date-desc">最新</button>
+            <button class="sort-btn" data-sort="date-asc">最舊</button>
+            <button class="sort-btn" data-sort="rating-desc">評分高</button>
+            <button class="sort-btn" data-sort="price-desc">票價高</button>
+            <button class="sort-btn" data-sort="artist-asc">藝人</button>
+          </div>
           <ul id="recordsList"></ul>
         </div>
 
-      </div><!-- /app-right -->
-    </div><!-- /app-layout -->
-
-  </div><!-- /appDiv -->
-</div><!-- /container -->
+      </div>
+    </div>
+  </div>
+</div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -671,7 +702,7 @@ try {
   setPersistence(auth, browserSessionPersistence);
 } catch(e) { console.error(e); alert("初始化失敗"); }
 
-// DOM
+// DOM refs
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -693,7 +724,6 @@ const profileCard = document.getElementById('profileCard');
 const displayNameInput = document.getElementById('displayNameInput');
 const bioInput = document.getElementById('bioInput');
 const preferredLang = document.getElementById('preferredLang');
-const profilePhoto = document.getElementById('profilePhoto');
 const inviteCodeInput = document.getElementById('inviteCodeInput');
 const generateInviteBtn = document.getElementById('generateInviteBtn');
 const saveInviteBtn = document.getElementById('saveInviteBtn');
@@ -701,22 +731,41 @@ const joinInviteInput = document.getElementById('joinInviteInput');
 const joinByCodeBtn = document.getElementById('joinByCodeBtn');
 const friendsList = document.getElementById('friendsList');
 const saveProfileBtn = document.getElementById('saveProfileBtn');
-const closeProfileBtn = document.getElementById('closeProfileBtn');
 const backToMyRecordsBtn = document.getElementById('backToMyRecordsBtn');
 const customiseStatsBtn = document.getElementById('customiseStatsBtn');
 const moduleToggleBar = document.getElementById('moduleToggleBar');
 const moduleToggles = document.getElementById('moduleToggles');
+const friendBanner = document.getElementById('friendBanner');
+const friendBannerName = document.getElementById('friendBannerName');
+const friendBannerStats = document.getElementById('friendBannerStats');
+const toggleCompareBtn = document.getElementById('toggleCompareBtn');
+const comparePanel = document.getElementById('comparePanel');
+const recordsTitle = document.getElementById('recordsTitle');
+const archiveLabel = document.getElementById('archiveLabel');
+const statsTitle = document.getElementById('statsTitle');
+const bannerBackBtn = document.getElementById('bannerBackBtn');
 
 let editingId = null;
 let currentPhotoBase64 = null;
 let allRecords = [];
+let myRecords = [];
 let currentUserId = null;
 let viewingFriendUid = null;
+let viewingFriendName = null;
 let formRating = 0;
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
+let currentSort = 'date-desc';
 
-// MODULES
+// ── TOAST ──
+function showToast(msg, duration = 2500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+// ── MODULES ──
 const MODULES = [
   { id:'overview', label:'📋 總覽',     defaultOn:true  },
   { id:'price',    label:'💰 票價分析', defaultOn:true  },
@@ -757,7 +806,29 @@ customiseStatsBtn.addEventListener('click', () => {
   if (!open) buildModuleToggles();
 });
 
-// THEME
+// ── SORT ──
+document.querySelectorAll('.sort-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentSort = btn.getAttribute('data-sort');
+    const sorted = sortRecords(allRecords);
+    displayRecords(sorted, viewingFriendUid || currentUserId);
+  });
+});
+function sortRecords(records) {
+  const arr = [...records];
+  switch(currentSort) {
+    case 'date-desc': return arr.sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
+    case 'date-asc':  return arr.sort((a,b) => new Date(a.data.datetime) - new Date(b.data.datetime));
+    case 'rating-desc': return arr.sort((a,b) => (b.data.rating||0) - (a.data.rating||0));
+    case 'price-desc': return arr.sort((a,b) => evalPrice(b.data.price) - evalPrice(a.data.price));
+    case 'artist-asc': return arr.sort((a,b) => (a.data.artist||'').localeCompare(b.data.artist||''));
+    default: return arr;
+  }
+}
+
+// ── THEME ──
 const themeMap = {
   green:{ p:'#00b377', p2:'#00cc88', glow:'rgba(0,200,120,0.5)', bg1:'#051210', bg2:'#0a1f19' },
   blue: { p:'#3388ff', p2:'#66aaff', glow:'rgba(51,150,255,0.5)', bg1:'#050d1a', bg2:'#0a1430' },
@@ -794,7 +865,7 @@ window.removePhoto = function() {
   currentPhotoBase64 = null; photoInput.value = ''; photoPreview.innerHTML = '';
 };
 
-// STARS
+// ── STARS ──
 document.querySelectorAll('#formStars .star').forEach(star => {
   star.addEventListener('click', () => {
     formRating = parseInt(star.dataset.val);
@@ -856,7 +927,7 @@ function clearForm() {
   photoInput.value = ''; photoPreview.innerHTML = ''; currentPhotoBase64 = null;
   formRating = 0; updateStarDisplay('formStars', 0);
   if (editingId) cancelEdit();
-  alert('表單已清除');
+  showToast('✓ 表單已清除');
 }
 function cancelEdit() {
   editingId = null; recordForm.reset();
@@ -873,7 +944,7 @@ cancelBtn.addEventListener("click", cancelEdit);
 photoInput.addEventListener('change', async e => {
   const file = e.target.files[0];
   if (!file) { currentPhotoBase64 = null; photoPreview.innerHTML = ''; return; }
-  if (file.size > 2 * 1024 * 1024) { alert('照片需小於2MB'); photoInput.value = ''; return; }
+  if (file.size > 2 * 1024 * 1024) { showToast('⚠️ 照片需小於2MB'); photoInput.value = ''; return; }
   const reader = new FileReader();
   reader.onload = ev => {
     currentPhotoBase64 = ev.target.result;
@@ -894,7 +965,7 @@ function countBy(arr, fn) {
   return map;
 }
 
-// STATS
+// ── STATS ──
 function updateStats(records) {
   const div = document.getElementById('statsDiv');
   if (records.length === 0) { div.innerHTML = '<div class="empty-state">✦ 還沒有任何紀錄 ✦</div>'; return; }
@@ -962,8 +1033,6 @@ function updateStats(records) {
           <div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%;background:linear-gradient(90deg,#3388ff,#00ccff)"></div></div>
           <div class="bar-val">${cnt} 次</div></div>`).join('')
       }</div></div><hr class="divider">`;
-    } else {
-      html += `<div class="stats-module visible"><div style="color:var(--text3);font-size:13px">尚無場地資料</div></div><hr class="divider">`;
     }
   }
 
@@ -986,22 +1055,15 @@ function updateStats(records) {
       });
       const path = pts.map((p,i) => i===0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`).join(' ');
       const area = `M${pts[0].x},${H} ` + pts.map(p => `L${p.x},${p.y}`).join(' ') + ` L${pts[pts.length-1].x},${H} Z`;
-
-      // Build ALL dots and labels (not just first and last)
       const dotsHtml = pts.map((p, i) => {
         const isEdge = (i === 0 || i === pts.length - 1);
-        const midY = (i > 0 && i < pts.length - 1); // intermediate
-        const labelY = p.y - 9;
-        const yearY = H + 16;
-        // For intermediate years with many points, only show year if spacing allows
         const showLabel = years.length <= 8 || isEdge || (i % Math.ceil(years.length/6) === 0);
         return `
           <circle cx="${p.x}" cy="${p.y}" r="${isEdge ? 5 : 3.5}" fill="var(--p)" opacity="${isEdge ? 1 : 0.8}"/>
-          ${showLabel ? `<text x="${p.x}" y="${labelY}" text-anchor="middle" fill="white" font-size="10">${p.val}</text>` : ''}
-          ${showLabel ? `<text x="${p.x}" y="${yearY}" text-anchor="middle" fill="rgba(245,238,255,0.4)" font-size="10">${p.year}</text>` : ''}
+          ${showLabel ? `<text x="${p.x}" y="${p.y - 9}" text-anchor="middle" fill="white" font-size="10">${p.val}</text>` : ''}
+          ${showLabel ? `<text x="${p.x}" y="${H + 16}" text-anchor="middle" fill="rgba(245,238,255,0.4)" font-size="10">${p.year}</text>` : ''}
         `;
       }).join('');
-
       html += `<div class="stats-module visible"><div class="trend-chart">
         <svg viewBox="0 0 ${W} ${H+24}" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1033,8 +1095,6 @@ function updateStats(records) {
             <div class="bar-val">${dist[v-1]}</div></div>`
         ).join('')}</div>
       </div></div><hr class="divider">`;
-    } else {
-      html += `<div class="stats-module visible"><div style="color:var(--text3);font-size:13px;padding:8px 0">尚無評分資料，新增紀錄時可以幫演唱會打星！</div></div><hr class="divider">`;
     }
   }
 
@@ -1042,8 +1102,7 @@ function updateStats(records) {
     const tagCount = {};
     records.forEach(r => {
       if (r.data.tags) r.data.tags.split(',').forEach(t => {
-        const tag = t.trim();
-        if (tag) tagCount[tag] = (tagCount[tag]||0) + 1;
+        const tag = t.trim(); if (tag) tagCount[tag] = (tagCount[tag]||0) + 1;
       });
     });
     const tags = Object.entries(tagCount).sort((a,b) => b[1]-a[1]).slice(0,20);
@@ -1051,8 +1110,6 @@ function updateStats(records) {
       html += `<div class="stats-module visible"><div>${
         tags.map(([t,c]) => `<span class="tag-pill">${t} <span style="opacity:.6">${c}</span></span>`).join('')
       }</div></div><hr class="divider">`;
-    } else {
-      html += `<div class="stats-module visible"><div style="color:var(--text3);font-size:13px">尚無標籤資料</div></div><hr class="divider">`;
     }
   }
 
@@ -1076,7 +1133,58 @@ function updateStats(records) {
     '<div style="color:var(--text3);font-size:13px;padding:16px 0">請在上方勾選要顯示的統計模組</div>';
 }
 
-// CALENDAR
+// ── COMPARE PANEL ──
+function buildCompareStats(myRecs, friendRecs, friendName) {
+  function calc(recs) {
+    const total = recs.length;
+    const artists = Object.keys(countBy(recs, r => r.data.artist)).length;
+    const rated = recs.filter(r => r.data.rating > 0);
+    const avgRating = rated.length ? (rated.reduce((s,r) => s+r.data.rating,0)/rated.length).toFixed(1) : '—';
+    const prices = recs.map(r => evalPrice(r.data.price)).filter(v => v > 0);
+    const totalSpend = prices.reduce((s,v) => s+v, 0);
+    return { total, artists, avgRating, totalSpend };
+  }
+  const me = calc(myRecs);
+  const fr = calc(friendRecs);
+  const sym = getCurrencySymbol('TWD');
+
+  return `
+    <div class="compare-grid">
+      <div class="compare-col">
+        <div class="compare-col-label me">✦ 我的紀錄</div>
+        <div class="compare-stat"><div class="compare-val">${me.total}</div><div class="compare-desc">總場次</div></div>
+        <div class="compare-stat"><div class="compare-val">${me.artists}</div><div class="compare-desc">不同藝人</div></div>
+        <div class="compare-stat"><div class="compare-val">${me.avgRating}</div><div class="compare-desc">平均評分</div></div>
+        <div class="compare-stat"><div class="compare-val" style="font-size:1.2em">${sym} ${me.totalSpend.toLocaleString()}</div><div class="compare-desc">TWD 總花費</div></div>
+      </div>
+      <div class="compare-vs" style="flex-direction:column;gap:48px;padding:40px 0">
+        <span>VS</span>
+      </div>
+      <div class="compare-col">
+        <div class="compare-col-label friend">✦ ${friendName}</div>
+        <div class="compare-stat"><div class="compare-val">${fr.total}</div><div class="compare-desc">總場次</div></div>
+        <div class="compare-stat"><div class="compare-val">${fr.artists}</div><div class="compare-desc">不同藝人</div></div>
+        <div class="compare-stat"><div class="compare-val">${fr.avgRating}</div><div class="compare-desc">平均評分</div></div>
+        <div class="compare-stat"><div class="compare-val" style="font-size:1.2em">${sym} ${fr.totalSpend.toLocaleString()}</div><div class="compare-desc">TWD 總花費</div></div>
+      </div>
+    </div>`;
+}
+
+toggleCompareBtn.addEventListener('click', () => {
+  const open = comparePanel.style.display !== 'none';
+  if (open) {
+    comparePanel.style.display = 'none';
+    toggleCompareBtn.textContent = '📊 對比統計';
+  } else {
+    comparePanel.style.display = 'block';
+    document.getElementById('compareContent').innerHTML = buildCompareStats(myRecords, allRecords, viewingFriendName || '好友');
+    toggleCompareBtn.textContent = '✕ 關閉對比';
+    comparePanel.scrollIntoView({ behavior:'smooth', block:'nearest' });
+  }
+});
+bannerBackBtn.addEventListener('click', backToMyRecords);
+
+// ── CALENDAR ──
 function renderCalendar() {
   const div = document.getElementById('calendarDiv');
   const year = calYear, month = calMonth;
@@ -1133,14 +1241,26 @@ window.calShowDay = function(day) {
   </div>`;
 };
 
-// RECORDS
+// ── LOAD / DISPLAY RECORDS ──
 async function loadRecords(uid) {
-  viewingFriendUid = null; backToMyRecordsBtn.style.display = 'none';
+  viewingFriendUid = null;
+  viewingFriendName = null;
+  backToMyRecordsBtn.style.display = 'none';
+  friendBanner.style.display = 'none';
+  comparePanel.style.display = 'none';
+
+  // Reset title to "我的演唱會紀錄"
+  recordsTitle.textContent = '我的演唱會紀錄';
+  archiveLabel.textContent = 'Archive';
+  statsTitle.textContent = '📊 追星統計';
+  document.getElementById('formCard').style.display = '';
+
   recordsList.innerHTML = '<li class="loading">載入中</li>';
   const q = query(collection(db,'concerts'), where('uid','==',uid));
   const snap = await getDocs(q);
   allRecords = snap.docs.map(d => ({ id:d.id, data:d.data() })).sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
-  displayRecords(allRecords, uid);
+  myRecords = [...allRecords];
+  displayRecords(sortRecords(allRecords), uid);
   updateStats(allRecords);
   renderCalendar();
   recordCount.textContent = `${allRecords.length} 筆紀錄`;
@@ -1148,14 +1268,18 @@ async function loadRecords(uid) {
 
 function displayRecords(records, ownerId) {
   recordsList.innerHTML = '';
+  const isFriendView = !!viewingFriendUid;
   if (records.length === 0) {
-    recordsList.innerHTML = '<li class="empty-state">✦ 還沒有任何紀錄，快新增吧 ✦</li>';
+    const msg = isFriendView
+      ? `✦ ${viewingFriendName || '好友'} 還沒有任何紀錄 ✦`
+      : '✦ 還沒有任何紀錄，快新增吧 ✦';
+    recordsList.innerHTML = `<li class="empty-state">${msg}</li>`;
     return;
   }
   records.forEach((r, i) => {
     const d = r.data;
     const li = document.createElement('li');
-    li.className = 'record-item';
+    li.className = 'record-item' + (isFriendView ? ' friend-record' : '');
     li.style.animationDelay = `${i*0.04}s`;
 
     const date = new Date(d.datetime);
@@ -1170,7 +1294,6 @@ function displayRecords(records, ownerId) {
       ? `<div style="margin-top:8px">${d.tags.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag-pill">${t}</span>`).join('')}</div>`
       : '';
 
-    // Build photo HTML
     const photoHTML = hasPhoto
       ? `<div class="record-photo-side">
            <div class="record-photo-container">
@@ -1179,15 +1302,25 @@ function displayRecords(records, ownerId) {
          </div>`
       : '';
 
-    // Build buttons
-    const editDelHTML = (currentUserId && d.uid === currentUserId)
+    // Edit/Delete only for own records
+    const editDelHTML = (!isFriendView && currentUserId && d.uid === currentUserId)
       ? `<div class="button-group">
            <button class="edit-btn">✏️ 編輯</button>
            <button class="del-btn btn-danger">🗑 刪除</button>
          </div>`
       : '';
 
-    // Inner layout: if has photo use .has-photo class for desktop side-by-side
+    // Reaction bar for friend records
+    const reactionHTML = isFriendView
+      ? `<div class="reaction-bar">
+           <span class="reaction-label">送出：</span>
+           <button class="reaction-btn" data-emoji="🔥" data-rid="${r.id}"><span>🔥</span><span class="r-count">${d.reactions?.fire||0}</span></button>
+           <button class="reaction-btn" data-emoji="💜" data-rid="${r.id}"><span>💜</span><span class="r-count">${d.reactions?.heart||0}</span></button>
+           <button class="reaction-btn" data-emoji="✨" data-rid="${r.id}"><span>✨</span><span class="r-count">${d.reactions?.sparkle||0}</span></button>
+           <button class="reaction-btn" data-emoji="👑" data-rid="${r.id}"><span>👑</span><span class="r-count">${d.reactions?.crown||0}</span></button>
+         </div>`
+      : '';
+
     li.innerHTML = `
       <div class="record-inner ${hasPhoto ? 'has-photo' : ''}">
         ${photoHTML}
@@ -1203,20 +1336,52 @@ function displayRecords(records, ownerId) {
           </div>
           ${tagsHTML}
           ${editDelHTML}
+          ${reactionHTML}
         </div>
       </div>`;
 
-    // Attach button events
-    if (currentUserId && d.uid === currentUserId) {
+    // Own record buttons
+    if (!isFriendView && currentUserId && d.uid === currentUserId) {
       li.querySelector('.edit-btn')?.addEventListener('click', () => startEdit(r.id, d));
       li.querySelector('.del-btn')?.addEventListener('click', async () => {
         if (confirm('確定刪除這筆紀錄？')) {
           await deleteDoc(doc(db,'concerts',r.id));
-          if (viewingFriendUid) displayFriendRecords(viewingFriendUid);
-          else loadRecords(currentUserId);
+          showToast('🗑 已刪除');
+          loadRecords(currentUserId);
         }
       });
     }
+
+    // Reaction buttons
+    if (isFriendView) {
+      li.querySelectorAll('.reaction-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          if (!currentUserId) return;
+          const rid = btn.getAttribute('data-rid');
+          const emoji = btn.getAttribute('data-emoji');
+          const emojiMap = { '🔥':'fire', '💜':'heart', '✨':'sparkle', '👑':'crown' };
+          const key = emojiMap[emoji] || emoji;
+          const sessionKey = `reacted_${rid}_${key}`;
+
+          if (sessionStorage.getItem(sessionKey)) {
+            showToast('已經送出過囉！'); return;
+          }
+
+          try {
+            const docRef = doc(db,'concerts',rid);
+            const snap = await getDoc(docRef);
+            const current = snap.data()?.reactions?.[key] || 0;
+            await updateDoc(docRef, { [`reactions.${key}`]: current + 1 });
+            sessionStorage.setItem(sessionKey, '1');
+            btn.classList.add('reacted');
+            const countEl = btn.querySelector('.r-count');
+            if (countEl) countEl.textContent = current + 1;
+            showToast(`${emoji} 已送出！`);
+          } catch(e) { showToast('送出失敗'); }
+        });
+      });
+    }
+
     recordsList.appendChild(li);
   });
 }
@@ -1245,7 +1410,7 @@ function startEdit(id, data) {
 recordForm.addEventListener('submit', async e => {
   e.preventDefault();
   const user = auth.currentUser;
-  if (!user) return alert('請登入');
+  if (!user) return showToast('請先登入');
   const payload = {
     uid: user.uid,
     artist: recordForm.artist.value.trim(),
@@ -1265,24 +1430,24 @@ recordForm.addEventListener('submit', async e => {
   try {
     if (editingId) await updateDoc(doc(db,'concerts',editingId), payload);
     else await addDoc(collection(db,'concerts'), payload);
-    alert(editingId ? '更新成功！' : '新增成功！');
+    showToast(editingId ? '✓ 更新成功！' : '✓ 新增成功！');
     cancelEdit(); loadRecords(user.uid);
-  } catch(err) { alert('儲存失敗：' + err.message); }
+  } catch(err) { showToast('儲存失敗：' + err.message); }
 });
 
-// FRIENDS
+// ── FRIENDS ──
 generateInviteBtn.addEventListener('click', () => {
   inviteCodeInput.value = 'KPOP' + Math.random().toString(36).substring(2,8).toUpperCase();
 });
 saveInviteBtn.addEventListener('click', async () => {
   if (!currentUserId) return;
   const code = inviteCodeInput.value.trim();
-  if (!code) return alert('請輸入邀請碼');
+  if (!code) return showToast('請輸入邀請碼');
   try {
     await setDoc(doc(db,'inviteCodes',code), { ownerUid:currentUserId, createdAt:serverTimestamp(), singleUse:false });
     await setDoc(doc(db,'users',currentUserId), { inviteCode:code }, { merge:true });
-    alert('邀請碼已儲存'); loadFriends();
-  } catch(e) { alert('儲存失敗'); }
+    showToast('✓ 邀請碼已儲存'); loadFriends();
+  } catch(e) { showToast('儲存失敗'); }
 });
 joinByCodeBtn.addEventListener('click', async () => {
   if (!currentUserId) return;
@@ -1295,8 +1460,8 @@ joinByCodeBtn.addEventListener('click', async () => {
     if (ownerUid === currentUserId) throw new Error('不能加自己');
     await setDoc(doc(db,'users',currentUserId,'friends',ownerUid), { createdAt:serverTimestamp() });
     await setDoc(doc(db,'users',ownerUid,'friends',currentUserId), { createdAt:serverTimestamp() });
-    alert('加入好友成功'); loadFriends();
-  } catch(e) { alert(e.message); }
+    showToast('✓ 加入好友成功'); loadFriends();
+  } catch(e) { showToast(e.message); }
 });
 saveProfileBtn.addEventListener('click', async () => {
   if (!currentUserId) return;
@@ -1305,8 +1470,10 @@ saveProfileBtn.addEventListener('click', async () => {
     bio: bioInput.value.trim(),
     preferredLang: preferredLang.value
   }, { merge:true });
-  alert('已儲存'); loadProfile();
+  showToast('✓ 已儲存');
+  loadProfile();
 });
+
 async function loadProfile() {
   if (!currentUserId) return;
   const snap = await getDoc(doc(db,'users',currentUserId));
@@ -1316,91 +1483,158 @@ async function loadProfile() {
   preferredLang.value = d.preferredLang || 'zh';
   inviteCodeInput.value = d.inviteCode || '';
 }
+
 async function loadFriends() {
   friendsList.innerHTML = '<li class="loading">載入中</li>';
   if (!currentUserId) return;
   const col = collection(db,'users',currentUserId,'friends');
   const snaps = await getDocs(col);
-  if (snaps.empty) { friendsList.innerHTML = '<li style="color:var(--text3);font-size:13px;padding:8px 0">暫無好友</li>'; return; }
+  if (snaps.empty) { friendsList.innerHTML = '<li style="color:var(--text3);font-size:13px;padding:8px 0">暫無好友，使用邀請碼新增好友吧！</li>'; return; }
   friendsList.innerHTML = '';
   for (const f of snaps.docs) {
     const fid = f.id;
-    let display = fid;
-    try { const u = await getDoc(doc(db,'users',fid)); if (u.exists() && u.data().displayName) display = u.data().displayName; } catch(e) {}
+    let displayName = fid;
+    let recordCount = 0;
+    try {
+      const u = await getDoc(doc(db,'users',fid));
+      if (u.exists() && u.data().displayName) displayName = u.data().displayName;
+    } catch(e) {}
+    try {
+      const q2 = query(collection(db,'concerts'), where('uid','==',fid));
+      const s2 = await getDocs(q2);
+      recordCount = s2.size;
+    } catch(e) {}
     const alias = f.data().alias || '';
-    const showName = alias || display;
+    const showName = alias || displayName;
     const li = document.createElement('li');
     li.className = 'friend-item';
-    li.innerHTML = `<div style="font-weight:500">${showName}</div>
+    const initials = showName.slice(0,1).toUpperCase() || '?';
+    li.innerHTML = `
+      <div class="friend-item-left">
+        <div class="friend-item-avatar">${initials}</div>
+        <div>
+          <div class="friend-item-name">${showName} ${alias ? `<span class="friend-badge">暱稱</span>` : ''}</div>
+          <div class="friend-item-count">🎤 ${recordCount} 筆紀錄</div>
+        </div>
+      </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button data-fid="${fid}" class="view-friend-btn btn-ghost">紀錄</button>
-        <button data-fid="${fid}" class="view-profile-btn btn-ghost">檔案</button>
+        <button data-fid="${fid}" class="view-friend-btn">查看紀錄</button>
         <button data-fid="${fid}" class="edit-alias-btn btn-ghost">暱稱</button>
         <button data-fid="${fid}" class="remove-friend-btn btn-danger">移除</button>
       </div>`;
     friendsList.appendChild(li);
   }
   document.querySelectorAll('.view-friend-btn').forEach(btn =>
-    btn.addEventListener('click', () => displayFriendRecords(btn.getAttribute('data-fid'))));
-  document.querySelectorAll('.view-profile-btn').forEach(btn =>
-    btn.addEventListener('click', async () => {
+    btn.addEventListener('click', () => {
       const fid = btn.getAttribute('data-fid');
-      const snap = await getDoc(doc(db,'users',fid));
-      if (snap.exists()) alert(`暱稱: ${snap.data().displayName||'未設定'}\n簡介: ${snap.data().bio||'無'}`);
-      else alert('無資料');
+      const li = btn.closest('.friend-item');
+      const name = li.querySelector('.friend-item-name').textContent.replace('暱稱','').trim();
+      profileCard.style.display = 'none';
+      displayFriendRecords(fid, name);
     }));
   document.querySelectorAll('.edit-alias-btn').forEach(btn =>
     btn.addEventListener('click', async () => {
       const fid = btn.getAttribute('data-fid');
-      const alias = prompt('暱稱');
+      const alias = prompt('設定好友暱稱（留空清除）');
       if (alias !== null) await setDoc(doc(db,'users',currentUserId,'friends',fid), { alias:alias.trim() }, { merge:true });
       loadFriends();
     }));
   document.querySelectorAll('.remove-friend-btn').forEach(btn =>
     btn.addEventListener('click', async () => {
       const fid = btn.getAttribute('data-fid');
-      if (confirm('移除好友?')) {
+      if (confirm('確定移除好友？')) {
         await deleteDoc(doc(db,'users',currentUserId,'friends',fid));
         await deleteDoc(doc(db,'users',fid,'friends',currentUserId));
         if (viewingFriendUid === fid) backToMyRecords();
         loadFriends();
+        showToast('已移除好友');
       }
     }));
 }
 
-async function displayFriendRecords(fid) {
-  viewingFriendUid = fid; backToMyRecordsBtn.style.display = 'inline-block';
+async function displayFriendRecords(fid, friendName) {
+  viewingFriendUid = fid;
+  viewingFriendName = friendName || '好友';
+  backToMyRecordsBtn.style.display = 'inline-block';
+  comparePanel.style.display = 'none';
+  toggleCompareBtn.textContent = '📊 對比統計';
+
+  // Update titles to show friend's name
+  recordsTitle.textContent = `${viewingFriendName} 的演唱會紀錄`;
+  archiveLabel.textContent = "Friend's Archive";
+  statsTitle.textContent = `📊 ${viewingFriendName} 的統計`;
+
+  // Hide add form when viewing friend
+  document.getElementById('formCard').style.display = 'none';
+
+  // Show friend banner
+  friendBanner.style.display = 'block';
+  friendBannerName.textContent = viewingFriendName;
+
   const q = query(collection(db,'concerts'), where('uid','==',fid));
   const snap = await getDocs(q);
   allRecords = snap.docs.map(d => ({ id:d.id, data:d.data() })).sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
-  displayRecords(allRecords, fid); renderCalendar();
-  recordCount.textContent = `${allRecords.length} 筆紀錄（好友）`;
+
+  // Build quick stats for banner
+  const artists = Object.keys(countBy(allRecords, r => r.data.artist)).length;
+  const rated = allRecords.filter(r => r.data.rating > 0);
+  const avgRating = rated.length ? (rated.reduce((s,r) => s+r.data.rating,0)/rated.length).toFixed(1) : '—';
+  friendBannerStats.innerHTML = `
+    <div class="friend-stat-pill"><strong>${allRecords.length}</strong> 場次</div>
+    <div class="friend-stat-pill"><strong>${artists}</strong> 位藝人</div>
+    <div class="friend-stat-pill">⭐ <strong>${avgRating}</strong></div>`;
+
+  displayRecords(sortRecords(allRecords), fid);
+  updateStats(allRecords);
+  renderCalendar();
+  recordCount.textContent = `${allRecords.length} 筆（${viewingFriendName}）`;
+
+  // Scroll to banner
+  friendBanner.scrollIntoView({ behavior:'smooth', block:'start' });
 }
+
 function backToMyRecords() {
-  viewingFriendUid = null; backToMyRecordsBtn.style.display = 'none';
+  viewingFriendUid = null;
+  viewingFriendName = null;
+  backToMyRecordsBtn.style.display = 'none';
+  friendBanner.style.display = 'none';
+  comparePanel.style.display = 'none';
   profileCard.style.display = 'none';
   if (currentUserId) loadRecords(currentUserId);
 }
 backToMyRecordsBtn.addEventListener('click', backToMyRecords);
+
 profileToggleBtn.addEventListener('click', () => {
   if (profileCard.style.display === 'none') {
-    profileCard.style.display = 'block'; loadProfile(); loadFriends(); setProfileEditable(true);
-  } else { profileCard.style.display = 'none'; }
+    profileCard.style.display = 'block'; loadProfile(); loadFriends();
+  } else {
+    profileCard.style.display = 'none';
+  }
 });
-function setProfileEditable(edit) {
-  displayNameInput.disabled = !edit;
-  bioInput.disabled = !edit;
-  preferredLang.disabled = !edit;
-  document.getElementById('inviteArea').style.display = edit ? 'block' : 'none';
-  saveProfileBtn.style.display = edit ? 'inline-block' : 'none';
-  generateInviteBtn.style.display = edit ? 'inline-block' : 'none';
-  saveInviteBtn.style.display = edit ? 'inline-block' : 'none';
-  joinByCodeBtn.style.display = edit ? 'inline-block' : 'none';
-  closeProfileBtn.style.display = edit ? 'none' : 'inline-block';
-}
-closeProfileBtn.addEventListener('click', () => { profileCard.style.display = 'none'; });
 
-// AUTH
+// ── SEARCH ──
+function initSearch() {
+  searchInput.addEventListener('input', () => {
+    const term = searchInput.value.trim().toLowerCase();
+    if (!term) {
+      displayRecords(sortRecords(allRecords), viewingFriendUid || currentUserId);
+      recordCount.textContent = viewingFriendUid
+        ? `${allRecords.length} 筆（${viewingFriendName}）`
+        : `${allRecords.length} 筆紀錄`;
+    } else {
+      const filtered = allRecords.filter(r =>
+        r.data.artist?.toLowerCase().includes(term) ||
+        r.data.venue?.toLowerCase().includes(term) ||
+        r.data.notes?.toLowerCase().includes(term) ||
+        r.data.tags?.toLowerCase().includes(term)
+      );
+      displayRecords(sortRecords(filtered), viewingFriendUid || currentUserId);
+      recordCount.textContent = `找到 ${filtered.length} 筆`;
+    }
+  });
+}
+
+// ── AUTH ──
 onAuthStateChanged(auth, user => {
   if (user) {
     loginDiv.style.display = 'none'; appDiv.style.display = 'block';
@@ -1409,8 +1643,10 @@ onAuthStateChanged(auth, user => {
     loadRecords(user.uid); loadProfile(); loadFriends(); initSearch();
   } else {
     loginDiv.style.display = 'block'; appDiv.style.display = 'none';
-    currentUserId = null; viewingFriendUid = null;
-    backToMyRecordsBtn.style.display = 'none'; profileCard.style.display = 'none';
+    currentUserId = null; viewingFriendUid = null; viewingFriendName = null;
+    backToMyRecordsBtn.style.display = 'none';
+    profileCard.style.display = 'none';
+    friendBanner.style.display = 'none';
   }
 });
 signupForm.addEventListener('submit', async e => {
@@ -1420,39 +1656,21 @@ signupForm.addEventListener('submit', async e => {
   try {
     await createUserWithEmailAndPassword(auth, email, pwd);
     await setDoc(doc(db,'users',auth.currentUser.uid), { email, displayName:'', bio:'', preferredLang:'zh' });
-    alert('註冊成功！'); signupForm.reset();
-  } catch(err) { alert('註冊失敗：' + err.message); }
+    showToast('✓ 註冊成功！'); signupForm.reset();
+  } catch(err) { showToast('註冊失敗：' + err.message); }
 });
 loginForm.addEventListener('submit', async e => {
   e.preventDefault();
   try { await signInWithEmailAndPassword(auth, loginForm.email.value.trim(), loginForm.password.value); loginForm.reset(); }
-  catch(err) { alert('登入失敗：帳密錯誤'); }
+  catch(err) { showToast('登入失敗：帳密錯誤'); }
 });
-logoutBtn.addEventListener('click', async () => { await signOut(auth); alert('已登出'); });
+logoutBtn.addEventListener('click', async () => { await signOut(auth); showToast('已登出'); });
 forgotPasswordBtn.addEventListener('click', async () => {
   const email = prompt('請輸入 Email');
-  if (email) try { await sendPasswordResetEmail(auth, email); alert('重設信件已發送！'); } catch(e) { alert('發送失敗'); }
+  if (email) try { await sendPasswordResetEmail(auth, email); showToast('✓ 重設信件已發送！'); } catch(e) { showToast('發送失敗'); }
 });
 
-function initSearch() {
-  searchInput.addEventListener('input', () => {
-    const term = searchInput.value.trim().toLowerCase();
-    if (!term) displayRecords(allRecords, viewingFriendUid || currentUserId);
-    else {
-      const filtered = allRecords.filter(r =>
-        r.data.artist?.toLowerCase().includes(term) ||
-        r.data.venue?.toLowerCase().includes(term) ||
-        r.data.notes?.toLowerCase().includes(term) ||
-        r.data.tags?.toLowerCase().includes(term)
-      );
-      displayRecords(filtered, viewingFriendUid || currentUserId);
-      recordCount.textContent = `找到 ${filtered.length} 筆`;
-    }
-  });
-}
-
 initThemeSelector();
-initSearch();
 </script>
 </body>
 </html>
