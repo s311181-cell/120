@@ -42,152 +42,9 @@
     @keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,30px) scale(1.1)} }
 
     .container { max-width:600px; margin:0 auto; position:relative; z-index:1; transition:max-width .3s; }
+    body.desktop-mode { padding:32px 32px 80px; }
+    body.desktop-mode .container { max-width:1320px; }
 
-    /* ── DESKTOP MODE ── */
-    body.desktop-mode { padding:40px 48px 80px; }
-    body.desktop-mode .container { max-width:1440px; }
-
-    /* Header in desktop */
-    body.desktop-mode .site-header { padding:32px 0 16px; margin-bottom:12px; }
-    body.desktop-mode .site-title { font-size:5.5em; letter-spacing:14px; }
-    body.desktop-mode .site-subtitle { font-size:1.1em; letter-spacing:6px; }
-
-    /* Cards in desktop — more breathing room */
-    body.desktop-mode .card { padding:40px 44px; margin-bottom:20px; border-radius:24px; }
-    body.desktop-mode .card:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.16); }
-
-    /* Form card even more padding */
-    body.desktop-mode #formCard { padding:44px 48px; }
-
-    /* Typography scale-up */
-    body.desktop-mode h2 { font-size:1.9em; letter-spacing:1.5px; margin-bottom:28px; }
-    body.desktop-mode h2::after { width:52px; height:2px; margin-top:10px; }
-    body.desktop-mode .card:hover h2::after { width:90px; }
-    body.desktop-mode .section-label { font-size:.75em; letter-spacing:5px; margin-bottom:6px; }
-
-    /* Inputs in desktop — taller, more comfortable */
-    body.desktop-mode input[type=text],
-    body.desktop-mode input[type=email],
-    body.desktop-mode input[type=password],
-    body.desktop-mode input[type=datetime-local],
-    body.desktop-mode textarea,
-    body.desktop-mode select {
-      padding: 16px 20px;
-      font-size: 15px;
-      border-radius: 14px;
-      margin-bottom: 16px;
-    }
-    body.desktop-mode textarea { min-height: 110px; line-height: 1.7; }
-
-    /* 2-col layout */
-    .app-layout { display:block; }
-    body.desktop-mode .app-layout {
-      display:grid;
-      grid-template-columns: 460px 1fr;
-      gap: 28px;
-      align-items:start;
-    }
-    body.desktop-mode .app-left {
-      position:sticky; top:40px;
-      max-height:calc(100vh - 80px);
-      overflow-y:auto; overflow-x:hidden;
-      scrollbar-width:thin;
-      scrollbar-color:rgba(232,80,122,0.3) transparent;
-      border-radius:var(--radius);
-    }
-    body.desktop-mode .app-left::-webkit-scrollbar { width:5px; }
-    body.desktop-mode .app-left::-webkit-scrollbar-thumb { background:rgba(232,80,122,0.3); border-radius:3px; }
-    .app-right { min-width:0; }
-
-    /* Toolbar desktop */
-    body.desktop-mode #toolbarCard { padding:20px 32px; margin-bottom:20px; }
-    body.desktop-mode .toolbar { gap:16px; }
-    body.desktop-mode .toolbar-buttons { gap:10px; }
-    body.desktop-mode #logoutBtn,
-    body.desktop-mode .toolbar-buttons button { padding: 10px 24px; font-size: 13px; }
-
-    /* Record items in desktop — more space */
-    body.desktop-mode .record-item { padding:28px 32px; margin:16px 0; border-radius:20px; }
-    body.desktop-mode .record-header { font-size:1.55em; margin-bottom:14px; }
-    body.desktop-mode .record-info { gap:8px; }
-    body.desktop-mode .record-info div { font-size:14px; gap:8px; }
-    body.desktop-mode .record-stars { font-size:16px; letter-spacing:3px; margin-bottom:10px; }
-    body.desktop-mode .button-group { margin-top:18px; gap:10px; }
-    body.desktop-mode .button-group button { padding:10px 22px; font-size:13px; }
-
-    /* Desktop photo layout */
-    body.desktop-mode .record-inner.has-photo {
-      flex-direction:row; align-items:flex-start; gap:28px;
-    }
-    body.desktop-mode .record-inner.has-photo .record-photo-side { flex:0 0 280px; width:280px; }
-    body.desktop-mode .record-inner.has-photo .record-text-side { flex:1; min-width:0; }
-    body.desktop-mode .record-photo-container img { max-height:260px; }
-
-    /* Stats desktop */
-    body.desktop-mode .stats-grid { gap:16px; margin-bottom:20px; }
-    body.desktop-mode .stats-grid-4 { gap:16px; margin-bottom:20px; }
-    body.desktop-mode .stat-card { padding:24px 20px; border-radius:16px; }
-    body.desktop-mode .stat-value { font-size:2.3em; }
-    body.desktop-mode .stat-value.sm { font-size:1.7em; }
-    body.desktop-mode .stat-label { font-size:12px; letter-spacing:2.5px; margin-top:6px; }
-    body.desktop-mode .bar-chart { gap:12px; margin-top:6px; }
-    body.desktop-mode .bar-row { font-size:13px; }
-    body.desktop-mode .bar-label { width:120px; }
-    body.desktop-mode .bar-track { height:12px; border-radius:6px; }
-
-    /* Calendar desktop */
-    body.desktop-mode .cal-nav { margin-bottom:20px; }
-    body.desktop-mode .cal-title { font-size:1.5em; letter-spacing:3px; }
-    body.desktop-mode .cal-grid { gap:6px; }
-    body.desktop-mode .cal-day { font-size:14px; border-radius:10px; }
-    body.desktop-mode .cal-weekday { font-size:12px; padding:8px 0; letter-spacing:2px; }
-
-    /* Records list header desktop */
-    body.desktop-mode .records-list-header { margin-bottom:24px; gap:20px; }
-    body.desktop-mode #searchInput { width:280px; font-size:14px; padding:13px 20px; }
-    body.desktop-mode .sort-bar { gap:10px; margin-bottom:20px; }
-    body.desktop-mode .sort-btn { padding:7px 18px; font-size:12px; }
-
-    /* Friend banner desktop */
-    body.desktop-mode #friendBanner { padding:28px 32px; margin-bottom:20px; border-radius:20px; }
-    body.desktop-mode .friend-avatar-lg { width:68px; height:68px; }
-    body.desktop-mode .friend-banner-name { font-size:1.7em; }
-    body.desktop-mode .friend-banner-stats { gap:12px; margin-top:14px; }
-    body.desktop-mode .friend-stat-pill { padding:7px 18px; font-size:13px; }
-
-    /* Reaction bar desktop */
-    body.desktop-mode .reaction-bar { gap:8px; margin-top:16px; }
-    body.desktop-mode .reaction-btn { padding:7px 16px; font-size:14px; border-radius:22px; }
-    body.desktop-mode .reaction-received { padding:12px 18px; gap:8px; margin-top:16px; }
-    body.desktop-mode .reaction-received-pill { padding:6px 16px; font-size:14px; }
-
-    /* Profile card desktop */
-    body.desktop-mode #profileCard { border-radius:24px; }
-    body.desktop-mode #profilePhoto { width:88px; height:88px; }
-
-    /* Tag pills desktop */
-    body.desktop-mode .tag-pill { padding:4px 14px; font-size:12px; margin:3px; }
-
-    /* Auth forms desktop — already handled by grid below */
-    body.desktop-mode .auth-forms { grid-template-columns:1fr 1fr; gap:48px; }
-
-    /* Wishlist desktop */
-    body.desktop-mode .wishlist-item { padding:18px 22px; font-size:14px; border-radius:14px; }
-    body.desktop-mode .wishlist-artist { font-size:15px; }
-    body.desktop-mode #wishlistCard h2 { margin-bottom:12px; }
-
-    /* Streak banner desktop */
-    body.desktop-mode .streak-banner { padding:16px 24px; font-size:14px; margin-bottom:16px; border-radius:14px; }
-
-    /* Compare panel desktop */
-    body.desktop-mode #comparePanel { padding:32px 36px; border-radius:20px; }
-    body.desktop-mode .compare-val { font-size:2.1em; }
-    body.desktop-mode .compare-desc { font-size:12px; letter-spacing:1.5px; }
-
-    /* Divider more spacing */
-    body.desktop-mode .divider { margin:28px 0; }
-
-    /* Mode toggle button */
     .mode-toggle {
       position:fixed; top:18px; right:18px; z-index:9999;
       background:rgba(10,5,16,0.85); backdrop-filter:blur(16px);
@@ -198,7 +55,6 @@
     }
     .mode-toggle:hover { color:var(--text); border-color:var(--p); background:rgba(232,80,122,0.12); }
 
-    /* ── SHARED STYLES (mobile + desktop) ── */
     .site-header { text-align:center; padding:20px 0 8px; margin-bottom:6px; }
     .site-title {
       font-family:'Cormorant Garamond',serif; font-size:3.4em; font-weight:300;
@@ -206,6 +62,7 @@
       text-shadow:0 0 40px var(--glow),0 0 80px rgba(232,80,122,0.2);
       animation:titleGlow 3s ease-in-out infinite alternate;
     }
+    body.desktop-mode .site-title { font-size:5em; }
     @keyframes titleGlow {
       from { text-shadow:0 0 30px var(--glow),0 0 60px rgba(232,80,122,0.15); }
       to   { text-shadow:0 0 50px var(--glow),0 0 100px rgba(232,80,122,0.3),0 0 140px rgba(123,47,255,0.1); }
@@ -235,6 +92,26 @@
       transition:border-color .25s,background .25s;
     }
     .card:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.16); }
+    body.desktop-mode .card { padding:36px; }
+
+    .app-layout { display:block; }
+    body.desktop-mode .app-layout {
+      display:grid;
+      grid-template-columns: 400px 1fr;
+      gap:20px;
+      align-items:start;
+    }
+    body.desktop-mode .app-left {
+      position:sticky; top:32px;
+      max-height:calc(100vh - 64px);
+      overflow-y:auto; overflow-x:hidden;
+      scrollbar-width:thin;
+      scrollbar-color:rgba(232,80,122,0.3) transparent;
+      border-radius:var(--radius);
+    }
+    body.desktop-mode .app-left::-webkit-scrollbar { width:5px; }
+    body.desktop-mode .app-left::-webkit-scrollbar-thumb { background:rgba(232,80,122,0.3); border-radius:3px; }
+    .app-right { min-width:0; }
 
     .section-label { font-family:'Cormorant Garamond',serif; font-size:.7em; letter-spacing:4px; text-transform:uppercase; color:var(--p2); font-weight:400; margin-bottom:4px; }
     h2 {
@@ -367,6 +244,8 @@
     .record-item:hover { background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.18); transform:translateX(4px); }
     .record-item:hover::before { opacity:1; }
     .record-item.friend-record::before { background:linear-gradient(180deg,#7b2fff,#3388ff); }
+
+    /* NEW: highlight when has reactions */
     .record-item.has-reactions { border-color:rgba(232,80,122,0.25); }
 
     .record-inner { display:flex; flex-direction:column; gap:14px; }
@@ -405,6 +284,7 @@
     .reaction-btn .r-count { font-family:'Space Mono',monospace; font-size:11px; }
     .reaction-label { font-size:11px; color:var(--text3); margin-right:2px; }
 
+    /* NEW: received reaction display (read-only own records) */
     .reaction-received {
       display:flex; align-items:center; gap:6px; margin-top:12px; flex-wrap:wrap;
       padding:10px 14px;
@@ -518,7 +398,7 @@
     .priority-mid  { background:rgba(255,170,0,0.15); border:1px solid rgba(255,170,0,0.3); color:#ffcc66; }
     .priority-low  { background:rgba(100,100,100,0.15); border:1px solid rgba(100,100,100,0.3); color:var(--text3); }
 
-    /* ── STREAK ── */
+    /* ── STREAK / NOTIFICATION BADGE ── */
     .streak-banner {
       background:linear-gradient(135deg,rgba(255,180,0,0.15),rgba(255,100,0,0.1));
       border:1px solid rgba(255,170,0,0.3);
@@ -570,8 +450,9 @@
 
     .records-list-header { display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:14px; margin-bottom:20px; }
     .records-list-header h2 { margin-bottom:0; }
+    #recordsTitle { transition:all .3s; }
 
-    /* ── TOAST ── */
+    /* ── TOAST NOTIFICATION ── */
     #toast {
       position:fixed; bottom:30px; left:50%; transform:translateX(-50%) translateY(20px);
       background:rgba(20,10,30,0.95); backdrop-filter:blur(20px);
@@ -589,7 +470,7 @@
     .sort-btn.active { background:rgba(232,80,122,0.15); border-color:var(--p); color:var(--p2); }
     .sort-btn:hover { color:var(--text); border-color:rgba(255,255,255,0.2); box-shadow:none; transform:none; }
 
-    /* ── LIGHTBOX ── */
+    /* ── PHOTO LIGHTBOX ── */
     #lightbox {
       display:none; position:fixed; inset:0; z-index:99998;
       background:rgba(0,0,0,0.92); backdrop-filter:blur(12px);
@@ -675,7 +556,7 @@
   <div id="appDiv" style="display:none">
 
     <!-- Toolbar -->
-    <div class="card" id="toolbarCard" style="padding:18px 28px;margin-bottom:16px">
+    <div class="card" style="padding:18px 28px;margin-bottom:16px">
       <div class="toolbar">
         <div class="record-count" id="recordCount">載入中…</div>
         <div class="toolbar-buttons">
@@ -794,8 +675,8 @@
             <input type="text" name="seat" placeholder="座位 / 區域">
             <input type="text" name="venue" placeholder="場地">
             <input type="text" name="tags" placeholder="標籤（逗號分隔，例：偶像、電子、戶外）">
-            <div style="margin-bottom:16px">
-              <div style="font-size:13px;color:var(--text3);margin-bottom:8px;letter-spacing:.5px">演出評分</div>
+            <div style="margin-bottom:12px">
+              <div style="font-size:13px;color:var(--text3);margin-bottom:6px;letter-spacing:.5px">演出評分</div>
               <div class="star-rating" id="formStars">
                 <span class="star" data-val="1">★</span>
                 <span class="star" data-val="2">★</span>
@@ -902,6 +783,7 @@ try {
   setPersistence(auth, browserSessionPersistence);
 } catch(e) { console.error(e); alert("初始化失敗"); }
 
+// DOM refs
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -958,6 +840,7 @@ let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 let currentSort = 'date-desc';
 
+// ── TOAST ──
 function showToast(msg, duration = 2500) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -965,6 +848,7 @@ function showToast(msg, duration = 2500) {
   setTimeout(() => t.classList.remove('show'), duration);
 }
 
+// ── LIGHTBOX ──
 window.openLightbox = function(src) {
   document.getElementById('lightboxImg').src = src;
   document.getElementById('lightbox').classList.add('open');
@@ -976,6 +860,7 @@ document.getElementById('lightbox').addEventListener('click', e => {
   if (e.target === document.getElementById('lightbox')) closeLightbox();
 });
 
+// ── MODULES ──
 const MODULES = [
   { id:'overview', label:'📋 總覽',     defaultOn:true  },
   { id:'price',    label:'💰 票價分析', defaultOn:true  },
@@ -1016,6 +901,7 @@ customiseStatsBtn.addEventListener('click', () => {
   if (!open) buildModuleToggles();
 });
 
+// ── SORT ──
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
@@ -1037,6 +923,7 @@ function sortRecords(records) {
   }
 }
 
+// ── THEME ──
 const themeMap = {
   green:{ p:'#00b377', p2:'#00cc88', glow:'rgba(0,200,120,0.5)', bg1:'#051210', bg2:'#0a1f19' },
   blue: { p:'#3388ff', p2:'#66aaff', glow:'rgba(51,150,255,0.5)', bg1:'#050d1a', bg2:'#0a1430' },
@@ -1073,6 +960,7 @@ window.removePhoto = function() {
   currentPhotoBase64 = null; photoInput.value = ''; photoPreview.innerHTML = '';
 };
 
+// ── STARS ──
 document.querySelectorAll('#formStars .star').forEach(star => {
   star.addEventListener('click', () => {
     formRating = parseInt(star.dataset.val);
@@ -1094,6 +982,7 @@ function updateStarDisplay(containerId, rating) {
   });
 }
 
+// Password toggle
 document.addEventListener('click', e => {
   if (e.target?.classList?.contains('toggle-password')) {
     const btn = e.target;
@@ -1171,6 +1060,7 @@ function countBy(arr, fn) {
   return map;
 }
 
+// ── STREAK DETECTION ──
 function checkStreak(records) {
   if (records.length < 2) return null;
   const sorted = [...records]
@@ -1190,12 +1080,14 @@ function checkStreak(records) {
   return streak >= 2 ? streak : null;
 }
 
+// ── STATS ──
 function updateStats(records) {
   const div = document.getElementById('statsDiv');
   if (records.length === 0) { div.innerHTML = '<div class="empty-state">✦ 還沒有任何紀錄 ✦</div>'; return; }
   const active = getActiveModules();
   let html = '';
 
+  // Streak banner
   const streak = checkStreak(records);
   if (streak) {
     html += `<div class="streak-banner"><span class="streak-icon">🔥</span><span>連續 <strong>${streak} 年</strong>都有去演唱會！繼續保持追星熱情 ✦</span></div>`;
@@ -1362,6 +1254,7 @@ function updateStats(records) {
     '<div style="color:var(--text3);font-size:13px;padding:16px 0">請在上方勾選要顯示的統計模組</div>';
 }
 
+// ── COMPARE PANEL ──
 function buildCompareStats(myRecs, friendRecs, friendName) {
   function calc(recs) {
     const total = recs.length;
@@ -1412,6 +1305,7 @@ toggleCompareBtn.addEventListener('click', () => {
 });
 bannerBackBtn.addEventListener('click', backToMyRecords);
 
+// ── CALENDAR ──
 function renderCalendar() {
   const div = document.getElementById('calendarDiv');
   const year = calYear, month = calMonth;
@@ -1468,6 +1362,7 @@ window.calShowDay = function(day) {
   </div>`;
 };
 
+// ── WISHLIST ──
 wishlistToggleBtn.addEventListener('click', () => {
   const open = wishlistCard.style.display !== 'none';
   wishlistCard.style.display = open ? 'none' : 'block';
@@ -1526,10 +1421,12 @@ function renderWishlist() {
     btn.addEventListener('click', () => {
       const artist = btn.getAttribute('data-artist');
       const wid = parseInt(btn.getAttribute('data-wid'));
+      // Pre-fill form
       recordForm.artist.value = artist;
       wishlistCard.style.display = 'none';
       document.getElementById('formCard').scrollIntoView({ behavior:'smooth' });
       showToast(`✓ 已帶入「${artist}」，填寫其他資料後儲存！`);
+      // Remove from wishlist after convert
       const updated = getWishlist().filter(w => w.id !== wid);
       saveWishlist(updated);
       renderWishlist();
@@ -1537,6 +1434,7 @@ function renderWishlist() {
   });
 }
 
+// ── LOAD / DISPLAY RECORDS ──
 async function loadRecords(uid) {
   viewingFriendUid = null;
   viewingFriendName = null;
@@ -1611,8 +1509,10 @@ function displayRecords(records, ownerId) {
          </div>`
       : '';
 
+    // ── REACTION SECTION ──
     let reactionHTML = '';
     if (isFriendView) {
+      // Friend's records: can send reactions
       reactionHTML = `<div class="reaction-bar">
         <span class="reaction-label">送出：</span>
         <button class="reaction-btn" data-emoji="🔥" data-rid="${r.id}"><span>🔥</span><span class="r-count">${fire}</span></button>
@@ -1621,6 +1521,7 @@ function displayRecords(records, ownerId) {
         <button class="reaction-btn" data-emoji="👑" data-rid="${r.id}"><span>👑</span><span class="r-count">${crown}</span></button>
       </div>`;
     } else if (totalReactions > 0) {
+      // Own records: show received reactions as read-only display
       reactionHTML = `<div class="reaction-received">
         <span class="reaction-received-label">✦ 收到</span>
         ${fire    > 0 ? `<span class="reaction-received-pill">🔥 <span class="r-count">${fire}</span></span>` : ''}
@@ -1738,6 +1639,7 @@ recordForm.addEventListener('submit', async e => {
   } catch(err) { showToast('儲存失敗：' + err.message); }
 });
 
+// ── FRIENDS ──
 generateInviteBtn.addEventListener('click', () => {
   inviteCodeInput.value = 'KPOP' + Math.random().toString(36).substring(2,8).toUpperCase();
 });
@@ -1902,6 +1804,7 @@ profileToggleBtn.addEventListener('click', () => {
   }
 });
 
+// ── SEARCH ──
 function initSearch() {
   searchInput.addEventListener('input', () => {
     const term = searchInput.value.trim().toLowerCase();
@@ -1923,6 +1826,7 @@ function initSearch() {
   });
 }
 
+// ── AUTH ──
 onAuthStateChanged(auth, user => {
   if (user) {
     loginDiv.style.display = 'none'; appDiv.style.display = 'block';
