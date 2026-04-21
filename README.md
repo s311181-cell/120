@@ -94,7 +94,7 @@
     #logoutBtn{background:rgba(255,255,255,0.08);color:var(--text2);border:1px solid var(--glass-border)}
     #logoutBtn:hover{background:rgba(204,60,60,0.2);border-color:#cc3c3c;color:white}
 
-    /* stats modules */
+    /* ── STATS MODULES ── */
     .stats-module-toggles{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
     .module-toggle-btn{
       background:rgba(255,255,255,0.06);
@@ -110,8 +110,11 @@
       color:var(--p2);
     }
     .module-toggle-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.25)}
+
     .stats-module{display:none;animation:fadeUp .3s ease both}
     .stats-module.visible{display:block}
+
+    /* basic grid */
     .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
     .stats-grid-4{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px;}
     @media(min-width:600px){
@@ -126,14 +129,20 @@
     .stat-value{font-family:'Cormorant Garamond',serif;font-size:2em;font-weight:300;color:white;letter-spacing:1px;}
     .stat-value.sm{font-size:1.5em}
     .stat-label{font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-top:4px;}
+
+    /* bar chart */
     .bar-chart{display:flex;flex-direction:column;gap:8px;margin-top:4px;}
     .bar-row{display:flex;align-items:center;gap:10px;font-size:12px;}
     .bar-label{width:100px;text-align:right;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0;}
     .bar-track{flex:1;height:10px;background:rgba(255,255,255,0.06);border-radius:5px;overflow:hidden;}
     .bar-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--p),#a030ee);transition:width .6s ease;}
     .bar-val{width:55px;font-family:'Space Mono',monospace;font-size:11px;color:var(--text3);}
+
+    /* trend chart */
     .trend-chart{width:100%;overflow:hidden;margin-top:8px}
     .trend-chart svg{display:block;width:100%}
+
+    /* calendar */
     .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
     .cal-title{font-family:'Cormorant Garamond',serif;font-size:1.3em;font-weight:300;letter-spacing:2px;color:white;}
     .cal-nav button{background:rgba(255,255,255,0.08);border:1px solid var(--glass-border);color:var(--text2);padding:7px 16px;font-size:13px;border-radius:30px;}
@@ -158,64 +167,23 @@
     .cal-event-item{padding:8px 0;border-bottom:1px solid var(--glass-border);font-size:13px;color:var(--text2);}
     .cal-event-item:last-child{border-bottom:none}
     .cal-event-artist{color:white;font-weight:500;margin-bottom:2px;}
+
+    /* spending breakdown */
     .spend-table{width:100%;border-collapse:collapse;margin-top:8px;font-size:13px;}
     .spend-table th{text-align:left;color:var(--text3);font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:8px 4px;border-bottom:1px solid var(--glass-border);font-weight:400;}
     .spend-table td{padding:10px 4px;color:var(--text2);border-bottom:1px solid rgba(255,255,255,0.04);}
     .spend-table tr:last-child td{border-bottom:none}
     .spend-rank{font-family:'Space Mono',monospace;color:var(--text3);font-size:11px;}
 
-    /* 修正照片顯示 - 保持比例不變形 */
-    .record-photo-container {
-      width: 100%;
-      margin-bottom: 14px;
-      overflow: hidden;
-      border-radius: var(--radius-sm);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: rgba(0,0,0,0.2);
-    }
-    .record-photo-container img {
-      width: 100%;
-      height: auto;
-      max-height: 280px;
-      object-fit: contain;
-      cursor: pointer;
-      transition: transform 0.3s;
-      border-radius: var(--radius-sm);
-    }
-    .record-photo-container img:hover {
-      transform: scale(1.02);
-    }
-    /* 電腦模式下維持相同比例 */
-    body.desktop-mode .record-item {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 24px;
-      align-items: start;
-    }
-    body.desktop-mode .record-photo-container {
-      margin-bottom: 0;
-      min-height: 200px;
-      background: rgba(0,0,0,0.15);
-    }
-    body.desktop-mode .record-photo-container img {
-      max-height: 320px;
-      width: 100%;
-      height: auto;
-      object-fit: contain;
-    }
-    .no-photo-placeholder {
-      text-align: center;
-      color: var(--text3);
-      font-size: 3em;
-      padding: 40px 20px;
-    }
-
+    /* records */
+    #recordsList{list-style:none}
     .record-item{background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));border:1px solid var(--glass-border);border-radius:var(--radius);padding:20px;margin:12px 0;transition:all .25s;position:relative;overflow:hidden;}
     .record-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--p),#7b2fff);opacity:0;transition:opacity .25s;}
     .record-item:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.18);transform:translateX(4px);}
     .record-item:hover::before{opacity:1}
+    .record-photo-container{width:100%;max-height:220px;overflow:hidden;border-radius:var(--radius-sm);margin-bottom:14px;}
+    .record-photo-container img{width:100%;object-fit:cover;cursor:pointer;transition:transform .3s;}
+    .record-photo-container img:hover{transform:scale(1.02)}
     .record-header{font-family:'Cormorant Garamond',serif;font-size:1.35em;font-weight:400;color:white;letter-spacing:.5px;margin-bottom:10px;}
     .record-info{display:grid;gap:5px}
     .record-info div{font-size:13px;color:var(--text2);display:flex;align-items:center;gap:6px;letter-spacing:.3px;}
@@ -258,11 +226,15 @@
     .empty-state{text-align:center;padding:48px 20px;font-family:'Cormorant Garamond',serif;font-size:1.1em;font-style:italic;color:var(--text3);letter-spacing:1px;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
     .record-item{animation:fadeUp .35s ease both}
+
+    /* rating stars */
     .star-rating{display:flex;gap:4px;margin-top:6px}
     .star{font-size:18px;cursor:pointer;color:var(--text3);transition:color .15s}
     .star.filled{color:#ffcc00}
     .star:hover,.star.hover{color:#ffcc00}
     .record-stars{font-size:14px;letter-spacing:2px}
+
+    /* tag pills */
     .tag-pill{display:inline-block;background:rgba(232,80,122,0.15);border:1px solid rgba(232,80,122,0.3);color:var(--p2);border-radius:20px;padding:3px 10px;font-size:11px;letter-spacing:.5px;margin:2px;}
   </style>
 </head>
@@ -333,6 +305,7 @@
   <!-- APP -->
   <div id="appDiv" style="display:none">
 
+    <!-- Toolbar -->
     <div class="card" style="margin-bottom:16px;padding:18px 28px">
       <div class="toolbar">
         <div class="record-count" id="recordCount">載入中…</div>
@@ -391,14 +364,21 @@
         <div class="currency-input-group">
           <input type="text" name="price" placeholder="票價（例：1500 或 1500*2）" required>
           <select name="currency" id="currencySelect" class="currency-select">
-            <option value="TWD">新台幣 TWD</option><option value="KRW">韓元 KRW</option><option value="JPY">日圓 JPY</option>
-            <option value="USD">美元 USD</option><option value="EUR">歐元 EUR</option><option value="HKD">港幣 HKD</option>
-            <option value="CNY">人民幣 CNY</option><option value="THB">泰銖 THB</option><option value="SGD">新加坡幣 SGD</option>
+            <option value="TWD">新台幣 TWD</option>
+            <option value="KRW">韓元 KRW</option>
+            <option value="JPY">日圓 JPY</option>
+            <option value="USD">美元 USD</option>
+            <option value="EUR">歐元 EUR</option>
+            <option value="HKD">港幣 HKD</option>
+            <option value="CNY">人民幣 CNY</option>
+            <option value="THB">泰銖 THB</option>
+            <option value="SGD">新加坡幣 SGD</option>
             <option value="MYR">馬來西亞令吉 MYR</option>
           </select>
         </div>
         <input type="text" name="seat" placeholder="座位 / 區域">
         <input type="text" name="venue" placeholder="場地">
+        <!-- NEW: tags & rating -->
         <input type="text" name="tags" placeholder="標籤（逗號分隔，例：偶像、電子、戶外）">
         <div style="margin-bottom:12px">
           <div style="font-size:13px;color:var(--text3);margin-bottom:6px;letter-spacing:.5px">演出評分</div>
@@ -425,21 +405,24 @@
       </form>
     </div>
 
-    <!-- STATS -->
+    <!-- ── STATS ── -->
     <div class="card" id="statsCard">
       <div class="section-label">Analytics</div>
       <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:8px">
         <h2 style="margin-bottom:0">📊 追星統計</h2>
         <button id="customiseStatsBtn" class="btn-ghost btn-sm" style="margin-top:4px">⚙ 自訂模組</button>
       </div>
+
+      <!-- Module toggle bar (hidden until customise clicked) -->
       <div id="moduleToggleBar" style="display:none;margin-bottom:16px">
         <div style="font-size:12px;color:var(--text3);margin-bottom:8px;letter-spacing:1px">勾選要顯示的統計模組：</div>
         <div class="stats-module-toggles" id="moduleToggles"></div>
       </div>
+
       <div id="statsDiv"><div class="loading">載入中</div></div>
     </div>
 
-    <!-- CALENDAR -->
+    <!-- ── CALENDAR ── -->
     <div class="card" id="calCard">
       <div class="section-label">Calendar</div>
       <h2>📅 行事曆</h2>
@@ -487,7 +470,7 @@ try {
   setPersistence(auth, browserSessionPersistence);
 } catch(e) { console.error(e); alert("初始化失敗"); }
 
-// DOM refs
+// ── DOM refs ──
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -532,7 +515,7 @@ let formRating = 0;
 let calYear = new Date().getFullYear();
 let calMonth = new Date().getMonth();
 
-// STATS MODULE DEFINITIONS
+// ── STATS MODULE DEFINITIONS ──
 const MODULES = [
   { id: 'overview',  label: '📋 總覽',       defaultOn: true },
   { id: 'price',     label: '💰 票價分析',   defaultOn: true },
@@ -549,18 +532,21 @@ function getActiveModules() {
   if (saved) return JSON.parse(saved);
   return MODULES.filter(m => m.defaultOn).map(m => m.id);
 }
-function saveActiveModules(ids) { localStorage.setItem('stats_modules', JSON.stringify(ids)); }
+function saveActiveModules(ids) {
+  localStorage.setItem('stats_modules', JSON.stringify(ids));
+}
 
 function buildModuleToggles() {
   const active = getActiveModules();
   moduleToggles.innerHTML = '';
-  MODULES.forEach((m, idx) => {
+  MODULES.forEach(m => {
     const btn = document.createElement('button');
     btn.className = 'module-toggle-btn' + (active.includes(m.id) ? ' active' : '');
     btn.textContent = m.label;
     btn.addEventListener('click', () => {
       btn.classList.toggle('active');
-      const activeIds = [...document.querySelectorAll('.module-toggle-btn')].map((b,i) => MODULES[i].id).filter((id,i) => document.querySelectorAll('.module-toggle-btn')[i].classList.contains('active'));
+      const ids = [...document.querySelectorAll('.module-toggle-btn.active')].map((b,i) => MODULES[i].id);
+      const activeIds = MODULES.filter((_,i) => document.querySelectorAll('.module-toggle-btn')[i].classList.contains('active')).map(m=>m.id);
       saveActiveModules(activeIds);
       updateStats(allRecords);
     });
@@ -574,7 +560,7 @@ customiseStatsBtn.addEventListener('click', () => {
   if (!open) buildModuleToggles();
 });
 
-// THEME
+// ── THEME ──
 const themeMap = {
   green:{p:'#00b377',p2:'#00cc88',glow:'rgba(0,200,120,0.5)',bg1:'#051210',bg2:'#0a1f19'},
   blue:{p:'#3388ff',p2:'#66aaff',glow:'rgba(51,150,255,0.5)',bg1:'#050d1a',bg2:'#0a1430'},
@@ -602,13 +588,25 @@ window.toggleMode=function(){
 };
 window.removePhoto=function(){currentPhotoBase64=null;photoInput.value='';photoPreview.innerHTML='';};
 
-// STAR RATING
+// ── STAR RATING ──
 document.querySelectorAll('#formStars .star').forEach(star => {
-  star.addEventListener('click', () => { formRating = parseInt(star.dataset.val); updateStarDisplay('formStars', formRating); });
-  star.addEventListener('mouseenter', () => { const v = parseInt(star.dataset.val); document.querySelectorAll('#formStars .star').forEach(s => s.classList.toggle('hover', parseInt(s.dataset.val) <= v)); });
-  star.addEventListener('mouseleave', () => { document.querySelectorAll('#formStars .star').forEach(s => s.classList.remove('hover')); });
+  star.addEventListener('click', () => {
+    formRating = parseInt(star.dataset.val);
+    updateStarDisplay('formStars', formRating);
+  });
+  star.addEventListener('mouseenter', () => {
+    const v = parseInt(star.dataset.val);
+    document.querySelectorAll('#formStars .star').forEach(s => s.classList.toggle('hover', parseInt(s.dataset.val) <= v));
+  });
+  star.addEventListener('mouseleave', () => {
+    document.querySelectorAll('#formStars .star').forEach(s => s.classList.remove('hover'));
+  });
 });
-function updateStarDisplay(containerId, rating) { document.querySelectorAll(`#${containerId} .star`).forEach(s => { s.classList.toggle('filled', parseInt(s.dataset.val) <= rating); }); }
+function updateStarDisplay(containerId, rating) {
+  document.querySelectorAll(`#${containerId} .star`).forEach(s => {
+    s.classList.toggle('filled', parseInt(s.dataset.val) <= rating);
+  });
+}
 
 // password toggle
 document.addEventListener('click',e=>{
@@ -647,12 +645,14 @@ photoInput.addEventListener('change',async e=>{
 function getCurrencySymbol(c){return{TWD:'NT$',KRW:'₩',JPY:'¥',USD:'US$',EUR:'€',HKD:'HK$',CNY:'¥',THB:'฿',SGD:'S$',MYR:'RM'}[c]||c;}
 function evalPrice(str){try{const v=eval((str||'0').replace(/[^0-9+\-*/().]/g,''));return isNaN(v)?0:v;}catch(e){return 0;}}
 
-// STATS ENGINE
+// ── STATS ENGINE ──
 function updateStats(records){
   const div = document.getElementById('statsDiv');
   if(records.length===0){div.innerHTML='<div class="empty-state">✦ 還沒有任何紀錄 ✦</div>';return;}
   const active = getActiveModules();
   let html = '';
+
+  // --- helper: group by currency (use most-common as primary) ---
   const curMap={};
   records.forEach(r=>{
     const c=r.data.currency||'TWD';
@@ -669,78 +669,176 @@ function updateStats(records){
   const mainMax=mainVals.length?Math.round(Math.max(...mainVals)):0;
   const mainMin=mainVals.length?Math.round(Math.min(...mainVals)):0;
 
+  // MODULE: overview
   if(active.includes('overview')){
-    html+=`<div class="stats-module visible"><div class="stats-grid-4">
-      <div class="stat-card"><div class="stat-value">${records.length}</div><div class="stat-label">🎤 總場次</div></div>
-      <div class="stat-card blue"><div class="stat-value sm">${sym} ${mainTotal.toLocaleString()}</div><div class="stat-label">💰 ${mainCur} 總花費</div></div>
-      <div class="stat-card green"><div class="stat-value sm">${sym} ${mainAvg.toLocaleString()}</div><div class="stat-label">📊 平均票價</div></div>
-      <div class="stat-card purple"><div class="stat-value">${Object.keys(countBy(records,r=>r.data.artist)).length}</div><div class="stat-label">🌟 不同藝人</div></div>
-    </div></div><hr class="divider">`;
+    html+=`<div class="stats-module visible" id="mod-overview">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">總覽</div>
+      <div class="stats-grid-4">
+        <div class="stat-card"><div class="stat-value">${records.length}</div><div class="stat-label">🎤 總場次</div></div>
+        <div class="stat-card blue"><div class="stat-value sm">${sym} ${mainTotal.toLocaleString()}</div><div class="stat-label">💰 ${mainCur} 總花費</div></div>
+        <div class="stat-card green"><div class="stat-value sm">${sym} ${mainAvg.toLocaleString()}</div><div class="stat-label">📊 平均票價</div></div>
+        <div class="stat-card purple"><div class="stat-value">${Object.keys(countBy(records,r=>r.data.artist)).length}</div><div class="stat-label">🌟 不同藝人</div></div>
+      </div>
+    </div><hr class="divider">`;
   }
+
+  // MODULE: price analysis
   if(active.includes('price') && mainVals.length){
     const sorted=[...mainVals].sort((a,b)=>a-b);
     const median=sorted.length%2===0?(sorted[sorted.length/2-1]+sorted[sorted.length/2])/2:sorted[Math.floor(sorted.length/2)];
-    html+=`<div class="stats-module visible"><div class="stats-grid">
-      <div class="stat-card"><div class="stat-value sm">${sym} ${mainMax.toLocaleString()}</div><div class="stat-label">🔺 最高票價</div></div>
-      <div class="stat-card"><div class="stat-value sm">${sym} ${mainMin.toLocaleString()}</div><div class="stat-label">🔻 最低票價</div></div>
-      <div class="stat-card blue"><div class="stat-value sm">${sym} ${Math.round(median).toLocaleString()}</div><div class="stat-label">📊 中位數</div></div>
-      <div class="stat-card green"><div class="stat-value sm">${sym} ${mainAvg.toLocaleString()}</div><div class="stat-label">📐 平均值</div></div>
-    </div></div><hr class="divider">`;
+    html+=`<div class="stats-module visible" id="mod-price">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">票價分析（${mainCur}）</div>
+      <div class="stats-grid" style="margin-bottom:0">
+        <div class="stat-card"><div class="stat-value sm">${sym} ${mainMax.toLocaleString()}</div><div class="stat-label">🔺 最高票價</div></div>
+        <div class="stat-card"><div class="stat-value sm">${sym} ${mainMin.toLocaleString()}</div><div class="stat-label">🔻 最低票價</div></div>
+        <div class="stat-card blue"><div class="stat-value sm">${sym} ${Math.round(median).toLocaleString()}</div><div class="stat-label">📊 中位數</div></div>
+        <div class="stat-card green"><div class="stat-value sm">${sym} ${mainAvg.toLocaleString()}</div><div class="stat-label">📐 平均值</div></div>
+      </div>
+    </div><hr class="divider">`;
   }
+
+  // MODULE: artist ranking
   if(active.includes('artist')){
     const artistCount = countBy(records, r=>r.data.artist);
     const top = Object.entries(artistCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
     const maxVal = top[0]?.[1]||1;
-    html+=`<div class="stats-module visible"><div class="bar-chart">${top.map(([name,cnt])=>`<div class="bar-row"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%"></div></div><div class="bar-val">${cnt} 場</div></div>`).join('')}</div></div><hr class="divider">`;
+    html+=`<div class="stats-module visible" id="mod-artist">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">藝人場次排行</div>
+      <div class="bar-chart">${top.map(([name,cnt])=>`
+        <div class="bar-row">
+          <div class="bar-label">${name}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%"></div></div>
+          <div class="bar-val">${cnt} 場</div>
+        </div>`).join('')}
+      </div>
+    </div><hr class="divider">`;
   }
+
+  // MODULE: venue ranking
   if(active.includes('venue')){
     const venueCount = countBy(records.filter(r=>r.data.venue), r=>r.data.venue);
     const top = Object.entries(venueCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
     const maxVal = top[0]?.[1]||1;
-    if(top.length) html+=`<div class="stats-module visible"><div class="bar-chart">${top.map(([name,cnt])=>`<div class="bar-row"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%;background:linear-gradient(90deg,#3388ff,#00ccff)"></div></div><div class="bar-val">${cnt} 次</div></div>`).join('')}</div></div><hr class="divider">`;
-    else html+=`<div class="stats-module visible"><div style="color:var(--text3);font-size:13px">尚無場地資料</div></div><hr class="divider">`;
+    html+=`<div class="stats-module visible" id="mod-venue">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">場地排行</div>
+      ${top.length?`<div class="bar-chart">${top.map(([name,cnt])=>`
+        <div class="bar-row">
+          <div class="bar-label">${name}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%;background:linear-gradient(90deg,#3388ff,#00ccff)"></div></div>
+          <div class="bar-val">${cnt} 次</div>
+        </div>`).join('')}
+      </div>`:'<div style="color:var(--text3);font-size:13px">尚無場地資料</div>'}
+    </div><hr class="divider">`;
   }
+
+  // MODULE: yearly trend
   if(active.includes('trend')){
-    const yearMap={}; records.forEach(r=>{if(r.data.datetime){const y=new Date(r.data.datetime).getFullYear();yearMap[y]=(yearMap[y]||0)+1;}});
-    const years=Object.keys(yearMap).sort(); const maxY=Math.max(...Object.values(yearMap),1);
+    const yearMap={};
+    records.forEach(r=>{
+      if(!r.data.datetime)return;
+      const y=new Date(r.data.datetime).getFullYear();
+      yearMap[y]=(yearMap[y]||0)+1;
+    });
+    const years=Object.keys(yearMap).sort();
+    const maxY=Math.max(...Object.values(yearMap),1);
     if(years.length>0){
       const W=360,H=80,pad=8;
-      const pts=years.map((y,i)=>{const x=years.length===1?W/2:pad+(W-pad*2)*i/(years.length-1);const yy=H-pad-(yearMap[y]/maxY)*(H-pad*2);return{x,y:yy,val:yearMap[y],year:y};});
+      const pts=years.map((y,i)=>{
+        const x=years.length===1?W/2:pad+(W-pad*2)*i/(years.length-1);
+        const yy=H-pad-(yearMap[y]/maxY)*(H-pad*2);
+        return{x,y:yy,val:yearMap[y],year:y};
+      });
       const path=pts.map((p,i)=>i===0?`M${p.x},${p.y}`:`L${p.x},${p.y}`).join(' ');
       const area=`M${pts[0].x},${H} `+pts.map(p=>`L${p.x},${p.y}`).join(' ')+` L${pts[pts.length-1].x},${H} Z`;
-      html+=`<div class="stats-module visible"><div class="trend-chart"><svg viewBox="0 0 ${W} ${H+20}"><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--p)" stop-opacity="0.35"/><stop offset="100%" stop-color="var(--p)" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#tg)"/><path d="${path}" fill="none" stroke="var(--p)" stroke-width="2"/><circle cx="${pts[0].x}" cy="${pts[0].y}" r="4" fill="var(--p)"/><text x="${pts[0].x}" y="${H+16}" text-anchor="middle" fill="rgba(245,238,255,0.4)" font-size="10">${pts[0].year}</text><text x="${pts[0].x}" y="${pts[0].y-8}" text-anchor="middle" fill="white" font-size="10">${pts[0].val}</text><circle cx="${pts[pts.length-1].x}" cy="${pts[pts.length-1].y}" r="4" fill="var(--p)"/><text x="${pts[pts.length-1].x}" y="${H+16}" text-anchor="middle" fill="rgba(245,238,255,0.4)" font-size="10">${pts[pts.length-1].year}</text><text x="${pts[pts.length-1].x}" y="${pts[pts.length-1].y-8}" text-anchor="middle" fill="white" font-size="10">${pts[pts.length-1].val}</text></svg></div></div><hr class="divider">`;
+      html+=`<div class="stats-module visible" id="mod-trend">
+        <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">年度場次趨勢</div>
+        <div class="trend-chart">
+          <svg viewBox="0 0 ${W} ${H+20}" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--p)" stop-opacity="0.35"/>
+                <stop offset="100%" stop-color="var(--p)" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+            <path d="${area}" fill="url(#tg)"/>
+            <path d="${path}" fill="none" stroke="var(--p)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            ${pts.map(p=>`<circle cx="${p.x}" cy="${p.y}" r="4" fill="var(--p)"/>
+              <text x="${p.x}" y="${H+16}" text-anchor="middle" fill="rgba(245,238,255,0.4)" font-size="10">${p.year}</text>
+              <text x="${p.x}" y="${p.y-8}" text-anchor="middle" fill="white" font-size="10">${p.val}</text>`).join('')}
+          </svg>
+        </div>
+      </div><hr class="divider">`;
     }
   }
+
+  // MODULE: rating analysis
   if(active.includes('rating')){
     const rated=records.filter(r=>r.data.rating>0);
     if(rated.length){
       const avg=(rated.reduce((s,r)=>s+r.data.rating,0)/rated.length).toFixed(1);
       const dist=[1,2,3,4,5].map(v=>rated.filter(r=>r.data.rating===v).length);
       const maxD=Math.max(...dist,1);
-      html+=`<div class="stats-module visible"><div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><div class="stat-card" style="min-width:100px"><div class="stat-value">${avg}</div><div class="stat-label">⭐ 平均分</div></div><div style="flex:1;min-width:180px">${[5,4,3,2,1].map(v=>`<div class="bar-row" style="margin-bottom:5px"><div class="bar-label" style="width:40px;font-size:13px">${'★'.repeat(v)}</div><div class="bar-track"><div class="bar-fill" style="width:${(dist[v-1]/maxD*100).toFixed(0)}%;background:linear-gradient(90deg,#ffcc00,#ff9900)"></div></div><div class="bar-val">${dist[v-1]}</div></div>`).join('')}</div></div></div><hr class="divider">`;
+      html+=`<div class="stats-module visible" id="mod-rating">
+        <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">評分分析（${rated.length}筆有評分）</div>
+        <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
+          <div class="stat-card" style="min-width:100px"><div class="stat-value">${avg}</div><div class="stat-label">⭐ 平均分</div></div>
+          <div style="flex:1;min-width:180px">
+            ${[5,4,3,2,1].map(v=>`<div class="bar-row" style="margin-bottom:5px">
+              <div class="bar-label" style="width:40px;font-size:13px">${'★'.repeat(v)}</div>
+              <div class="bar-track"><div class="bar-fill" style="width:${(dist[v-1]/maxD*100).toFixed(0)}%;background:linear-gradient(90deg,#ffcc00,#ff9900)"></div></div>
+              <div class="bar-val">${dist[v-1]}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+      </div><hr class="divider">`;
     } else {
-      html+=`<div class="stats-module visible"><div style="color:var(--text3);font-size:13px;padding:8px 0">尚無評分資料，新增紀錄時可以幫演唱會打星！</div></div><hr class="divider">`;
+      html+=`<div class="stats-module visible" id="mod-rating"><div style="color:var(--text3);font-size:13px;padding:8px 0">尚無評分資料，新增紀錄時可以幫演唱會打星！</div></div><hr class="divider">`;
     }
   }
+
+  // MODULE: tags cloud
   if(active.includes('tags')){
     const tagCount={};
-    records.forEach(r=>{if(r.data.tags)r.data.tags.split(',').forEach(t=>{const tag=t.trim();if(tag)tagCount[tag]=(tagCount[tag]||0)+1;});});
+    records.forEach(r=>{
+      if(!r.data.tags)return;
+      r.data.tags.split(',').forEach(t=>{const tag=t.trim();if(tag){tagCount[tag]=(tagCount[tag]||0)+1;}});
+    });
     const tags=Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,20);
-    if(tags.length) html+=`<div class="stats-module visible"><div>${tags.map(([t,c])=>`<span class="tag-pill">${t} <span style="opacity:.6">${c}</span></span>`).join('')}</div></div><hr class="divider">`;
-    else html+=`<div class="stats-module visible"><div style="color:var(--text3);font-size:13px">尚無標籤資料</div></div><hr class="divider">`;
+    html+=`<div class="stats-module visible" id="mod-tags">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">標籤雲</div>
+      ${tags.length?`<div>${tags.map(([t,c])=>`<span class="tag-pill">${t} <span style="opacity:.6">${c}</span></span>`).join('')}</div>`:'<div style="color:var(--text3);font-size:13px">尚無標籤資料</div>'}
+    </div><hr class="divider">`;
   }
+
+  // MODULE: monthly distribution
   if(active.includes('month')){
     const mNames=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
     const mCount=Array(12).fill(0);
     records.forEach(r=>{if(r.data.datetime){const m=new Date(r.data.datetime).getMonth();mCount[m]++;}});
     const maxM=Math.max(...mCount,1);
-    html+=`<div class="stats-module visible"><div class="bar-chart">${mCount.map((c,i)=>c>0?`<div class="bar-row"><div class="bar-label">${mNames[i]}</div><div class="bar-track"><div class="bar-fill" style="width:${(c/maxM*100).toFixed(1)}%;background:linear-gradient(90deg,#7b2fff,#e8507a)"></div></div><div class="bar-val">${c} 場</div></div>`:'').join('')}</div></div>`;
+    html+=`<div class="stats-module visible" id="mod-month">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px">月份分布</div>
+      <div class="bar-chart">${mCount.map((c,i)=>c>0?`
+        <div class="bar-row">
+          <div class="bar-label">${mNames[i]}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(c/maxM*100).toFixed(1)}%;background:linear-gradient(90deg,#7b2fff,#e8507a)"></div></div>
+          <div class="bar-val">${c} 場</div>
+        </div>`:''
+      ).join('')}
+      </div>
+    </div>`;
   }
+
   document.getElementById('statsDiv').innerHTML = html || '<div style="color:var(--text3);font-size:13px;padding:16px 0">請在上方勾選要顯示的統計模組</div>';
 }
-function countBy(arr, fn){ const map={}; arr.forEach(item=>{const k=fn(item);if(k){map[k]=(map[k]||0)+1;}}); return map; }
 
-// CALENDAR
+function countBy(arr, fn){
+  const map={};
+  arr.forEach(item=>{const k=fn(item);if(k){map[k]=(map[k]||0)+1;}});
+  return map;
+}
+
+// ── CALENDAR ──
 function renderCalendar(){
   const div = document.getElementById('calendarDiv');
   const year=calYear, month=calMonth;
@@ -748,27 +846,197 @@ function renderCalendar(){
   const firstDay=new Date(year,month,1).getDay();
   const daysInMonth=new Date(year,month+1,0).getDate();
   const monthNames=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+
+  // index events by day
   const eventsByDay={};
-  allRecords.forEach(r=>{if(r.data.datetime){const d=new Date(r.data.datetime);if(d.getFullYear()===year&&d.getMonth()===month){const day=d.getDate();if(!eventsByDay[day])eventsByDay[day]=[];eventsByDay[day].push(r.data);}}});
-  let html=`<div class="cal-nav"><button onclick="calPrev()">‹</button><div class="cal-title">${year} 年 ${monthNames[month]}</div><button onclick="calNext()">›</button></div><div class="cal-grid"><div class="cal-weekday">日</div><div class="cal-weekday">一</div><div class="cal-weekday">二</div><div class="cal-weekday">三</div><div class="cal-weekday">四</div><div class="cal-weekday">五</div><div class="cal-weekday">六</div>`;
+  allRecords.forEach(r=>{
+    if(!r.data.datetime)return;
+    const d=new Date(r.data.datetime);
+    if(d.getFullYear()===year&&d.getMonth()===month){
+      const day=d.getDate();
+      if(!eventsByDay[day])eventsByDay[day]=[];
+      eventsByDay[day].push(r.data);
+    }
+  });
+
+  let html=`<div class="cal-nav">
+    <button onclick="calPrev()">‹</button>
+    <div class="cal-title">${year} 年 ${monthNames[month]}</div>
+    <button onclick="calNext()">›</button>
+  </div>
+  <div class="cal-grid">
+    <div class="cal-weekday">日</div><div class="cal-weekday">一</div>
+    <div class="cal-weekday">二</div><div class="cal-weekday">三</div>
+    <div class="cal-weekday">四</div><div class="cal-weekday">五</div>
+    <div class="cal-weekday">六</div>`;
+
   for(let i=0;i<firstDay;i++) html+=`<div class="cal-day other-month"></div>`;
-  for(let d=1;d<=daysInMonth;d++){ const isToday=today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d; const hasEvent=!!eventsByDay[d]; const cls=['cal-day',isToday?'today':'',hasEvent?'has-event':''].filter(Boolean).join(' '); const onclick=hasEvent?`onclick="calShowDay(${d})"`:''; html+=`<div class="${cls}" ${onclick} data-day="${d}">${d}</div>`;}
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday=today.getFullYear()===year&&today.getMonth()===month&&today.getDate()===d;
+    const hasEvent=!!eventsByDay[d];
+    const cls=['cal-day',isToday?'today':'',hasEvent?'has-event':''].filter(Boolean).join(' ');
+    const onclick=hasEvent?`onclick="calShowDay(${d})"`:''
+    html+=`<div class="${cls}" ${onclick} data-day="${d}">${d}</div>`;
+  }
   html+=`</div><div id="calPopup"></div>`;
   div.innerHTML=html;
 }
+
 window.calPrev=function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();}
 window.calNext=function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();}
 window.calShowDay=function(day){
   const popup=document.getElementById('calPopup');
-  const events=allRecords.filter(r=>{if(!r.data.datetime)return false;const d=new Date(r.data.datetime);return d.getFullYear()===calYear&&d.getMonth()===calMonth&&d.getDate()===day;});
+  const events=allRecords.filter(r=>{
+    if(!r.data.datetime)return false;
+    const d=new Date(r.data.datetime);
+    return d.getFullYear()===calYear&&d.getMonth()===calMonth&&d.getDate()===day;
+  });
   const monthNames=['一','二','三','四','五','六','七','八','九','十','十一','十二'];
-  popup.innerHTML=`<div class="cal-events-popup"><div style="font-size:12px;color:var(--text3);letter-spacing:2px;margin-bottom:8px">${calYear}年${monthNames[calMonth]}月${day}日的活動</div>${events.map(r=>`<div class="cal-event-item"><div class="cal-event-artist">🎤 ${r.data.artist}</div><div style="font-size:12px;color:var(--text3)">${new Date(r.data.datetime).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})} ／ ${r.data.venue||'未填場地'}</div></div>`).join('')}</div>`;
+  popup.innerHTML=`<div class="cal-events-popup">
+    <div style="font-size:12px;color:var(--text3);letter-spacing:2px;margin-bottom:8px">${calYear}年${monthNames[calMonth]}月${day}日的活動</div>
+    ${events.map(r=>`<div class="cal-event-item">
+      <div class="cal-event-artist">🎤 ${r.data.artist}</div>
+      <div style="font-size:12px;color:var(--text3)">${new Date(r.data.datetime).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})} ／ ${r.data.venue||'未填場地'}</div>
+    </div>`).join('')}
+  </div>`;
 }
 
-// RECORDS
+// ── RECORDS ──
 async function loadRecords(uid){
   viewingFriendUid=null;backToMyRecordsBtn.style.display='none';
   recordsList.innerHTML='<li class="loading">載入中</li>';
   const q=query(collection(db,'concerts'),where('uid','==',uid));
   const snap=await getDocs(q);
-  allRecords=snap.docs.map(d=>({
+  allRecords=snap.docs.map(d=>({id:d.id,data:d.data()})).sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
+  displayRecords(allRecords,uid);
+  updateStats(allRecords);
+  renderCalendar();
+  recordCount.textContent=`${allRecords.length} 筆紀錄`;
+}
+
+function displayRecords(records, ownerId){
+  recordsList.innerHTML='';
+  if(records.length===0){recordsList.innerHTML='<li class="empty-state">✦ 還沒有任何紀錄，快新增吧 ✦</li>';return;}
+  records.forEach((r,i)=>{
+    const d=r.data;const li=document.createElement('li');li.className='record-item';
+    li.style.animationDelay=`${i*0.04}s`;
+    const date=new Date(d.datetime);
+    const dateStr=date.toLocaleDateString('zh-TW');
+    const timeStr=date.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+    const photoHTML=d.photo?`<div class="record-photo-container"><img src="${d.photo}" onclick="window.open(this.src)"></div>`:'';
+    const starsHTML=d.rating?`<div class="record-stars">${'★'.repeat(d.rating)}<span style="color:var(--text3)">${'★'.repeat(5-d.rating)}</span></div>`:'';
+    const tagsHTML=d.tags?`<div style="margin-top:6px">${d.tags.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag-pill">${t}</span>`).join('')}</div>`:'';
+    li.innerHTML=`${photoHTML}
+      <div class="record-header">🎤 ${d.artist}</div>
+      ${starsHTML}
+      <div class="record-info">
+        <div><span class="info-icon">📅</span>${dateStr} ${timeStr}</div>
+        <div><span class="info-icon">💰</span>${getCurrencySymbol(d.currency||'TWD')} ${d.price||'未填'} <span style="color:var(--text3);font-size:11px">(${d.currency||'TWD'})</span></div>
+        <div><span class="info-icon">💺</span>${d.seat||'未填'}</div>
+        <div><span class="info-icon">📍</span>${d.venue||'未填'}</div>
+        ${d.notes?`<div><span class="info-icon">📝</span>${d.notes}</div>`:''}
+      </div>
+      ${tagsHTML}`;
+    const btnDiv=document.createElement('div');btnDiv.className='button-group';
+    if(currentUserId&&d.uid===currentUserId){
+      const editBtn=document.createElement('button');editBtn.textContent='✏️ 編輯';editBtn.onclick=()=>startEdit(r.id,d);
+      const delBtn=document.createElement('button');delBtn.textContent='🗑 刪除';delBtn.className='btn-danger';
+      delBtn.onclick=async()=>{if(confirm('確定刪除這筆紀錄？')){await deleteDoc(doc(db,'concerts',r.id));if(viewingFriendUid)displayFriendRecords(viewingFriendUid);else loadRecords(currentUserId);}};
+      btnDiv.append(editBtn,delBtn);
+    }
+    li.appendChild(btnDiv);recordsList.appendChild(li);
+  });
+}
+
+function startEdit(id,data){
+  editingId=id;formTitle.textContent="編輯演唱會紀錄";submitBtn.textContent="💾 更新紀錄";
+  cancelBtn.style.display="inline-block";clearBtn.style.display="none";
+  recordForm.artist.value=data.artist||'';recordForm.datetime.value=data.datetime||'';
+  recordForm.price.value=data.price||'';document.getElementById('currencySelect').value=data.currency||'TWD';
+  recordForm.seat.value=data.seat||'';recordForm.venue.value=data.venue||'';
+  recordForm.notes.value=data.notes||'';recordForm.tags.value=data.tags||'';
+  formRating=data.rating||0;updateStarDisplay('formStars',formRating);
+  currentPhotoBase64=data.photo||null;
+  photoPreview.innerHTML=data.photo?`<img src="${data.photo}" style="max-width:100%;border-radius:12px"><br><button type="button" class="remove-photo-btn" onclick="removePhoto()">移除照片</button>`:'';
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+recordForm.addEventListener('submit',async e=>{
+  e.preventDefault();const user=auth.currentUser;if(!user)return alert('請登入');
+  const payload={uid:user.uid,artist:recordForm.artist.value.trim(),datetime:recordForm.datetime.value,
+    price:recordForm.price.value.trim(),currency:document.getElementById('currencySelect').value,
+    seat:recordForm.seat.value.trim(),venue:recordForm.venue.value.trim(),
+    notes:recordForm.notes.value.trim(),tags:recordForm.tags.value.trim(),
+    rating:formRating,photo:currentPhotoBase64||'',visibility:'public',updatedAt:new Date().toISOString()};
+  if(!editingId)payload.createdAt=new Date().toISOString();
+  try{
+    if(editingId)await updateDoc(doc(db,'concerts',editingId),payload);
+    else await addDoc(collection(db,'concerts'),payload);
+    alert(editingId?'更新成功！':'新增成功！');cancelEdit();loadRecords(user.uid);
+  }catch(err){alert('儲存失敗：'+err.message);}
+});
+
+// ── FRIENDS ──
+generateInviteBtn.addEventListener('click',()=>{inviteCodeInput.value='KPOP'+Math.random().toString(36).substring(2,8).toUpperCase();});
+saveInviteBtn.addEventListener('click',async()=>{if(!currentUserId)return;const code=inviteCodeInput.value.trim();if(!code)return alert('請輸入邀請碼');try{await setDoc(doc(db,'inviteCodes',code),{ownerUid:currentUserId,createdAt:serverTimestamp(),singleUse:false});await setDoc(doc(db,'users',currentUserId),{inviteCode:code},{merge:true});alert('邀請碼已儲存');loadFriends();}catch(e){alert('儲存失敗');}});
+joinByCodeBtn.addEventListener('click',async()=>{if(!currentUserId)return;const code=joinInviteInput.value.trim();if(!code)return;try{const snap=await getDoc(doc(db,'inviteCodes',code));if(!snap.exists())throw new Error('無效邀請碼');const{ownerUid}=snap.data();if(ownerUid===currentUserId)throw new Error('不能加自己');await setDoc(doc(db,'users',currentUserId,'friends',ownerUid),{createdAt:serverTimestamp()});await setDoc(doc(db,'users',ownerUid,'friends',currentUserId),{createdAt:serverTimestamp()});alert('加入好友成功');loadFriends();}catch(e){alert(e.message);}});
+saveProfileBtn.addEventListener('click',async()=>{if(!currentUserId)return;await setDoc(doc(db,'users',currentUserId),{displayName:displayNameInput.value.trim(),bio:bioInput.value.trim(),preferredLang:preferredLang.value},{merge:true});alert('已儲存');loadProfile();});
+async function loadProfile(){if(!currentUserId)return;const snap=await getDoc(doc(db,'users',currentUserId));const d=snap.data()||{};displayNameInput.value=d.displayName||'';bioInput.value=d.bio||'';preferredLang.value=d.preferredLang||'zh';inviteCodeInput.value=d.inviteCode||'';}
+async function loadFriends(){friendsList.innerHTML='<li class="loading">載入中</li>';if(!currentUserId)return;const col=collection(db,'users',currentUserId,'friends');const snaps=await getDocs(col);if(snaps.empty){friendsList.innerHTML='<li style="color:var(--text3);font-size:13px;padding:8px 0">暫無好友</li>';return;}friendsList.innerHTML='';for(const f of snaps.docs){const fid=f.id;let display=fid;try{const u=await getDoc(doc(db,'users',fid));if(u.exists()&&u.data().displayName)display=u.data().displayName;}catch(e){}const alias=f.data().alias||'';const showName=alias||display;const li=document.createElement('li');li.className='friend-item';li.innerHTML=`<div style="font-weight:500">${showName}</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button data-fid="${fid}" class="view-friend-btn btn-ghost">紀錄</button><button data-fid="${fid}" class="view-profile-btn btn-ghost">檔案</button><button data-fid="${fid}" class="edit-alias-btn btn-ghost">暱稱</button><button data-fid="${fid}" class="remove-friend-btn btn-danger">移除</button></div>`;friendsList.appendChild(li);}
+  document.querySelectorAll('.view-friend-btn').forEach(btn=>btn.addEventListener('click',()=>displayFriendRecords(btn.getAttribute('data-fid'))));
+  document.querySelectorAll('.view-profile-btn').forEach(btn=>btn.addEventListener('click',async()=>{const fid=btn.getAttribute('data-fid');const snap=await getDoc(doc(db,'users',fid));if(snap.exists()){alert(`暱稱: ${snap.data().displayName||'未設定'}\n簡介: ${snap.data().bio||'無'}`);}else alert('無資料');}));
+  document.querySelectorAll('.edit-alias-btn').forEach(btn=>btn.addEventListener('click',async()=>{const fid=btn.getAttribute('data-fid');const alias=prompt('暱稱');if(alias!==null)await setDoc(doc(db,'users',currentUserId,'friends',fid),{alias:alias.trim()},{merge:true});loadFriends();}));
+  document.querySelectorAll('.remove-friend-btn').forEach(btn=>btn.addEventListener('click',async()=>{const fid=btn.getAttribute('data-fid');if(confirm('移除好友?')){await deleteDoc(doc(db,'users',currentUserId,'friends',fid));await deleteDoc(doc(db,'users',fid,'friends',currentUserId));if(viewingFriendUid===fid)backToMyRecords();loadFriends();}}));
+}
+
+async function displayFriendRecords(fid){
+  viewingFriendUid=fid;backToMyRecordsBtn.style.display='inline-block';
+  const q=query(collection(db,'concerts'),where('uid','==',fid));
+  const snap=await getDocs(q);
+  allRecords=snap.docs.map(d=>({id:d.id,data:d.data()})).sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
+  displayRecords(allRecords,fid);renderCalendar();recordCount.textContent=`${allRecords.length} 筆紀錄（好友）`;
+}
+function backToMyRecords(){viewingFriendUid=null;backToMyRecordsBtn.style.display='none';profileCard.style.display='none';if(currentUserId)loadRecords(currentUserId);}
+backToMyRecordsBtn.addEventListener('click',backToMyRecords);
+
+profileToggleBtn.addEventListener('click',()=>{if(profileCard.style.display==='none'){profileCard.style.display='block';loadProfile();loadFriends();setProfileEditable(true);}else{profileCard.style.display='none';}});
+function setProfileEditable(edit){displayNameInput.disabled=!edit;bioInput.disabled=!edit;preferredLang.disabled=!edit;document.getElementById('inviteArea').style.display=edit?'block':'none';saveProfileBtn.style.display=edit?'inline-block':'none';generateInviteBtn.style.display=edit?'inline-block':'none';saveInviteBtn.style.display=edit?'inline-block':'none';joinByCodeBtn.style.display=edit?'inline-block':'none';closeProfileBtn.style.display=edit?'none':'inline-block';}
+closeProfileBtn.addEventListener('click',()=>{profileCard.style.display='none';});
+
+// ── AUTH ──
+onAuthStateChanged(auth,user=>{
+  if(user){
+    loginDiv.style.display='none';appDiv.style.display='block';currentUserId=user.uid;
+    setDoc(doc(db,'users',user.uid),{email:user.email},{merge:true});
+    loadRecords(user.uid);loadProfile();loadFriends();initSearch();
+  }else{
+    loginDiv.style.display='block';appDiv.style.display='none';currentUserId=null;viewingFriendUid=null;
+    backToMyRecordsBtn.style.display='none';profileCard.style.display='none';
+  }
+});
+signupForm.addEventListener('submit',async e=>{e.preventDefault();const email=signupForm.email.value.trim();const pwd=signupForm.password.value;try{await createUserWithEmailAndPassword(auth,email,pwd);await setDoc(doc(db,'users',auth.currentUser.uid),{email,displayName:'',bio:'',preferredLang:'zh'});alert('註冊成功！');signupForm.reset();}catch(err){alert('註冊失敗：'+err.message);}});
+loginForm.addEventListener('submit',async e=>{e.preventDefault();try{await signInWithEmailAndPassword(auth,loginForm.email.value.trim(),loginForm.password.value);loginForm.reset();}catch(err){alert('登入失敗：帳密錯誤');}});
+logoutBtn.addEventListener('click',async()=>{await signOut(auth);alert('已登出');});
+forgotPasswordBtn.addEventListener('click',async()=>{const email=prompt('請輸入 Email');if(email)try{await sendPasswordResetEmail(auth,email);alert('重設信件已發送！');}catch(e){alert('發送失敗');}});
+
+function initSearch(){
+  searchInput.addEventListener('input',()=>{
+    const term=searchInput.value.trim().toLowerCase();
+    if(!term)displayRecords(allRecords,viewingFriendUid||currentUserId);
+    else{
+      const filtered=allRecords.filter(r=>
+        r.data.artist?.toLowerCase().includes(term)||
+        r.data.venue?.toLowerCase().includes(term)||
+        r.data.notes?.toLowerCase().includes(term)||
+        r.data.tags?.toLowerCase().includes(term));
+      displayRecords(filtered,viewingFriendUid||currentUserId);
+      recordCount.textContent=`找到 ${filtered.length} 筆`;
+    }
+  });
+}
+
+initThemeSelector();
+initSearch();
+</script>
+</body>
+</html>
