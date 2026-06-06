@@ -373,6 +373,37 @@
     #exportPanel { display:none; }
     .export-options { display:flex; gap:10px; flex-wrap:wrap; }
 
+    /* ═══ 周邊記帳 MERCH ═══ */
+    #merchCard { display:none; }
+    .merch-item { background:var(--glass); border:1px solid var(--glass-border); border-radius:var(--radius-sm); padding:14px 16px; margin:8px 0; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; font-size:13px; transition:all .2s; position:relative; overflow:hidden; }
+    .merch-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,hsl(calc(var(--hue)+30),80%,60%),hsl(calc(var(--hue)+80),60%,50%)); }
+    .merch-item:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.2); }
+    .merch-item-info { display:flex; flex-direction:column; gap:3px; flex:1; min-width:0; padding-left:10px; }
+    .merch-item-name { color:white; font-weight:500; font-size:14px; }
+    .merch-item-sub { color:var(--text3); font-size:12px; }
+    .merch-cat-pill { padding:3px 10px; border-radius:12px; font-size:11px; letter-spacing:.5px; background:hsla(calc(var(--hue)+30),70%,60%,0.18); border:1px solid hsla(calc(var(--hue)+30),70%,60%,0.35); color:hsl(calc(var(--hue)+30),90%,80%); white-space:nowrap; flex-shrink:0; }
+    .merch-total-bar { background:linear-gradient(135deg,hsla(calc(var(--hue)+30),70%,60%,0.12),hsla(var(--hue),78%,62%,0.08)); border:1px solid hsla(calc(var(--hue)+30),70%,60%,0.25); border-radius:var(--radius-sm); padding:14px 18px; margin-top:4px; margin-bottom:4px; display:flex; gap:24px; flex-wrap:wrap; align-items:center; }
+    .merch-total-item { text-align:center; }
+    .merch-total-val { font-family:'Cormorant Garamond',serif; font-size:1.6em; font-weight:300; color:white; }
+    .merch-total-label { font-size:10px; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; }
+
+    /* ── TICKET RELEASE ── */
+    #ticketReleaseBtn { background:linear-gradient(135deg,hsl(calc(var(--hue)+40),80%,50%),hsl(calc(var(--hue)+80),65%,42%)); }
+    #ticketReleaseBtn:hover { box-shadow:0 8px 24px hsla(calc(var(--hue)+60),70%,50%,0.45); }
+    #ticketModal { display:none; position:fixed; inset:0; z-index:99990; background:rgba(0,0,0,0.75); backdrop-filter:blur(8px); align-items:center; justify-content:center; padding:20px; }
+    #ticketModal.open { display:flex; }
+    .ticket-modal-box { background:rgba(18,8,28,0.98); backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--radius); padding:32px; max-width:500px; width:100%; position:relative; animation:fadeUp .3s ease both; max-height:90vh; overflow-y:auto; }
+    .ticket-modal-box::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,hsl(calc(var(--hue)+40),80%,50%),var(--p),hsl(calc(var(--hue)+80),60%,50%)); border-radius:var(--radius) var(--radius) 0 0; }
+    .ticket-modal-title { font-family:'Cormorant Garamond',serif; font-size:2em; font-weight:300; color:white; letter-spacing:2px; margin-bottom:4px; }
+    .ticket-modal-sub { font-size:12px; color:var(--text3); letter-spacing:1.5px; margin-bottom:20px; }
+    .ticket-preset-grid { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .ticket-preset-btn { background:rgba(255,255,255,0.06); border:1px solid var(--glass-border); color:var(--text2); padding:9px 18px; border-radius:20px; font-size:12px; cursor:pointer; transition:all .2s; white-space:nowrap; }
+    .ticket-preset-btn:hover { background:hsla(var(--hue),78%,62%,0.2); border-color:var(--p); color:white; box-shadow:0 0 12px hsla(var(--hue),78%,62%,0.3); transform:translateY(-1px); }
+    .ticket-saved-item { display:flex; align-items:center; gap:8px; padding:8px 0; border-bottom:1px solid var(--glass-border); }
+    .ticket-saved-item:last-child { border-bottom:none; }
+    .ticket-saved-label { font-size:13px; color:white; font-weight:500; flex:0 0 90px; }
+    .ticket-saved-url { font-size:11px; color:var(--text3); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1; }
+
     /* ── MISC ── */
     .loading { text-align:center; color:var(--text3); font-style:italic; font-size:13px; padding:20px; letter-spacing:1px; }
     .loading::after { content:'...'; animation:dots 1.4s infinite; }
@@ -445,6 +476,34 @@
 <div id="lightbox">
   <button id="lightboxClose" onclick="closeLightbox()">✕ 關閉</button>
   <img id="lightboxImg" src="" alt="照片">
+</div>
+
+<!-- TICKET RELEASE MODAL -->
+<div id="ticketModal">
+  <div class="ticket-modal-box">
+    <div class="ticket-modal-title">🎫 釋票通知</div>
+    <div class="ticket-modal-sub">✦ 快速前往釋票查詢頁面 ✦</div>
+    <div style="font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">預設快速連結</div>
+    <div class="ticket-preset-grid">
+      <button class="ticket-preset-btn" data-url="https://twice.jcomp.tk/ticket/?game=itzy068&utm_source=threads&utm_medium=social&utm_content=link_in_bio">🎟 ITZY 釋票查詢</button>
+      <button class="ticket-preset-btn" data-url="https://tixcraft.com">TIXCRAFT 拓元</button>
+      <button class="ticket-preset-btn" data-url="https://kktix.com">KKTIX</button>
+      <button class="ticket-preset-btn" data-url="https://ticket.ibon.com.tw">ibon 售票</button>
+      <button class="ticket-preset-btn" data-url="https://www.indievox.com">Indievox</button>
+      <button class="ticket-preset-btn" data-url="https://www.cityline.com">Cityline</button>
+    </div>
+    <hr class="divider" style="margin:16px 0">
+    <div style="font-size:11px;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px">自訂釋票頁（最多 5 個）</div>
+    <div id="ticketSavedList" style="margin-bottom:12px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
+      <input id="ticketCustomUrlInput" placeholder="貼上釋票網址…" style="margin-bottom:0;flex:1;min-width:180px;font-size:12px">
+      <input id="ticketCustomLabelInput" placeholder="名稱" style="margin-bottom:0;width:80px;font-size:12px;flex-shrink:0">
+      <button id="addTicketSiteBtn" class="btn-sm" style="flex-shrink:0">＋ 儲存</button>
+    </div>
+    <div style="display:flex;justify-content:flex-end">
+      <button id="closeTicketModalBtn" class="btn-ghost">✕ 關閉</button>
+    </div>
+  </div>
 </div>
 
 <!-- QUICK NOTE FAB -->
@@ -557,8 +616,10 @@
         <div class="record-count" id="recordCount">載入中…</div>
         <div class="toolbar-buttons">
           <button id="backToMyRecordsBtn" class="btn-ghost" style="display:none">← 我的紀錄</button>
+          <button id="ticketReleaseBtn">🎫 釋票通知</button>
           <button id="exportToggleBtn" class="btn-ghost">📤 匯出</button>
           <button id="wishlistToggleBtn" class="btn-ghost">🎯 願望</button>
+          <button id="merchToggleBtn" class="btn-ghost">🛍 周邊</button>
           <button id="profileToggleBtn" class="btn-ghost">個人檔案</button>
           <button id="logoutBtn">登出</button>
         </div>
@@ -656,6 +717,44 @@
       <button id="addWishBtn" style="width:100%">✚ 加入願望清單</button>
       <hr class="divider">
       <ul id="wishlistItems" style="list-style:none"></ul>
+    </div>
+
+    <!-- MERCH 周邊記帳 -->
+    <div id="merchCard" class="card">
+      <div class="section-label">Merchandise</div>
+      <h2>🛍 周邊記帳</h2>
+      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">記錄演唱會周邊消費，掌握追星完整花費</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+        <input id="merchArtistInput" placeholder="藝人 / 活動" style="flex:1;min-width:0;margin-bottom:0">
+        <select id="merchCatSelect" style="width:auto;min-width:120px;margin-bottom:0">
+          <option value="album">💿 專輯</option>
+          <option value="photobook">📖 寫真集</option>
+          <option value="goods">🎀 官方周邊</option>
+          <option value="lightstick">🪄 螢光棒</option>
+          <option value="fanmade">✂️ 自製周邊</option>
+          <option value="outfit">👗 演唱會服裝</option>
+          <option value="food">🍱 現場餐飲</option>
+          <option value="other">📦 其他</option>
+        </select>
+      </div>
+      <input id="merchNameInput" placeholder="品項名稱（例：Fancy You 限定版）" style="margin-bottom:8px">
+      <div class="currency-input-group">
+        <input type="text" id="merchPriceInput" placeholder="金額（例：890 或 500*3）" style="margin-bottom:0">
+        <select id="merchCurrencySelect" class="currency-select" style="margin-bottom:0">
+          <option value="TWD">新台幣 TWD</option>
+          <option value="KRW">韓元 KRW</option>
+          <option value="JPY">日圓 JPY</option>
+          <option value="USD">美元 USD</option>
+          <option value="EUR">歐元 EUR</option>
+          <option value="HKD">港幣 HKD</option>
+          <option value="SGD">新加坡幣 SGD</option>
+        </select>
+      </div>
+      <input id="merchNoteInput" placeholder="備註（選填，例：現場限定、代購）" style="margin-top:4px;margin-bottom:12px">
+      <button id="addMerchBtn" style="width:100%">✚ 新增周邊記帳</button>
+      <hr class="divider">
+      <div id="merchTotalBar" class="merch-total-bar" style="display:none"></div>
+      <ul id="merchItems" style="list-style:none;margin-top:4px"></ul>
     </div>
 
     <!-- 2-column layout -->
@@ -860,8 +959,6 @@ const COUNTRIES = [
   {code:'EG',name:'埃及',en:'Egypt',flag:'🇪🇬'},
   {code:'PE',name:'秘魯',en:'Peru',flag:'🇵🇪'},
 ];
-
-// Country code → info map
 const COUNTRY_MAP = {};
 COUNTRIES.forEach(c => { COUNTRY_MAP[c.code] = c; });
 
@@ -931,20 +1028,15 @@ function initCountrySearch() {
     ).slice(0, 15);
   }
 
-  // Expose for edit population
   window._selectCountry = selectCountry;
   window._clearCountry = () => { input.value = ''; hidden.value = ''; };
 }
 
 // ════════════════════════════════════════
-// WORLD MAP — compact SVG
-// We use Natural Earth simplified paths encoded as a JS lookup.
-// For size reasons we use a curated set of country shapes via
-// a lightweight GeoJSON-to-path approach using a CDN.
+// WORLD MAP
 // ════════════════════════════════════════
 function renderWorldMap(visitedCodes) {
   const visited = new Set(visitedCodes);
-  // Use world-atlas topojson from CDN, render via canvas-free SVG
   const container = document.createElement('div');
   container.innerHTML = `
     <div style="font-size:13px;color:var(--text2);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
@@ -960,7 +1052,6 @@ function renderWorldMap(visitedCodes) {
       <div class="map-legend-item"><div class="map-legend-dot" style="background:rgba(255,255,255,0.07)"></div> 未去</div>
     </div>`;
 
-  // Visited country tags
   const tagContainer = container.querySelector('#mapVisitedList');
   if (visited.size === 0) {
     tagContainer.innerHTML = '<div style="font-size:12px;color:var(--text3)">新增演唱會時選擇國家，就會在地圖上顯示 ✦</div>';
@@ -976,15 +1067,12 @@ function renderWorldMap(visitedCodes) {
     });
   }
 
-  // Load world SVG map via topojson + d3 (from CDN)
   const wrap = container.querySelector('#mapSvgWrap');
   loadMapSVG(wrap, visited);
-
   return container;
 }
 
 function loadMapSVG(wrap, visited) {
-  // Load d3 + topojson dynamically
   const loadScript = src => new Promise((res,rej) => {
     if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
     const s = document.createElement('script');
@@ -999,15 +1087,10 @@ function loadMapSVG(wrap, visited) {
     return fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
   }).then(r => r.json()).then(world => {
     wrap.querySelector('#mapLoadingMsg')?.remove();
-
     const W = 800, H = 420;
-    const projection = d3.geoNaturalEarth1()
-      .scale(140)
-      .translate([W/2, H/2]);
+    const projection = d3.geoNaturalEarth1().scale(140).translate([W/2, H/2]);
     const path = d3.geoPath().projection(projection);
     const countries = topojson.feature(world, world.objects.countries);
-
-    // ISO numeric to alpha-2 lookup (curated subset)
     const numericToAlpha2 = {
       '004':'AF','008':'AL','012':'DZ','024':'AO','032':'AR','036':'AU','040':'AT',
       '050':'BD','056':'BE','076':'BR','100':'BG','116':'KH','120':'CM','124':'CA',
@@ -1021,30 +1104,22 @@ function loadMapSVG(wrap, visited) {
       '630':'PR','642':'RO','643':'RU','682':'SA','706':'SO','710':'ZA','724':'ES',
       '752':'SE','756':'CH','764':'TH','788':'TN','792':'TR','804':'UA','784':'AE',
       '826':'GB','840':'US','858':'UY','862':'VE','704':'VN','887':'YE','716':'ZW',
-      '344':'HK','446':'MO','158':'TW','076':'BR','818':'EG','288':'GH','404':'KE',
+      '344':'HK','446':'MO','158':'TW',
     };
-
     const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
-    svgEl.style.width = '100%';
-    svgEl.style.height = 'auto';
-
+    svgEl.style.width = '100%'; svgEl.style.height = 'auto';
     const tooltip = document.getElementById('mapTooltip');
-
     countries.features.forEach(feature => {
       const numId = String(feature.id).padStart(3,'0');
       const alpha2 = numericToAlpha2[numId];
       const isVisited = alpha2 && visited.has(alpha2);
       const country = alpha2 ? COUNTRY_MAP[alpha2] : null;
-
       const pathEl = document.createElementNS('http://www.w3.org/2000/svg','path');
       const d = path(feature);
       if (!d) return;
       pathEl.setAttribute('d', d);
       pathEl.setAttribute('class', 'country-path' + (isVisited ? ' visited' : ''));
-      pathEl.setAttribute('data-code', alpha2 || '');
-      pathEl.setAttribute('data-name', country ? country.name : '');
-
       if (isVisited && country) {
         pathEl.addEventListener('mousemove', e => {
           tooltip.style.display = 'block';
@@ -1056,46 +1131,16 @@ function loadMapSVG(wrap, visited) {
       }
       svgEl.appendChild(pathEl);
     });
-
-    // Taiwan special: add as a small circle since it may be tiny in 110m
-    if (visited.has('TW')) {
-      const twPt = projection([121.0, 23.7]);
-      if (twPt) {
-        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        circle.setAttribute('cx', twPt[0]);
-        circle.setAttribute('cy', twPt[1]);
-        circle.setAttribute('r', 5);
-        circle.setAttribute('class', 'country-path visited');
-        circle.style.cursor = 'pointer';
-        circle.addEventListener('mousemove', e => {
-          tooltip.style.display = 'block';
-          tooltip.style.left = e.clientX + 'px';
-          tooltip.style.top  = e.clientY + 'px';
-          tooltip.textContent = '🇹🇼 台灣';
-        });
-        circle.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
-        svgEl.appendChild(circle);
-      }
-    }
-    if (visited.has('HK')) {
-      const hkPt = projection([114.1, 22.3]);
-      if (hkPt) {
-        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        circle.setAttribute('cx', hkPt[0]); circle.setAttribute('cy', hkPt[1]);
-        circle.setAttribute('r', 5); circle.setAttribute('class', 'country-path visited');
-        svgEl.appendChild(circle);
-      }
-    }
-    if (visited.has('SG')) {
-      const sgPt = projection([103.8, 1.3]);
-      if (sgPt) {
-        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
-        circle.setAttribute('cx', sgPt[0]); circle.setAttribute('cy', sgPt[1]);
-        circle.setAttribute('r', 5); circle.setAttribute('class', 'country-path visited');
-        svgEl.appendChild(circle);
-      }
-    }
-
+    [['TW',[121.0,23.7],'🇹🇼 台灣'],['HK',[114.1,22.3],'🇭🇰 香港'],['SG',[103.8,1.3],'🇸🇬 新加坡'],['MO',[113.5,22.2],'🇲🇴 澳門']].forEach(([code,lnglat,label])=>{
+      if(!visited.has(code))return;
+      const pt=projection(lnglat);if(!pt)return;
+      const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('cx',pt[0]);circle.setAttribute('cy',pt[1]);circle.setAttribute('r',5);
+      circle.setAttribute('class','country-path visited');circle.style.cursor='pointer';
+      circle.addEventListener('mousemove',e=>{tooltip.style.display='block';tooltip.style.left=e.clientX+'px';tooltip.style.top=e.clientY+'px';tooltip.textContent=label;});
+      circle.addEventListener('mouseleave',()=>{tooltip.style.display='none';});
+      svgEl.appendChild(circle);
+    });
     wrap.appendChild(svgEl);
   }).catch(err => {
     wrap.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:12px;padding:30px">地圖載入失敗，請檢查網路連線</div>';
@@ -1169,9 +1214,7 @@ let activeYearFilter = null;
 let activeTagFilter = null;
 let pinnedIds = new Set();
 
-// ════════════════════════════════════════
-// UI LANGUAGE (zh / en)
-// ════════════════════════════════════════
+// ── UI LANGUAGE ──
 const UI_TEXT = {
   zh: {
     newEntry: '新增演唱會紀錄', save: '💾 儲存紀錄', update: '💾 更新紀錄',
@@ -1213,9 +1256,7 @@ function loadLangPref() {
   return localStorage.getItem('mj_lang_' + (currentUserId||'')) || 'zh';
 }
 
-// ════════════════════════════════════════
-// COLOR PICKER
-// ════════════════════════════════════════
+// ── COLOR PICKER ──
 const PRESETS = [
   { label:'粉紅', h:338, s:78, bg:5 },
   { label:'紫羅蘭', h:270, s:70, bg:5 },
@@ -1536,27 +1577,31 @@ function updateStats(records) {
   const mainMin=mainVals.length?Math.round(Math.min(...mainVals)):0;
 
   if(active.includes('overview')) {
+    // Include merch total in overview
+    const merchList = getMerchList ? getMerchList() : [];
+    const merchByC = {};
+    merchList.forEach(m => { const v=evalPrice(m.price); if(!merchByC[m.currency])merchByC[m.currency]=0; merchByC[m.currency]+=v; });
+    const merchTWD = Math.round(merchByC['TWD']||0);
+    const merchExtra = merchTWD > 0 ? `<div class="stat-card" style="background:linear-gradient(135deg,hsla(calc(var(--hue)+30),70%,60%,0.15),hsla(calc(var(--hue)+80),60%,50%,0.08));border-color:hsla(calc(var(--hue)+30),70%,60%,0.25)"><div class="stat-value sm">NT$ ${merchTWD.toLocaleString()}</div><div class="stat-label">🛍 周邊花費</div></div>` : '';
     html+=`<div class="stats-module visible"><div class="stats-grid-4">
       <div class="stat-card"><div class="stat-value">${records.length}</div><div class="stat-label">🎤 總場次</div></div>
       <div class="stat-card blue"><div class="stat-value sm">${sym} ${mainTotal.toLocaleString()}</div><div class="stat-label">💰 ${mainCur} 總花費</div></div>
       <div class="stat-card green"><div class="stat-value sm">${sym} ${mainAvg.toLocaleString()}</div><div class="stat-label">📊 平均票價</div></div>
       <div class="stat-card purple"><div class="stat-value">${Object.keys(countBy(records,r=>r.data.artist)).length}</div><div class="stat-label">🌟 不同藝人</div></div>
+      ${merchExtra}
     </div></div><hr class="divider">`;
   }
 
-  // ★ WORLD MAP MODULE ★
   if(active.includes('map')) {
     const visitedCodes=[...new Set(records.map(r=>r.data.countryCode).filter(Boolean))];
     const mapEl=renderWorldMap(visitedCodes);
-    // We'll insert as placeholder and fill after HTML is set
     html+=`<div class="stats-module visible" id="mapModuleSlot"></div><hr class="divider">`;
     div.innerHTML=html;
     const slot=div.querySelector('#mapModuleSlot');
     if(slot) slot.appendChild(mapEl);
-    // Continue building rest
-    html=''; // reset since we set innerHTML
+    html='';
     buildRemainingStats(div, records, active, curMap, mainCur, sym, mainVals, mainTotal, mainAvg, mainMax, mainMin);
-    return; // early return since we set innerHTML already
+    return;
   }
 
   buildRemainingStats(div, records, active, curMap, mainCur, sym, mainVals, mainTotal, mainAvg, mainMax, mainMin, html);
@@ -1625,19 +1670,15 @@ function buildRemainingStats(div, records, active, curMap, mainCur, sym, mainVal
   }
 
   if(active.includes('map')) {
-    // Already handled above
     const existing=div.querySelector('#mapModuleSlot');
     if(existing){
-      const after=existing.nextElementSibling;
       const temp=document.createElement('div');
       temp.innerHTML=html;
       while(temp.firstChild){ div.appendChild(temp.firstChild); }
       return;
     }
   }
-
   if(!active.includes('map')){
-    // Need to append to existing innerHTML if map was not used
     div.innerHTML += html || '<div style="color:var(--text3);font-size:13px;padding:16px 0">請在上方勾選要顯示的統計模組</div>';
   }
 }
@@ -1723,6 +1764,161 @@ function renderWishlist(){
   ul.querySelectorAll('.wish-convert-btn').forEach(btn=>btn.addEventListener('click',()=>{const artist=btn.getAttribute('data-artist');const wid=parseInt(btn.getAttribute('data-wid'));recordForm.artist.value=artist;wishlistCard.style.display='none';document.getElementById('formCard').scrollIntoView({behavior:'smooth'});showToast(`✓ 已帶入「${artist}」`);saveWishlist(getWishlist().filter(w=>w.id!==wid));renderWishlist();}));
 }
 
+// ════════════════════════════════════════
+// 🛍 周邊記帳 MERCH ACCOUNTING
+// ════════════════════════════════════════
+const MERCH_CAT_LABELS = {
+  album:'💿 專輯', photobook:'📖 寫真集', goods:'🎀 官方周邊',
+  lightstick:'🪄 螢光棒', fanmade:'✂️ 自製周邊', outfit:'👗 演唱會服裝',
+  food:'🍱 現場餐飲', other:'📦 其他'
+};
+
+document.getElementById('merchToggleBtn').addEventListener('click', () => {
+  const card = document.getElementById('merchCard');
+  const open = card.style.display !== 'none';
+  card.style.display = open ? 'none' : 'block';
+  if (!open) renderMerchList();
+});
+
+document.getElementById('addMerchBtn').addEventListener('click', () => {
+  const artist   = document.getElementById('merchArtistInput').value.trim();
+  const name     = document.getElementById('merchNameInput').value.trim();
+  const price    = document.getElementById('merchPriceInput').value.trim();
+  const currency = document.getElementById('merchCurrencySelect').value;
+  const category = document.getElementById('merchCatSelect').value;
+  const note     = document.getElementById('merchNoteInput').value.trim();
+  if (!name && !artist) return showToast('請輸入品項或藝人名稱');
+  if (!price) return showToast('請輸入金額');
+  const list = getMerchList();
+  list.unshift({ id:Date.now(), artist, name, price, currency, category, note, createdAt:new Date().toISOString() });
+  saveMerchList(list);
+  document.getElementById('merchArtistInput').value = '';
+  document.getElementById('merchNameInput').value   = '';
+  document.getElementById('merchPriceInput').value  = '';
+  document.getElementById('merchNoteInput').value   = '';
+  renderMerchList();
+  showToast('✓ 周邊記帳已新增！');
+});
+
+function getMerchList() {
+  try { return JSON.parse(localStorage.getItem('merch_' + (currentUserId||'guest')) || '[]'); } catch(e) { return []; }
+}
+function saveMerchList(list) {
+  localStorage.setItem('merch_' + (currentUserId||'guest'), JSON.stringify(list));
+}
+
+function renderMerchList() {
+  const ul    = document.getElementById('merchItems');
+  const total = document.getElementById('merchTotalBar');
+  const list  = getMerchList();
+  if (!list.length) {
+    ul.innerHTML = '<li class="empty-state" style="padding:20px">✦ 還沒有周邊紀錄，快來記帳吧 ✦</li>';
+    total.style.display = 'none';
+    return;
+  }
+  // Totals per currency
+  const byC = {};
+  list.forEach(item => {
+    const val = evalPrice(item.price);
+    if (!byC[item.currency]) byC[item.currency] = 0;
+    byC[item.currency] += val;
+  });
+  total.style.display = 'flex';
+  total.innerHTML =
+    `<div class="merch-total-item"><div class="merch-total-val">${list.length}</div><div class="merch-total-label">📦 件數</div></div>` +
+    Object.entries(byC).map(([cur, amt]) =>
+      `<div class="merch-total-item"><div class="merch-total-val">${getCurrencySymbol(cur)} ${Math.round(amt).toLocaleString()}</div><div class="merch-total-label">${cur} 合計</div></div>`
+    ).join('');
+
+  ul.innerHTML = list.map(item => `
+    <li class="merch-item" data-mid="${item.id}">
+      <div class="merch-item-info">
+        <div class="merch-item-name">${item.name || item.artist || '—'}</div>
+        <div class="merch-item-sub">${item.artist ? '🎤 ' + item.artist + '　' : ''}${item.note ? '📝 ' + item.note : ''}</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+        <span class="merch-cat-pill">${MERCH_CAT_LABELS[item.category] || item.category}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:13px;color:white;flex-shrink:0">${getCurrencySymbol(item.currency)} ${Math.round(evalPrice(item.price)).toLocaleString()}</span>
+        <button class="merch-del-btn btn-danger btn-sm" data-mid="${item.id}">✕</button>
+      </div>
+    </li>`).join('');
+
+  ul.querySelectorAll('.merch-del-btn').forEach(btn => btn.addEventListener('click', () => {
+    saveMerchList(getMerchList().filter(i => i.id !== parseInt(btn.getAttribute('data-mid'))));
+    renderMerchList();
+    showToast('已刪除');
+  }));
+}
+
+// ════════════════════════════════════════
+// 🎫 釋票通知 TICKET RELEASE MODAL
+// ════════════════════════════════════════
+function getCustomTicketSites() {
+  try { return JSON.parse(localStorage.getItem('ticket_sites') || '[]'); } catch(e) { return []; }
+}
+function saveCustomTicketSites(list) {
+  localStorage.setItem('ticket_sites', JSON.stringify(list));
+}
+
+function renderTicketSavedList() {
+  const container = document.getElementById('ticketSavedList');
+  const sites = getCustomTicketSites();
+  if (!sites.length) {
+    container.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:4px 0;margin-bottom:4px">尚未儲存自訂連結</div>';
+    return;
+  }
+  container.innerHTML = sites.map((s, i) => `
+    <div class="ticket-saved-item">
+      <span class="ticket-saved-label">${s.label}</span>
+      <span class="ticket-saved-url">${s.url}</span>
+      <button class="btn-sm btn-ghost" style="padding:5px 12px;flex-shrink:0" onclick="window.open('${s.url}','_blank','noopener')">前往 ↗</button>
+      <button class="btn-sm btn-danger" style="padding:5px 10px;flex-shrink:0" onclick="deleteTicketSite(${i})">✕</button>
+    </div>`).join('');
+}
+
+window.deleteTicketSite = function(idx) {
+  const list = getCustomTicketSites();
+  list.splice(idx, 1);
+  saveCustomTicketSites(list);
+  renderTicketSavedList();
+};
+
+// Open modal
+document.getElementById('ticketReleaseBtn').addEventListener('click', () => {
+  document.getElementById('ticketModal').classList.add('open');
+  renderTicketSavedList();
+});
+document.getElementById('closeTicketModalBtn').addEventListener('click', () => {
+  document.getElementById('ticketModal').classList.remove('open');
+});
+document.getElementById('ticketModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('ticketModal'))
+    document.getElementById('ticketModal').classList.remove('open');
+});
+
+// Preset buttons
+document.querySelectorAll('.ticket-preset-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    window.open(btn.getAttribute('data-url'), '_blank', 'noopener');
+  });
+});
+
+// Save custom site
+document.getElementById('addTicketSiteBtn').addEventListener('click', () => {
+  let url   = document.getElementById('ticketCustomUrlInput').value.trim();
+  const label = document.getElementById('ticketCustomLabelInput').value.trim();
+  if (!url) return showToast('請貼上網址');
+  if (!url.startsWith('http')) url = 'https://' + url;
+  const list = getCustomTicketSites();
+  if (list.length >= 5) return showToast('最多儲存 5 個連結');
+  list.push({ url, label: label || new URL(url).hostname });
+  saveCustomTicketSites(list);
+  document.getElementById('ticketCustomUrlInput').value  = '';
+  document.getElementById('ticketCustomLabelInput').value = '';
+  renderTicketSavedList();
+  showToast('✓ 已儲存！');
+});
+
 // ── LOAD / DISPLAY RECORDS ──
 async function loadRecords(uid) {
   viewingFriendUid=null; viewingFriendName=null;
@@ -1765,24 +1961,17 @@ function displayRecords(records, ownerId) {
     const starsHTML=d.rating?`<div class="record-stars">${'★'.repeat(d.rating)}<span style="color:var(--text3)">${'★'.repeat(5-d.rating)}</span></div>`:'';
     const tagsHTML=d.tags?`<div style="margin-top:8px">${d.tags.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag-pill${activeTagFilter===t?' active-filter':''}" onclick="filterByTag('${t}')">${t}</span>`).join('')}</div>`:'';
     const photoHTML=hasPhoto?`<div class="record-photo-side"><div class="record-photo-container"><img src="${d.photo}" onclick="openLightbox('${d.photo.replace(/'/g,"\\'")}');" alt="演唱會照片" loading="lazy"></div></div>`:'';
-
-    // Country display
     const countryInfo = d.countryCode ? COUNTRY_MAP[d.countryCode] : null;
     const countryHTML = countryInfo ? `<div><span class="info-icon">🌍</span><span>${countryInfo.flag} ${countryInfo.name}</span></div>` : '';
-
-    // Notes
     let notesHTML='';
     if(d.notes){const long=d.notes.length>80;notesHTML=`<div class="notes-collapsible"><div class="notes-content${long?' collapsed':''}" id="nc_${r.id}"><div><span class="info-icon">📝</span><span>${d.notes}</span></div></div>${long?`<button class="notes-toggle-btn" onclick="toggleNote('${r.id}')">展開全部 ▼</button>`:''}</div>`;}
-
     const editDelHTML=(!isFriendView&&currentUserId&&d.uid===currentUserId)?`<div class="button-group"><button class="edit-btn">✏️ 編輯</button><button class="del-btn btn-danger">🗑 刪除</button><button class="pin-btn btn-ghost">${isPinned?'📌 取消固定':'📌 固定'}</button></div>`:'';
-
     let reactionHTML='';
     if(isFriendView){
       reactionHTML=`<div class="reaction-bar"><span class="reaction-label">送出：</span><button class="reaction-btn" data-emoji="🔥" data-rid="${r.id}"><span>🔥</span><span class="r-count">${fire}</span></button><button class="reaction-btn" data-emoji="💜" data-rid="${r.id}"><span>💜</span><span class="r-count">${heart}</span></button><button class="reaction-btn" data-emoji="✨" data-rid="${r.id}"><span>✨</span><span class="r-count">${sparkle}</span></button><button class="reaction-btn" data-emoji="👑" data-rid="${r.id}"><span>👑</span><span class="r-count">${crown}</span></button></div>`;
     } else if(totalReactions>0){
       reactionHTML=`<div class="reaction-received"><span class="reaction-received-label">✦ 收到</span>${fire>0?`<span class="reaction-received-pill">🔥 <span class="r-count">${fire}</span></span>`:''}${heart>0?`<span class="reaction-received-pill">💜 <span class="r-count">${heart}</span></span>`:''}${sparkle>0?`<span class="reaction-received-pill">✨ <span class="r-count">${sparkle}</span></span>`:''}${crown>0?`<span class="reaction-received-pill">👑 <span class="r-count">${crown}</span></span>`:''}</div>`;
     }
-
     li.innerHTML=`${isPinned?'<div class="pin-badge">📌 已固定</div>':''}${countdown?`<div class="countdown-badge">⏰ ${countdown}</div>`:''}
       <div class="record-inner ${hasPhoto?'has-photo':''}">
         ${photoHTML}
@@ -1802,7 +1991,6 @@ function displayRecords(records, ownerId) {
           ${reactionHTML}
         </div>
       </div>`;
-
     if(!isFriendView&&currentUserId&&d.uid===currentUserId){
       li.querySelector('.edit-btn')?.addEventListener('click',()=>startEdit(r.id,d));
       li.querySelector('.del-btn')?.addEventListener('click',async()=>{if(confirm('確定刪除這筆紀錄？')){await deleteDoc(doc(db,'concerts',r.id));showToast('🗑 已刪除');loadRecords(currentUserId);}});
@@ -1826,7 +2014,6 @@ function displayRecords(records, ownerId) {
   });
 }
 
-// Notes toggle
 window.toggleNote=function(id){const el=document.getElementById('nc_'+id);const btn=el?.nextElementSibling;if(!el)return;const isCollapsed=el.classList.contains('collapsed');el.classList.toggle('collapsed',!isCollapsed);el.style.maxHeight=isCollapsed?'none':'42px';if(btn)btn.textContent=isCollapsed?'收起 ▲':'展開全部 ▼';};
 
 function startEdit(id, data) {
@@ -1836,7 +2023,6 @@ function startEdit(id, data) {
   recordForm.price.value=data.price||''; document.getElementById('currencySelect').value=data.currency||'TWD';
   recordForm.seat.value=data.seat||''; recordForm.venue.value=data.venue||'';
   recordForm.notes.value=data.notes||''; recordForm.tags.value=data.tags||'';
-  // Restore country
   if(data.countryCode && window._selectCountry) { window._selectCountry(data.countryCode); }
   else if(window._clearCountry) window._clearCountry();
   formRating=data.rating||0; updateStarDisplay('formStars',formRating);
@@ -1950,7 +2136,6 @@ async function loadProfile(){
   const d=snap.data()||{};
   displayNameInput.value=d.displayName||''; bioInput.value=d.bio||'';
   preferredLang.value=d.preferredLang||'zh'; inviteCodeInput.value=d.inviteCode||'';
-  // Apply saved language
   if(d.preferredLang) applyLang(d.preferredLang);
 }
 
