@@ -73,141 +73,93 @@
     .site-subtitle { font-family:'Cormorant Garamond',serif; font-size:1em; font-weight:300; letter-spacing:4px; color:var(--text3); font-style:italic; margin-top:4px; }
     .title-line { width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--p),transparent); margin:16px auto; }
 
-    /* ═══════════════════════════════════════════
-       CUSTOM COLOR PICKER (NEW)
-    ═══════════════════════════════════════════ */
+    /* ═══ CUSTOM COLOR PICKER ═══ */
     .theme-panel {
       background:var(--glass); backdrop-filter:blur(20px);
       border:1px solid var(--glass-border);
       border-radius:var(--radius); padding:20px 24px;
       margin:0 auto 28px; max-width:520px;
     }
-    .theme-panel-header {
-      display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;
-    }
-    .theme-panel-title {
-      font-family:'Cormorant Garamond',serif; font-size:1em; letter-spacing:3px;
-      text-transform:uppercase; color:var(--p2); font-weight:400;
-    }
+    .theme-panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .theme-panel-title { font-family:'Cormorant Garamond',serif; font-size:1em; letter-spacing:3px; text-transform:uppercase; color:var(--p2); font-weight:400; }
     .theme-presets { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
-    .theme-preset {
-      width:30px; height:30px; border-radius:50%; cursor:pointer;
-      transition:transform .2s,box-shadow .2s; border:2px solid transparent;
-      flex-shrink:0; position:relative;
-    }
+    .theme-preset { width:30px; height:30px; border-radius:50%; cursor:pointer; transition:transform .2s,box-shadow .2s; border:2px solid transparent; flex-shrink:0; position:relative; }
     .theme-preset.active { border-color:white; transform:scale(1.15); }
     .theme-preset:hover { transform:scale(1.2); }
-
     .color-sliders { display:grid; gap:12px; }
     .slider-row { display:flex; align-items:center; gap:12px; }
     .slider-label { font-size:11px; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; width:36px; flex-shrink:0; }
     .slider-track { flex:1; position:relative; height:24px; display:flex; align-items:center; }
-    input[type=range] {
-      -webkit-appearance:none; appearance:none;
-      width:100%; height:6px; border-radius:3px; outline:none;
-      cursor:pointer; background:transparent; margin:0;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance:none; width:18px; height:18px; border-radius:50%;
-      background:white; border:2px solid rgba(0,0,0,0.3);
-      box-shadow:0 2px 8px rgba(0,0,0,0.4); cursor:pointer;
-      transition:transform .15s;
-    }
+    input[type=range] { -webkit-appearance:none; appearance:none; width:100%; height:6px; border-radius:3px; outline:none; cursor:pointer; background:transparent; margin:0; }
+    input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:white; border:2px solid rgba(0,0,0,0.3); box-shadow:0 2px 8px rgba(0,0,0,0.4); cursor:pointer; transition:transform .15s; }
     input[type=range]::-webkit-slider-thumb:hover { transform:scale(1.15); }
-    input[type=range]::-moz-range-thumb {
-      width:18px; height:18px; border-radius:50%;
-      background:white; border:2px solid rgba(0,0,0,0.3);
-      box-shadow:0 2px 8px rgba(0,0,0,0.4); cursor:pointer;
-    }
+    input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:white; border:2px solid rgba(0,0,0,0.3); box-shadow:0 2px 8px rgba(0,0,0,0.4); cursor:pointer; }
     #hueSlider { background:linear-gradient(to right,#f00,#ff0,#0f0,#0ff,#00f,#f0f,#f00); }
-    .slider-val {
-      font-family:'Space Mono',monospace; font-size:11px;
-      color:var(--text3); width:32px; text-align:right; flex-shrink:0;
-    }
-    .theme-preview-swatch {
-      width:100%; height:32px; border-radius:var(--radius-sm);
-      margin-top:14px; transition:background .2s;
-      display:flex; align-items:center; justify-content:center;
-      font-size:12px; color:rgba(255,255,255,0.7); letter-spacing:2px;
-    }
+    .slider-val { font-family:'Space Mono',monospace; font-size:11px; color:var(--text3); width:32px; text-align:right; flex-shrink:0; }
+    .theme-preview-swatch { width:100%; height:32px; border-radius:var(--radius-sm); margin-top:14px; transition:background .2s; display:flex; align-items:center; justify-content:center; font-size:12px; color:rgba(255,255,255,0.7); letter-spacing:2px; }
     .theme-save-row { display:flex; gap:8px; margin-top:14px; flex-wrap:wrap; }
     .saved-themes { display:flex; gap:8px; flex-wrap:wrap; margin-top:10px; }
-    .saved-theme-dot {
-      width:26px; height:26px; border-radius:50%; cursor:pointer;
-      border:2px solid rgba(255,255,255,0.2); transition:all .2s;
-      position:relative; flex-shrink:0;
-    }
+    .saved-theme-dot { width:26px; height:26px; border-radius:50%; cursor:pointer; border:2px solid rgba(255,255,255,0.2); transition:all .2s; position:relative; flex-shrink:0; }
     .saved-theme-dot:hover { transform:scale(1.2); border-color:white; }
-    .saved-theme-dot .del-saved {
-      display:none; position:absolute; inset:-4px; background:rgba(0,0,0,0.6);
-      border-radius:50%; align-items:center; justify-content:center;
-      font-size:10px; color:white; cursor:pointer;
-    }
+    .saved-theme-dot .del-saved { display:none; position:absolute; inset:-4px; background:rgba(0,0,0,0.6); border-radius:50%; align-items:center; justify-content:center; font-size:10px; color:white; cursor:pointer; }
     .saved-theme-dot:hover .del-saved { display:flex; }
 
-    /* ═══════════════════════════════════════════
-       REST OF ORIGINAL STYLES
-    ═══════════════════════════════════════════ */
-    .card {
-      background:var(--glass); backdrop-filter:blur(24px);
-      border:1px solid var(--glass-border); border-radius:var(--radius);
-      padding:28px; margin-bottom:16px;
-      transition:border-color .25s,background .25s;
-    }
+    /* ═══ WORLD MAP ═══ */
+    .world-map-container { width:100%; overflow:visible; border-radius:var(--radius-sm); margin-top:8px; position:relative; background:rgba(0,0,0,0.2); border:1px solid var(--glass-border); border-radius:var(--radius-sm); padding:12px; }
+    .world-map-container svg { display:block; width:100%; height:auto; }
+    .country-path { fill:rgba(255,255,255,0.07); stroke:rgba(255,255,255,0.12); stroke-width:0.4; transition:fill .3s; cursor:default; }
+    .country-path.visited { fill:var(--p); stroke:rgba(255,255,255,0.3); opacity:0.85; cursor:pointer; }
+    .country-path.visited:hover { opacity:1; fill:var(--p2); }
+    .map-tooltip { position:fixed; background:rgba(10,5,20,0.95); backdrop-filter:blur(12px); border:1px solid var(--glass-border); border-radius:8px; padding:6px 12px; font-size:12px; color:var(--text); pointer-events:none; display:none; z-index:99999; white-space:nowrap; letter-spacing:.5px; transform:translate(-50%,-120%); }
+    .map-legend { display:flex; gap:16px; margin-top:10px; flex-wrap:wrap; }
+    .map-legend-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--text3); }
+    .map-legend-dot { width:12px; height:12px; border-radius:3px; }
+    .map-visited-list { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+    .map-country-tag { background:hsla(var(--hue),78%,62%,0.15); border:1px solid hsla(var(--hue),78%,62%,0.3); color:var(--p2); border-radius:20px; padding:3px 10px; font-size:12px; display:flex; align-items:center; gap:4px; }
+
+    /* ═══ COUNTRY SEARCH ═══ */
+    .country-search-wrapper { position:relative; margin-bottom:12px; }
+    .country-search-wrapper input { margin-bottom:0; }
+    .country-dropdown { position:absolute; top:100%; left:0; right:0; background:rgba(12,6,22,0.98); backdrop-filter:blur(20px); border:1px solid var(--glass-border); border-top:none; border-radius:0 0 var(--radius-sm) var(--radius-sm); max-height:200px; overflow-y:auto; z-index:5000; display:none; }
+    .country-dropdown.open { display:block; }
+    .country-option { padding:9px 14px; font-size:13px; color:var(--text2); cursor:pointer; transition:background .15s; display:flex; align-items:center; gap:8px; }
+    .country-option:hover, .country-option.highlighted { background:hsla(var(--hue),78%,62%,0.18); color:white; }
+    .country-option .flag { font-size:15px; }
+
+    /* ═══ MAIN STYLES ═══ */
+    .card { background:var(--glass); backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--radius); padding:28px; margin-bottom:16px; transition:border-color .25s,background .25s; }
     .card:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.16); }
     body.desktop-mode .card { padding:36px; }
 
     .app-layout { display:block; }
-    body.desktop-mode .app-layout {
-      display:grid; grid-template-columns:400px 1fr; gap:20px; align-items:start;
-    }
-    body.desktop-mode .app-left {
-      position:sticky; top:32px; max-height:calc(100vh - 64px);
-      overflow-y:auto; overflow-x:hidden; scrollbar-width:thin;
-      scrollbar-color:rgba(232,80,122,0.3) transparent; border-radius:var(--radius);
-    }
+    body.desktop-mode .app-layout { display:grid; grid-template-columns:400px 1fr; gap:20px; align-items:start; }
+    body.desktop-mode .app-left { position:sticky; top:32px; max-height:calc(100vh - 64px); overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; scrollbar-color:rgba(232,80,122,0.3) transparent; border-radius:var(--radius); }
     body.desktop-mode .app-left::-webkit-scrollbar { width:5px; }
     body.desktop-mode .app-left::-webkit-scrollbar-thumb { background:rgba(232,80,122,0.3); border-radius:3px; }
     .app-right { min-width:0; }
 
     .section-label { font-family:'Cormorant Garamond',serif; font-size:.7em; letter-spacing:4px; text-transform:uppercase; color:var(--p2); font-weight:400; margin-bottom:4px; }
-    h2 {
-      font-family:'Cormorant Garamond',serif; color:white !important; font-size:1.6em;
-      font-weight:300; letter-spacing:1px; margin-bottom:20px;
-      padding-bottom:0; border:none !important; position:relative;
-    }
+    h2 { font-family:'Cormorant Garamond',serif; color:white !important; font-size:1.6em; font-weight:300; letter-spacing:1px; margin-bottom:20px; padding-bottom:0; border:none !important; position:relative; }
     h2::after { content:''; display:block; width:40px; height:2px; background:linear-gradient(90deg,var(--p),transparent); margin-top:8px; transition:width .3s; }
     .card:hover h2::after { width:70px; }
 
     .auth-forms { display:grid; grid-template-columns:1fr; gap:24px; }
     @media(min-width:900px) { body.desktop-mode .auth-forms { grid-template-columns:1fr 1fr; gap:32px; } }
 
-    input[type=text], input[type=email], input[type=password],
-    input[type=datetime-local], textarea, select {
-      width:100%; background:rgba(255,255,255,0.05);
-      border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-sm);
-      color:var(--text); padding:13px 16px;
-      font-family:'Noto Sans TC',sans-serif; font-size:14px;
-      margin-bottom:12px; transition:border-color .2s,background .2s,box-shadow .2s;
-      -webkit-appearance:none;
+    input[type=text], input[type=email], input[type=password], input[type=datetime-local], textarea, select {
+      width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-sm);
+      color:var(--text); padding:13px 16px; font-family:'Noto Sans TC',sans-serif; font-size:14px;
+      margin-bottom:12px; transition:border-color .2s,background .2s,box-shadow .2s; -webkit-appearance:none;
     }
     input::placeholder, textarea::placeholder { color:var(--text3); }
     select option { background:#1a0a1f; color:var(--text); }
-    input:focus, textarea:focus, select:focus {
-      outline:none; border-color:var(--p);
-      background:hsla(var(--hue),78%,62%,0.06);
-      box-shadow:0 0 0 3px hsla(var(--hue),78%,62%,0.12);
-    }
+    input:focus, textarea:focus, select:focus { outline:none; border-color:var(--p); background:hsla(var(--hue),78%,62%,0.06); box-shadow:0 0 0 3px hsla(var(--hue),78%,62%,0.12); }
     textarea { resize:vertical; min-height:90px; line-height:1.6; }
     input[type=datetime-local] { color-scheme:dark; }
 
     .password-container { position:relative; margin-bottom:12px; }
     .password-container input { margin-bottom:0; padding-right:48px; }
-    .toggle-password {
-      position:absolute; right:12px; top:50%; transform:translateY(-50%);
-      background:none; border:none; color:var(--text3); padding:4px;
-      font-size:16px; cursor:pointer; transition:color .2s;
-    }
+    .toggle-password { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; color:var(--text3); padding:4px; font-size:16px; cursor:pointer; transition:color .2s; }
     .toggle-password:hover { color:var(--p); transform:translateY(-50%) scale(1.05); }
 
     .password-strength { height:3px; border-radius:3px; margin:0 0 10px; background:rgba(255,255,255,0.1); transition:background .3s; }
@@ -253,17 +205,8 @@
     .remove-photo-btn:hover { background:rgba(255,80,80,0.35); }
 
     /* ── FRIEND BANNER ── */
-    #friendBanner {
-      display:none;
-      background:linear-gradient(135deg,hsla(calc(var(--hue)+60),50%,30%,0.18),hsla(var(--hue),78%,62%,0.12));
-      border:1px solid hsla(calc(var(--hue)+60),50%,50%,0.35);
-      border-radius:var(--radius); padding:20px 24px; margin-bottom:16px;
-      animation:fadeUp .35s ease both; position:relative; overflow:hidden;
-    }
-    #friendBanner::before {
-      content:''; position:absolute; top:0; left:0; right:0; height:2px;
-      background:linear-gradient(90deg,hsl(calc(var(--hue)+60),60%,50%),var(--p),hsl(calc(var(--hue)+60),60%,50%));
-    }
+    #friendBanner { display:none; background:linear-gradient(135deg,hsla(calc(var(--hue)+60),50%,30%,0.18),hsla(var(--hue),78%,62%,0.12)); border:1px solid hsla(calc(var(--hue)+60),50%,50%,0.35); border-radius:var(--radius); padding:20px 24px; margin-bottom:16px; animation:fadeUp .35s ease both; position:relative; overflow:hidden; }
+    #friendBanner::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,hsl(calc(var(--hue)+60),60%,50%),var(--p),hsl(calc(var(--hue)+60),60%,50%)); }
     .friend-banner-inner { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
     .friend-avatar-lg { width:56px; height:56px; border-radius:50%; object-fit:cover; border:2px solid hsla(calc(var(--hue)+60),50%,50%,0.5); flex-shrink:0; }
     .friend-banner-info { flex:1; min-width:0; }
@@ -275,37 +218,18 @@
     .friend-banner-actions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
 
     /* ── RECORD ITEM ── */
-    .record-item {
-      background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02));
-      border:1px solid var(--glass-border); border-radius:var(--radius);
-      padding:20px; margin:12px 0;
-      transition:all .25s; position:relative; overflow:hidden;
-      animation:fadeUp .35s ease both;
-    }
-    .record-item::before {
-      content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
-      background:linear-gradient(180deg,var(--p),hsl(calc(var(--hue)+60),60%,50%)); opacity:0; transition:opacity .25s;
-    }
+    .record-item { background:linear-gradient(135deg,rgba(255,255,255,0.04),rgba(255,255,255,0.02)); border:1px solid var(--glass-border); border-radius:var(--radius); padding:20px; margin:12px 0; transition:all .25s; position:relative; overflow:hidden; animation:fadeUp .35s ease both; }
+    .record-item::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:linear-gradient(180deg,var(--p),hsl(calc(var(--hue)+60),60%,50%)); opacity:0; transition:opacity .25s; }
     .record-item:hover { background:rgba(255,255,255,0.07); border-color:rgba(255,255,255,0.18); transform:translateX(4px); }
     .record-item:hover::before { opacity:1; }
     .record-item.friend-record::before { background:linear-gradient(180deg,hsl(calc(var(--hue)+60),60%,50%),#3388ff); }
     .record-item.has-reactions { border-color:hsla(var(--hue),78%,62%,0.25); }
-
-    /* NEW: pinned record */
     .record-item.pinned { border-color:hsla(45,100%,60%,0.4); }
     .record-item.pinned::before { background:linear-gradient(180deg,#ffcc00,#ff9900); opacity:1; }
     .pin-badge { display:inline-block; font-size:11px; background:rgba(255,204,0,0.15); border:1px solid rgba(255,204,0,0.3); color:#ffcc66; border-radius:12px; padding:2px 8px; margin-bottom:6px; letter-spacing:1px; }
-
-    /* NEW: upcoming concert */
     .record-item.upcoming { border-color:hsla(calc(var(--hue)+120),60%,50%,0.35); }
     .record-item.upcoming::before { background:linear-gradient(180deg,hsl(calc(var(--hue)+120),60%,50%),#00ccff); opacity:1; }
-    .countdown-badge {
-      display:inline-flex; align-items:center; gap:6px;
-      font-size:11px; background:hsla(calc(var(--hue)+120),50%,50%,0.15);
-      border:1px solid hsla(calc(var(--hue)+120),50%,50%,0.35);
-      color:hsl(calc(var(--hue)+120),80%,75%); border-radius:12px; padding:3px 10px;
-      margin-bottom:6px; letter-spacing:.5px; animation:pulse 2s ease infinite;
-    }
+    .countdown-badge { display:inline-flex; align-items:center; gap:6px; font-size:11px; background:hsla(calc(var(--hue)+120),50%,50%,0.15); border:1px solid hsla(calc(var(--hue)+120),50%,50%,0.35); color:hsl(calc(var(--hue)+120),80%,75%); border-radius:12px; padding:3px 10px; margin-bottom:6px; letter-spacing:.5px; animation:pulse 2s ease infinite; }
     @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.7} }
 
     .record-inner { display:flex; flex-direction:column; gap:14px; }
@@ -344,7 +268,7 @@
     .star.filled { color:#ffcc00; }
     .star:hover, .star.hover { color:#ffcc00; }
     .record-stars { font-size:14px; letter-spacing:2px; margin-bottom:6px; }
-    .tag-pill { display:inline-block; background:hsla(var(--hue),78%,62%,0.15); border:1px solid hsla(var(--hue),78%,62%,0.3); color:var(--p2); border-radius:20px; padding:3px 10px; font-size:11px; letter-spacing:.5px; margin:2px; cursor:pointer; transition:all .15s; }
+    .tag-pill { display:inline-block; background:hsla(var(--hue),78%,62%,0.15); border:1px solid hsla(var(--hue),78%,62%,0.3); color:var(--p2); border-radius:20px; padding:3px 10px; font-size:11px; letter-spacing:.5px; margin:2px; cursor:pointer; transition:all .15px; }
     .tag-pill:hover { background:hsla(var(--hue),78%,62%,0.3); }
     .tag-pill.active-filter { background:var(--p); color:white; border-color:var(--p); }
 
@@ -353,7 +277,7 @@
     #searchInput { margin:0; padding-right:40px; font-size:13px; width:100%; max-width:300px; }
     .search-icon { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:14px; pointer-events:none; color:var(--text3); }
 
-    /* ── YEAR FILTER (NEW) ── */
+    /* ── YEAR FILTER ── */
     .year-filter { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:12px; }
     .year-btn { background:rgba(255,255,255,0.05); border:1px solid var(--glass-border); color:var(--text3); padding:4px 12px; border-radius:16px; font-size:11px; font-family:'Space Mono',monospace; letter-spacing:1px; cursor:pointer; transition:all .2s; }
     .year-btn.active { background:hsla(var(--hue),78%,62%,0.2); border-color:var(--p); color:var(--p2); }
@@ -412,7 +336,6 @@
     .cal-day.has-event::after { content:''; position:absolute; bottom:4px; left:50%; transform:translateX(-50%); width:5px; height:5px; border-radius:50%; background:var(--p); }
     .cal-day.has-event:hover { background:hsla(var(--hue),78%,62%,0.2); }
     .cal-day.other-month { color:var(--text3); }
-    /* NEW: future event on calendar */
     .cal-day.upcoming-event::after { background:#00ccff; box-shadow:0 0 4px #00ccff; }
     .cal-day.upcoming-event { color:#80eaff; }
     .cal-day.cal-clickable { cursor:pointer; }
@@ -439,18 +362,14 @@
     .streak-icon { font-size:22px; }
     .streak-text strong { color:white; }
 
-    /* ── NOTES COLLAPSE (NEW) ── */
+    /* ── NOTES COLLAPSE ── */
     .notes-collapsible { position:relative; }
     .notes-content { overflow:hidden; transition:max-height .35s ease; }
     .notes-content.collapsed { max-height:42px; }
-    .notes-toggle-btn {
-      background:none; border:none; color:var(--p2); font-size:11px;
-      padding:2px 0; cursor:pointer; letter-spacing:.5px;
-      box-shadow:none; transform:none; display:inline-block;
-    }
+    .notes-toggle-btn { background:none; border:none; color:var(--p2); font-size:11px; padding:2px 0; cursor:pointer; letter-spacing:.5px; box-shadow:none; transform:none; display:inline-block; }
     .notes-toggle-btn:hover { color:white; transform:none; box-shadow:none; }
 
-    /* ── EXPORT PANEL (NEW) ── */
+    /* ── EXPORT PANEL ── */
     #exportPanel { display:none; }
     .export-options { display:flex; gap:10px; flex-wrap:wrap; }
 
@@ -506,23 +425,10 @@
     #lightbox img { max-width:100%; max-height:90vh; border-radius:var(--radius-sm); object-fit:contain; }
     #lightboxClose { position:absolute; top:20px; right:24px; background:rgba(255,255,255,0.1); border:1px solid var(--glass-border); color:white; padding:8px 18px; border-radius:30px; font-size:13px; }
 
-    /* ── QUICK NOTE (NEW) ── */
-    .quick-note-bubble {
-      position:fixed; bottom:80px; right:20px; z-index:8000;
-      width:48px; height:48px; border-radius:50%;
-      background:linear-gradient(135deg,var(--p),hsl(calc(var(--hue)+60),60%,40%));
-      border:none; font-size:20px; cursor:pointer;
-      box-shadow:0 4px 20px hsla(var(--hue),78%,62%,0.4);
-      display:flex; align-items:center; justify-content:center;
-      transition:all .25s; padding:0;
-    }
+    /* ── QUICK NOTE ── */
+    .quick-note-bubble { position:fixed; bottom:80px; right:20px; z-index:8000; width:48px; height:48px; border-radius:50%; background:linear-gradient(135deg,var(--p),hsl(calc(var(--hue)+60),60%,40%)); border:none; font-size:20px; cursor:pointer; box-shadow:0 4px 20px hsla(var(--hue),78%,62%,0.4); display:flex; align-items:center; justify-content:center; transition:all .25s; padding:0; }
     .quick-note-bubble:hover { transform:scale(1.1) translateY(-2px); box-shadow:0 8px 28px hsla(var(--hue),78%,62%,0.5); }
-    #quickNotePanel {
-      display:none; position:fixed; bottom:140px; right:20px; z-index:8000;
-      background:rgba(20,10,30,0.96); backdrop-filter:blur(20px);
-      border:1px solid var(--glass-border); border-radius:var(--radius);
-      padding:18px; width:280px; animation:fadeUp .25s ease both;
-    }
+    #quickNotePanel { display:none; position:fixed; bottom:140px; right:20px; z-index:8000; background:rgba(20,10,30,0.96); backdrop-filter:blur(20px); border:1px solid var(--glass-border); border-radius:var(--radius); padding:18px; width:280px; animation:fadeUp .25s ease both; }
     #quickNotePanel textarea { min-height:60px; margin-bottom:8px; font-size:13px; }
     #quickNotePanel .qn-title { font-size:11px; color:var(--p2); letter-spacing:2px; margin-bottom:10px; }
     #quickNotePanel .qn-footer { display:flex; gap:8px; }
@@ -533,6 +439,7 @@
 <div class="orb orb2"></div>
 <div class="orb orb3"></div>
 <div id="toast"></div>
+<div id="mapTooltip" class="map-tooltip"></div>
 
 <!-- LIGHTBOX -->
 <div id="lightbox">
@@ -540,7 +447,7 @@
   <img id="lightboxImg" src="" alt="照片">
 </div>
 
-<!-- QUICK NOTE FAB (shown when logged in) -->
+<!-- QUICK NOTE FAB -->
 <button class="quick-note-bubble" id="quickNoteFab" style="display:none" title="快速備忘">📝</button>
 <div id="quickNotePanel">
   <div class="qn-title">✦ QUICK NOTE</div>
@@ -568,29 +475,21 @@
       <button id="themeCollapseBtn" class="btn-ghost btn-sm">收起 ▲</button>
     </div>
     <div id="themeBody">
-      <div class="theme-presets" id="themePresets">
-        <!-- generated by JS -->
-      </div>
+      <div class="theme-presets" id="themePresets"></div>
       <div class="color-sliders">
         <div class="slider-row">
           <span class="slider-label">色相</span>
-          <div class="slider-track">
-            <input type="range" id="hueSlider" min="0" max="359" value="338">
-          </div>
+          <div class="slider-track"><input type="range" id="hueSlider" min="0" max="359" value="338"></div>
           <span class="slider-val" id="hueVal">338°</span>
         </div>
         <div class="slider-row">
           <span class="slider-label">飽和</span>
-          <div class="slider-track">
-            <input type="range" id="satSlider" min="20" max="100" value="78" style="background:linear-gradient(to right, hsl(338,20%,62%), hsl(338,100%,62%))">
-          </div>
+          <div class="slider-track"><input type="range" id="satSlider" min="20" max="100" value="78"></div>
           <span class="slider-val" id="satVal">78%</span>
         </div>
         <div class="slider-row">
           <span class="slider-label">亮度</span>
-          <div class="slider-track">
-            <input type="range" id="bgLSlider" min="2" max="14" value="5" style="background:linear-gradient(to right, #000, #222)">
-          </div>
+          <div class="slider-track"><input type="range" id="bgLSlider" min="2" max="14" value="5"></div>
           <span class="slider-val" id="bgLVal">5%</span>
         </div>
       </div>
@@ -666,7 +565,7 @@
       </div>
     </div>
 
-    <!-- EXPORT PANEL (NEW) -->
+    <!-- EXPORT PANEL -->
     <div id="exportPanel" class="card">
       <div class="section-label">Export</div>
       <h2>📤 匯出資料</h2>
@@ -711,7 +610,10 @@
           <input id="displayNameInput" placeholder="暱稱">
           <textarea id="bioInput" placeholder="關於我（簡短自我介紹）"></textarea>
           <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
-            <select id="preferredLang"><option value="zh">中文</option><option value="en">English</option></select>
+            <select id="preferredLang">
+              <option value="zh">中文介面</option>
+              <option value="en">English UI</option>
+            </select>
             <button id="saveProfileBtn">儲存</button>
           </div>
           <hr class="divider">
@@ -784,6 +686,14 @@
             </div>
             <input type="text" name="seat" placeholder="座位 / 區域">
             <input type="text" name="venue" placeholder="場地">
+
+            <!-- ★ 國家/地區搜尋欄位 ★ -->
+            <div class="country-search-wrapper" id="countrySearchWrapper">
+              <input type="text" id="countrySearchInput" placeholder="🌏 國家 / 地區（選填，點擊選擇）" autocomplete="off" style="margin-bottom:0">
+              <input type="hidden" id="countryCodeInput" name="countryCode">
+              <div class="country-dropdown" id="countryDropdown"></div>
+            </div>
+
             <input type="text" name="tags" placeholder="標籤（逗號分隔，例：偶像、電子、戶外）">
             <div style="margin-bottom:12px">
               <div style="font-size:13px;color:var(--text3);margin-bottom:6px;letter-spacing:.5px">演出評分</div>
@@ -848,10 +758,7 @@
               <span class="search-icon">🔍</span>
             </div>
           </div>
-
-          <!-- YEAR FILTER (NEW) -->
           <div class="year-filter" id="yearFilterBar"></div>
-
           <div class="sort-bar" id="sortBar">
             <span class="sort-label">排序：</span>
             <button class="sort-btn active" data-sort="date-desc">最新</button>
@@ -898,7 +805,307 @@ try {
   setPersistence(auth, browserSessionPersistence);
 } catch(e) { console.error(e); alert("初始化失敗"); }
 
+// ════════════════════════════════════════
+// COUNTRY DATA
+// ════════════════════════════════════════
+const COUNTRIES = [
+  {code:'TW',name:'台灣',en:'Taiwan',flag:'🇹🇼'},
+  {code:'JP',name:'日本',en:'Japan',flag:'🇯🇵'},
+  {code:'KR',name:'韓國',en:'South Korea',flag:'🇰🇷'},
+  {code:'US',name:'美國',en:'United States',flag:'🇺🇸'},
+  {code:'GB',name:'英國',en:'United Kingdom',flag:'🇬🇧'},
+  {code:'FR',name:'法國',en:'France',flag:'🇫🇷'},
+  {code:'DE',name:'德國',en:'Germany',flag:'🇩🇪'},
+  {code:'IT',name:'義大利',en:'Italy',flag:'🇮🇹'},
+  {code:'ES',name:'西班牙',en:'Spain',flag:'🇪🇸'},
+  {code:'AU',name:'澳洲',en:'Australia',flag:'🇦🇺'},
+  {code:'CA',name:'加拿大',en:'Canada',flag:'🇨🇦'},
+  {code:'CN',name:'中國',en:'China',flag:'🇨🇳'},
+  {code:'HK',name:'香港',en:'Hong Kong',flag:'🇭🇰'},
+  {code:'MO',name:'澳門',en:'Macau',flag:'🇲🇴'},
+  {code:'SG',name:'新加坡',en:'Singapore',flag:'🇸🇬'},
+  {code:'TH',name:'泰國',en:'Thailand',flag:'🇹🇭'},
+  {code:'MY',name:'馬來西亞',en:'Malaysia',flag:'🇲🇾'},
+  {code:'PH',name:'菲律賓',en:'Philippines',flag:'🇵🇭'},
+  {code:'ID',name:'印尼',en:'Indonesia',flag:'🇮🇩'},
+  {code:'VN',name:'越南',en:'Vietnam',flag:'🇻🇳'},
+  {code:'NZ',name:'紐西蘭',en:'New Zealand',flag:'🇳🇿'},
+  {code:'MX',name:'墨西哥',en:'Mexico',flag:'🇲🇽'},
+  {code:'BR',name:'巴西',en:'Brazil',flag:'🇧🇷'},
+  {code:'AR',name:'阿根廷',en:'Argentina',flag:'🇦🇷'},
+  {code:'NL',name:'荷蘭',en:'Netherlands',flag:'🇳🇱'},
+  {code:'BE',name:'比利時',en:'Belgium',flag:'🇧🇪'},
+  {code:'AT',name:'奧地利',en:'Austria',flag:'🇦🇹'},
+  {code:'CH',name:'瑞士',en:'Switzerland',flag:'🇨🇭'},
+  {code:'SE',name:'瑞典',en:'Sweden',flag:'🇸🇪'},
+  {code:'NO',name:'挪威',en:'Norway',flag:'🇳🇴'},
+  {code:'DK',name:'丹麥',en:'Denmark',flag:'🇩🇰'},
+  {code:'FI',name:'芬蘭',en:'Finland',flag:'🇫🇮'},
+  {code:'PT',name:'葡萄牙',en:'Portugal',flag:'🇵🇹'},
+  {code:'PL',name:'波蘭',en:'Poland',flag:'🇵🇱'},
+  {code:'CZ',name:'捷克',en:'Czech Republic',flag:'🇨🇿'},
+  {code:'HU',name:'匈牙利',en:'Hungary',flag:'🇭🇺'},
+  {code:'GR',name:'希臘',en:'Greece',flag:'🇬🇷'},
+  {code:'TR',name:'土耳其',en:'Turkey',flag:'🇹🇷'},
+  {code:'AE',name:'阿聯酋',en:'UAE',flag:'🇦🇪'},
+  {code:'IN',name:'印度',en:'India',flag:'🇮🇳'},
+  {code:'RU',name:'俄羅斯',en:'Russia',flag:'🇷🇺'},
+  {code:'ZA',name:'南非',en:'South Africa',flag:'🇿🇦'},
+  {code:'IE',name:'愛爾蘭',en:'Ireland',flag:'🇮🇪'},
+  {code:'CL',name:'智利',en:'Chile',flag:'🇨🇱'},
+  {code:'CO',name:'哥倫比亞',en:'Colombia',flag:'🇨🇴'},
+  {code:'UA',name:'烏克蘭',en:'Ukraine',flag:'🇺🇦'},
+  {code:'RO',name:'羅馬尼亞',en:'Romania',flag:'🇷🇴'},
+  {code:'IL',name:'以色列',en:'Israel',flag:'🇮🇱'},
+  {code:'EG',name:'埃及',en:'Egypt',flag:'🇪🇬'},
+  {code:'PE',name:'秘魯',en:'Peru',flag:'🇵🇪'},
+];
+
+// Country code → info map
+const COUNTRY_MAP = {};
+COUNTRIES.forEach(c => { COUNTRY_MAP[c.code] = c; });
+
+// ════════════════════════════════════════
+// COUNTRY SEARCH DROPDOWN
+// ════════════════════════════════════════
+function initCountrySearch() {
+  const input = document.getElementById('countrySearchInput');
+  const hidden = document.getElementById('countryCodeInput');
+  const dropdown = document.getElementById('countryDropdown');
+  let highlightIdx = -1;
+
+  function renderDropdown(list) {
+    if (!list.length) { dropdown.classList.remove('open'); return; }
+    dropdown.innerHTML = list.map((c,i) =>
+      `<div class="country-option" data-code="${c.code}" data-idx="${i}">
+        <span class="flag">${c.flag}</span>
+        <span>${c.name} <span style="color:var(--text3);font-size:11px">${c.en}</span></span>
+      </div>`
+    ).join('');
+    dropdown.classList.add('open');
+    highlightIdx = -1;
+    dropdown.querySelectorAll('.country-option').forEach(opt => {
+      opt.addEventListener('mousedown', e => {
+        e.preventDefault();
+        selectCountry(opt.getAttribute('data-code'));
+      });
+    });
+  }
+
+  function selectCountry(code) {
+    const c = COUNTRY_MAP[code];
+    if (!c) return;
+    input.value = c.flag + ' ' + c.name;
+    hidden.value = code;
+    dropdown.classList.remove('open');
+  }
+
+  input.addEventListener('focus', () => {
+    const val = input.value.trim();
+    const list = val ? filterCountries(val) : COUNTRIES.slice(0, 20);
+    renderDropdown(list);
+  });
+  input.addEventListener('input', () => {
+    const val = input.value.trim();
+    hidden.value = '';
+    const list = val ? filterCountries(val) : COUNTRIES.slice(0, 20);
+    renderDropdown(list);
+  });
+  input.addEventListener('keydown', e => {
+    const opts = dropdown.querySelectorAll('.country-option');
+    if (e.key === 'ArrowDown') { e.preventDefault(); highlightIdx = Math.min(highlightIdx+1, opts.length-1); updateHighlight(opts); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); highlightIdx = Math.max(highlightIdx-1, 0); updateHighlight(opts); }
+    else if (e.key === 'Enter' && highlightIdx >= 0) { e.preventDefault(); const code = opts[highlightIdx]?.getAttribute('data-code'); if(code) selectCountry(code); }
+    else if (e.key === 'Escape') dropdown.classList.remove('open');
+  });
+  input.addEventListener('blur', () => { setTimeout(() => dropdown.classList.remove('open'), 150); });
+
+  function updateHighlight(opts) {
+    opts.forEach((o,i) => o.classList.toggle('highlighted', i === highlightIdx));
+    opts[highlightIdx]?.scrollIntoView({ block:'nearest' });
+  }
+  function filterCountries(q) {
+    const lower = q.toLowerCase();
+    return COUNTRIES.filter(c =>
+      c.name.includes(q) || c.en.toLowerCase().includes(lower) || c.code.toLowerCase().includes(lower)
+    ).slice(0, 15);
+  }
+
+  // Expose for edit population
+  window._selectCountry = selectCountry;
+  window._clearCountry = () => { input.value = ''; hidden.value = ''; };
+}
+
+// ════════════════════════════════════════
+// WORLD MAP — compact SVG
+// We use Natural Earth simplified paths encoded as a JS lookup.
+// For size reasons we use a curated set of country shapes via
+// a lightweight GeoJSON-to-path approach using a CDN.
+// ════════════════════════════════════════
+function renderWorldMap(visitedCodes) {
+  const visited = new Set(visitedCodes);
+  // Use world-atlas topojson from CDN, render via canvas-free SVG
+  const container = document.createElement('div');
+  container.innerHTML = `
+    <div style="font-size:13px;color:var(--text2);margin-bottom:10px;display:flex;justify-content:space-between;align-items:center">
+      <span>🌍 去過的國家</span>
+      <span style="font-family:'Space Mono',monospace;font-size:11px;color:var(--p2)">${visited.size} 個國家</span>
+    </div>
+    <div class="world-map-container" id="mapSvgWrap">
+      <div id="mapLoadingMsg" style="text-align:center;color:var(--text3);font-size:12px;padding:40px">載入地圖中…</div>
+    </div>
+    <div class="map-visited-list" id="mapVisitedList"></div>
+    <div class="map-legend" style="margin-top:12px">
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:var(--p)"></div> 去過</div>
+      <div class="map-legend-item"><div class="map-legend-dot" style="background:rgba(255,255,255,0.07)"></div> 未去</div>
+    </div>`;
+
+  // Visited country tags
+  const tagContainer = container.querySelector('#mapVisitedList');
+  if (visited.size === 0) {
+    tagContainer.innerHTML = '<div style="font-size:12px;color:var(--text3)">新增演唱會時選擇國家，就會在地圖上顯示 ✦</div>';
+  } else {
+    visitedCodes.forEach(code => {
+      const c = COUNTRY_MAP[code];
+      if (c) {
+        const span = document.createElement('span');
+        span.className = 'map-country-tag';
+        span.innerHTML = `${c.flag} ${c.name}`;
+        tagContainer.appendChild(span);
+      }
+    });
+  }
+
+  // Load world SVG map via topojson + d3 (from CDN)
+  const wrap = container.querySelector('#mapSvgWrap');
+  loadMapSVG(wrap, visited);
+
+  return container;
+}
+
+function loadMapSVG(wrap, visited) {
+  // Load d3 + topojson dynamically
+  const loadScript = src => new Promise((res,rej) => {
+    if (document.querySelector(`script[src="${src}"]`)) { res(); return; }
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = rej;
+    document.head.appendChild(s);
+  });
+
+  Promise.all([
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js'),
+    loadScript('https://cdnjs.cloudflare.com/ajax/libs/topojson/3.0.2/topojson.min.js')
+  ]).then(() => {
+    return fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json');
+  }).then(r => r.json()).then(world => {
+    wrap.querySelector('#mapLoadingMsg')?.remove();
+
+    const W = 800, H = 420;
+    const projection = d3.geoNaturalEarth1()
+      .scale(140)
+      .translate([W/2, H/2]);
+    const path = d3.geoPath().projection(projection);
+    const countries = topojson.feature(world, world.objects.countries);
+
+    // ISO numeric to alpha-2 lookup (curated subset)
+    const numericToAlpha2 = {
+      '004':'AF','008':'AL','012':'DZ','024':'AO','032':'AR','036':'AU','040':'AT',
+      '050':'BD','056':'BE','076':'BR','100':'BG','116':'KH','120':'CM','124':'CA',
+      '144':'LK','152':'CL','156':'CN','170':'CO','191':'HR','203':'CZ','208':'DK',
+      '218':'EC','818':'EG','233':'EE','246':'FI','250':'FR','266':'GA','276':'DE',
+      '288':'GH','300':'GR','320':'GT','340':'HN','348':'HU','356':'IN','360':'ID',
+      '364':'IR','368':'IQ','372':'IE','376':'IL','380':'IT','388':'JM','392':'JP',
+      '400':'JO','404':'KE','410':'KR','414':'KW','418':'LA','422':'LB','458':'MY',
+      '484':'MX','504':'MA','508':'MZ','516':'NA','528':'NL','554':'NZ','566':'NG',
+      '578':'NO','586':'PK','591':'PA','604':'PE','608':'PH','616':'PL','620':'PT',
+      '630':'PR','642':'RO','643':'RU','682':'SA','706':'SO','710':'ZA','724':'ES',
+      '752':'SE','756':'CH','764':'TH','788':'TN','792':'TR','804':'UA','784':'AE',
+      '826':'GB','840':'US','858':'UY','862':'VE','704':'VN','887':'YE','716':'ZW',
+      '344':'HK','446':'MO','158':'TW','076':'BR','818':'EG','288':'GH','404':'KE',
+    };
+
+    const svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svgEl.setAttribute('viewBox', `0 0 ${W} ${H}`);
+    svgEl.style.width = '100%';
+    svgEl.style.height = 'auto';
+
+    const tooltip = document.getElementById('mapTooltip');
+
+    countries.features.forEach(feature => {
+      const numId = String(feature.id).padStart(3,'0');
+      const alpha2 = numericToAlpha2[numId];
+      const isVisited = alpha2 && visited.has(alpha2);
+      const country = alpha2 ? COUNTRY_MAP[alpha2] : null;
+
+      const pathEl = document.createElementNS('http://www.w3.org/2000/svg','path');
+      const d = path(feature);
+      if (!d) return;
+      pathEl.setAttribute('d', d);
+      pathEl.setAttribute('class', 'country-path' + (isVisited ? ' visited' : ''));
+      pathEl.setAttribute('data-code', alpha2 || '');
+      pathEl.setAttribute('data-name', country ? country.name : '');
+
+      if (isVisited && country) {
+        pathEl.addEventListener('mousemove', e => {
+          tooltip.style.display = 'block';
+          tooltip.style.left = e.clientX + 'px';
+          tooltip.style.top  = e.clientY + 'px';
+          tooltip.textContent = country.flag + ' ' + country.name;
+        });
+        pathEl.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+      }
+      svgEl.appendChild(pathEl);
+    });
+
+    // Taiwan special: add as a small circle since it may be tiny in 110m
+    if (visited.has('TW')) {
+      const twPt = projection([121.0, 23.7]);
+      if (twPt) {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx', twPt[0]);
+        circle.setAttribute('cy', twPt[1]);
+        circle.setAttribute('r', 5);
+        circle.setAttribute('class', 'country-path visited');
+        circle.style.cursor = 'pointer';
+        circle.addEventListener('mousemove', e => {
+          tooltip.style.display = 'block';
+          tooltip.style.left = e.clientX + 'px';
+          tooltip.style.top  = e.clientY + 'px';
+          tooltip.textContent = '🇹🇼 台灣';
+        });
+        circle.addEventListener('mouseleave', () => { tooltip.style.display = 'none'; });
+        svgEl.appendChild(circle);
+      }
+    }
+    if (visited.has('HK')) {
+      const hkPt = projection([114.1, 22.3]);
+      if (hkPt) {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx', hkPt[0]); circle.setAttribute('cy', hkPt[1]);
+        circle.setAttribute('r', 5); circle.setAttribute('class', 'country-path visited');
+        svgEl.appendChild(circle);
+      }
+    }
+    if (visited.has('SG')) {
+      const sgPt = projection([103.8, 1.3]);
+      if (sgPt) {
+        const circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx', sgPt[0]); circle.setAttribute('cy', sgPt[1]);
+        circle.setAttribute('r', 5); circle.setAttribute('class', 'country-path visited');
+        svgEl.appendChild(circle);
+      }
+    }
+
+    wrap.appendChild(svgEl);
+  }).catch(err => {
+    wrap.innerHTML = '<div style="text-align:center;color:var(--text3);font-size:12px;padding:30px">地圖載入失敗，請檢查網路連線</div>';
+    console.error('Map load error:', err);
+  });
+}
+
+// ════════════════════════════════════════
 // DOM refs
+// ════════════════════════════════════════
 const loginDiv = document.getElementById("loginDiv");
 const appDiv = document.getElementById("appDiv");
 const loginForm = document.getElementById("loginForm");
@@ -962,9 +1169,53 @@ let activeYearFilter = null;
 let activeTagFilter = null;
 let pinnedIds = new Set();
 
-// ══════════════════════════════════════════════
-// CUSTOM COLOR PICKER
-// ══════════════════════════════════════════════
+// ════════════════════════════════════════
+// UI LANGUAGE (zh / en)
+// ════════════════════════════════════════
+const UI_TEXT = {
+  zh: {
+    newEntry: '新增演唱會紀錄', save: '💾 儲存紀錄', update: '💾 更新紀錄',
+    cancel: '✕ 取消編輯', clear: '🗑 清除',
+    sortLabel: '排序：', newest:'最新', oldest:'最舊', ratingHigh:'評分高', priceHigh:'票價高', artistAZ:'藝人',
+    archive: 'Archive', myRecords:'我的演唱會紀錄', stats:'📊 追星統計',
+    searchPlaceholder: '搜尋…', logout: '登出', profile: '個人檔案',
+  },
+  en: {
+    newEntry: 'New Concert Entry', save: '💾 Save', update: '💾 Update',
+    cancel: '✕ Cancel Edit', clear: '🗑 Clear',
+    sortLabel: 'Sort: ', newest:'Newest', oldest:'Oldest', ratingHigh:'Top Rated', priceHigh:'Priciest', artistAZ:'Artist A-Z',
+    archive: 'Archive', myRecords: 'My Concert Records', stats:'📊 Statistics',
+    searchPlaceholder: 'Search…', logout: 'Logout', profile: 'Profile',
+  }
+};
+let currentLang = 'zh';
+
+function applyLang(lang) {
+  currentLang = lang;
+  const t = UI_TEXT[lang] || UI_TEXT.zh;
+  formTitle.textContent = t.newEntry;
+  submitBtn.textContent = editingId ? t.update : t.save;
+  cancelBtn.textContent = t.cancel;
+  clearBtn.textContent = t.clear;
+  document.querySelector('.sort-label').textContent = t.sortLabel;
+  const sortBtns = document.querySelectorAll('.sort-btn');
+  const sortKeys = ['newest','oldest','ratingHigh','priceHigh','artistAZ'];
+  sortBtns.forEach((b,i) => { if(sortKeys[i]) b.textContent = t[sortKeys[i]]; });
+  archiveLabel.textContent = t.archive;
+  if (!viewingFriendUid) recordsTitle.textContent = t.myRecords;
+  if (!viewingFriendUid) statsTitle.textContent = t.stats;
+  searchInput.placeholder = t.searchPlaceholder;
+  logoutBtn.textContent = t.logout;
+  profileToggleBtn.textContent = t.profile;
+  localStorage.setItem('mj_lang_' + (currentUserId||''), lang);
+}
+function loadLangPref() {
+  return localStorage.getItem('mj_lang_' + (currentUserId||'')) || 'zh';
+}
+
+// ════════════════════════════════════════
+// COLOR PICKER
+// ════════════════════════════════════════
 const PRESETS = [
   { label:'粉紅', h:338, s:78, bg:5 },
   { label:'紫羅蘭', h:270, s:70, bg:5 },
@@ -982,19 +1233,15 @@ function applyThemeHSL(h, s, bg) {
   updateSwatch(h, s, bg);
   updateSliderBgs(h, s, bg);
 }
-
 function updateSwatch(h, s, bg) {
   const el = document.getElementById('themeSwatch');
   if (!el) return;
   el.style.background = `linear-gradient(135deg, hsl(${h},${s}%,62%), hsl(${(h+60)%360},${s-10}%,50%))`;
 }
 function updateSliderBgs(h, s, bg) {
-  document.getElementById('satSlider').style.background =
-    `linear-gradient(to right, hsl(${h},20%,62%), hsl(${h},100%,62%))`;
-  document.getElementById('bgLSlider').style.background =
-    `linear-gradient(to right, hsl(${h},40%,2%), hsl(${h},40%,14%))`;
+  document.getElementById('satSlider').style.background = `linear-gradient(to right, hsl(${h},20%,62%), hsl(${h},100%,62%))`;
+  document.getElementById('bgLSlider').style.background = `linear-gradient(to right, hsl(${h},40%,2%), hsl(${h},40%,14%))`;
 }
-
 function buildPresets() {
   const container = document.getElementById('themePresets');
   container.innerHTML = '';
@@ -1010,8 +1257,7 @@ function buildPresets() {
       document.getElementById('hueVal').textContent = p.h + '°';
       document.getElementById('satVal').textContent = p.s + '%';
       document.getElementById('bgLVal').textContent = p.bg + '%';
-      applyThemeHSL(p.h, p.s, p.bg);
-      saveThemePref(p.h, p.s, p.bg);
+      applyThemeHSL(p.h, p.s, p.bg); saveThemePref(p.h, p.s, p.bg);
       document.querySelectorAll('.theme-preset').forEach(d => d.classList.remove('active'));
       dot.classList.add('active');
     });
@@ -1019,142 +1265,101 @@ function buildPresets() {
   });
   renderSavedThemes();
 }
-
-function saveThemePref(h, s, bg) {
-  localStorage.setItem('mj_theme', JSON.stringify({h,s,bg}));
-}
-function loadThemePref() {
-  try {
-    const t = JSON.parse(localStorage.getItem('mj_theme'));
-    if (t) return t;
-  } catch(e) {}
-  return { h:338, s:78, bg:5 };
-}
-
-function getSavedCustomThemes() {
-  try { return JSON.parse(localStorage.getItem('mj_custom_themes') || '[]'); } catch(e) { return []; }
-}
+function saveThemePref(h, s, bg) { localStorage.setItem('mj_theme', JSON.stringify({h,s,bg})); }
+function loadThemePref() { try { const t = JSON.parse(localStorage.getItem('mj_theme')); if(t) return t; } catch(e){} return {h:338,s:78,bg:5}; }
+function getSavedCustomThemes() { try { return JSON.parse(localStorage.getItem('mj_custom_themes')||'[]'); } catch(e) { return []; } }
 function saveSavedCustomThemes(arr) { localStorage.setItem('mj_custom_themes', JSON.stringify(arr)); }
 function renderSavedThemes() {
   const arr = getSavedCustomThemes();
   const row = document.getElementById('savedThemesRow');
   const dots = document.getElementById('savedThemesDots');
-  if (!arr.length) { row.style.display = 'none'; return; }
-  row.style.display = 'block';
-  dots.innerHTML = '';
-  arr.forEach((t, i) => {
+  if (!arr.length) { row.style.display='none'; return; }
+  row.style.display='block';
+  dots.innerHTML='';
+  arr.forEach((t,i) => {
     const dot = document.createElement('div');
-    dot.className = 'saved-theme-dot';
-    dot.style.background = `linear-gradient(135deg, hsl(${t.h},${t.s}%,60%), hsl(${(t.h+50)%360},60%,45%))`;
-    dot.title = `自訂 ${i+1} — 點擊套用`;
+    dot.className='saved-theme-dot';
+    dot.style.background=`linear-gradient(135deg, hsl(${t.h},${t.s}%,60%), hsl(${(t.h+50)%360},60%,45%))`;
+    dot.title=`自訂 ${i+1}`;
     const del = document.createElement('div');
-    del.className = 'del-saved';
-    del.textContent = '✕';
+    del.className='del-saved'; del.textContent='✕';
     del.addEventListener('click', e => {
       e.stopPropagation();
-      const updated = getSavedCustomThemes().filter((_,j) => j !== i);
-      saveSavedCustomThemes(updated);
-      renderSavedThemes();
+      const updated = getSavedCustomThemes().filter((_,j)=>j!==i);
+      saveSavedCustomThemes(updated); renderSavedThemes();
     });
     dot.appendChild(del);
     dot.addEventListener('click', () => {
-      document.getElementById('hueSlider').value = t.h;
-      document.getElementById('satSlider').value = t.s;
-      document.getElementById('bgLSlider').value = t.bg;
-      document.getElementById('hueVal').textContent = t.h + '°';
-      document.getElementById('satVal').textContent = t.s + '%';
-      document.getElementById('bgLVal').textContent = t.bg + '%';
-      applyThemeHSL(t.h, t.s, t.bg);
-      saveThemePref(t.h, t.s, t.bg);
+      document.getElementById('hueSlider').value=t.h;
+      document.getElementById('satSlider').value=t.s;
+      document.getElementById('bgLSlider').value=t.bg;
+      document.getElementById('hueVal').textContent=t.h+'°';
+      document.getElementById('satVal').textContent=t.s+'%';
+      document.getElementById('bgLVal').textContent=t.bg+'%';
+      applyThemeHSL(t.h,t.s,t.bg); saveThemePref(t.h,t.s,t.bg);
     });
     dots.appendChild(dot);
   });
 }
-
 function initColorPicker() {
   buildPresets();
-  const { h, s, bg } = loadThemePref();
-  document.getElementById('hueSlider').value = h;
-  document.getElementById('satSlider').value = s;
-  document.getElementById('bgLSlider').value = bg;
-  document.getElementById('hueVal').textContent = h + '°';
-  document.getElementById('satVal').textContent = s + '%';
-  document.getElementById('bgLVal').textContent = bg + '%';
-  applyThemeHSL(h, s, bg);
-
+  const {h,s,bg} = loadThemePref();
+  document.getElementById('hueSlider').value=h;
+  document.getElementById('satSlider').value=s;
+  document.getElementById('bgLSlider').value=bg;
+  document.getElementById('hueVal').textContent=h+'°';
+  document.getElementById('satVal').textContent=s+'%';
+  document.getElementById('bgLVal').textContent=bg+'%';
+  applyThemeHSL(h,s,bg);
   ['hueSlider','satSlider','bgLSlider'].forEach(id => {
     document.getElementById(id).addEventListener('input', () => {
-      const hv = +document.getElementById('hueSlider').value;
-      const sv = +document.getElementById('satSlider').value;
-      const bv = +document.getElementById('bgLSlider').value;
-      document.getElementById('hueVal').textContent = hv + '°';
-      document.getElementById('satVal').textContent = sv + '%';
-      document.getElementById('bgLVal').textContent = bv + '%';
-      applyThemeHSL(hv, sv, bv);
+      const hv=+document.getElementById('hueSlider').value;
+      const sv=+document.getElementById('satSlider').value;
+      const bv=+document.getElementById('bgLSlider').value;
+      document.getElementById('hueVal').textContent=hv+'°';
+      document.getElementById('satVal').textContent=sv+'%';
+      document.getElementById('bgLVal').textContent=bv+'%';
+      applyThemeHSL(hv,sv,bv);
     });
     document.getElementById(id).addEventListener('change', () => {
-      const hv = +document.getElementById('hueSlider').value;
-      const sv = +document.getElementById('satSlider').value;
-      const bv = +document.getElementById('bgLSlider').value;
-      saveThemePref(hv, sv, bv);
+      saveThemePref(+document.getElementById('hueSlider').value,+document.getElementById('satSlider').value,+document.getElementById('bgLSlider').value);
     });
   });
-
   document.getElementById('saveThemeBtn').addEventListener('click', () => {
-    const hv = +document.getElementById('hueSlider').value;
-    const sv = +document.getElementById('satSlider').value;
-    const bv = +document.getElementById('bgLSlider').value;
-    const arr = getSavedCustomThemes();
-    if (arr.length >= 8) { showToast('最多儲存 8 個自訂主題'); return; }
-    arr.push({ h:hv, s:sv, bg:bv });
-    saveSavedCustomThemes(arr);
-    renderSavedThemes();
-    showToast('✓ 自訂主題已儲存！');
+    const hv=+document.getElementById('hueSlider').value, sv=+document.getElementById('satSlider').value, bv=+document.getElementById('bgLSlider').value;
+    const arr=getSavedCustomThemes();
+    if(arr.length>=8){showToast('最多儲存 8 個自訂主題');return;}
+    arr.push({h:hv,s:sv,bg:bv}); saveSavedCustomThemes(arr); renderSavedThemes(); showToast('✓ 自訂主題已儲存！');
   });
   document.getElementById('resetThemeBtn').addEventListener('click', () => {
-    applyThemeHSL(338, 78, 5);
-    saveThemePref(338, 78, 5);
-    document.getElementById('hueSlider').value = 338;
-    document.getElementById('satSlider').value = 78;
-    document.getElementById('bgLSlider').value = 5;
-    document.getElementById('hueVal').textContent = '338°';
-    document.getElementById('satVal').textContent = '78%';
-    document.getElementById('bgLVal').textContent = '5%';
+    applyThemeHSL(338,78,5); saveThemePref(338,78,5);
+    document.getElementById('hueSlider').value=338; document.getElementById('satSlider').value=78; document.getElementById('bgLSlider').value=5;
+    document.getElementById('hueVal').textContent='338°'; document.getElementById('satVal').textContent='78%'; document.getElementById('bgLVal').textContent='5%';
     showToast('↩ 已重置為預設粉紅');
   });
-
-  // Collapse toggle
-  let themeCollapsed = false;
+  let themeCollapsed=false;
   document.getElementById('themeCollapseBtn').addEventListener('click', () => {
-    themeCollapsed = !themeCollapsed;
-    document.getElementById('themeBody').style.display = themeCollapsed ? 'none' : '';
-    document.getElementById('themeCollapseBtn').textContent = themeCollapsed ? '展開 ▼' : '收起 ▲';
+    themeCollapsed=!themeCollapsed;
+    document.getElementById('themeBody').style.display=themeCollapsed?'none':'';
+    document.getElementById('themeCollapseBtn').textContent=themeCollapsed?'展開 ▼':'收起 ▲';
   });
 }
 
 // ── TOAST ──
-function showToast(msg, duration = 2500) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), duration);
+function showToast(msg, duration=2500) {
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),duration);
 }
 
 // ── LIGHTBOX ──
-window.openLightbox = function(src) {
-  document.getElementById('lightboxImg').src = src;
-  document.getElementById('lightbox').classList.add('open');
-};
-window.closeLightbox = function() {
-  document.getElementById('lightbox').classList.remove('open');
-};
-document.getElementById('lightbox').addEventListener('click', e => {
-  if (e.target === document.getElementById('lightbox')) closeLightbox();
-});
+window.openLightbox = function(src) { document.getElementById('lightboxImg').src=src; document.getElementById('lightbox').classList.add('open'); };
+window.closeLightbox = function() { document.getElementById('lightbox').classList.remove('open'); };
+document.getElementById('lightbox').addEventListener('click', e => { if(e.target===document.getElementById('lightbox'))closeLightbox(); });
 
 // ── MODULES ──
 const MODULES = [
   { id:'overview', label:'📋 總覽',     defaultOn:true  },
+  { id:'map',      label:'🌍 世界地圖', defaultOn:true  },
   { id:'price',    label:'💰 票價分析', defaultOn:true  },
   { id:'artist',   label:'🎤 藝人排行', defaultOn:true  },
   { id:'venue',    label:'📍 場地排行', defaultOn:false },
@@ -1166,664 +1371,419 @@ const MODULES = [
 function getActiveModules() {
   const saved = localStorage.getItem('stats_modules');
   if (saved) return JSON.parse(saved);
-  return MODULES.filter(m => m.defaultOn).map(m => m.id);
+  return MODULES.filter(m=>m.defaultOn).map(m=>m.id);
 }
 function saveActiveModules(ids) { localStorage.setItem('stats_modules', JSON.stringify(ids)); }
 function buildModuleToggles() {
   const active = getActiveModules();
-  moduleToggles.innerHTML = '';
+  moduleToggles.innerHTML='';
   MODULES.forEach(m => {
     const btn = document.createElement('button');
-    btn.className = 'module-toggle-btn' + (active.includes(m.id) ? ' active' : '');
-    btn.textContent = m.label;
+    btn.className='module-toggle-btn'+(active.includes(m.id)?' active':'');
+    btn.textContent=m.label;
     btn.addEventListener('click', () => {
       btn.classList.toggle('active');
-      const activeIds = [...document.querySelectorAll('.module-toggle-btn')]
-        .map((b,i) => MODULES[i].id)
-        .filter((id,i) => document.querySelectorAll('.module-toggle-btn')[i].classList.contains('active'));
-      saveActiveModules(activeIds);
-      updateStats(allRecords);
+      const activeIds=[...document.querySelectorAll('.module-toggle-btn')].map((b,i)=>MODULES[i].id).filter((id,i)=>document.querySelectorAll('.module-toggle-btn')[i].classList.contains('active'));
+      saveActiveModules(activeIds); updateStats(allRecords);
     });
     moduleToggles.appendChild(btn);
   });
 }
 customiseStatsBtn.addEventListener('click', () => {
-  const open = moduleToggleBar.style.display !== 'none';
-  moduleToggleBar.style.display = open ? 'none' : 'block';
-  if (!open) buildModuleToggles();
+  const open=moduleToggleBar.style.display!=='none';
+  moduleToggleBar.style.display=open?'none':'block';
+  if(!open)buildModuleToggles();
 });
 
 // ── SORT ──
 document.querySelectorAll('.sort-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentSort = btn.getAttribute('data-sort');
+    document.querySelectorAll('.sort-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active'); currentSort=btn.getAttribute('data-sort');
     applyFiltersAndSort();
   });
 });
 function sortRecords(records) {
-  const pinned = records.filter(r => pinnedIds.has(r.id));
-  const rest   = records.filter(r => !pinnedIds.has(r.id));
+  const pinned=records.filter(r=>pinnedIds.has(r.id));
+  const rest=records.filter(r=>!pinnedIds.has(r.id));
   function srt(arr) {
     switch(currentSort) {
-      case 'date-desc':   return arr.sort((a,b) => new Date(b.data.datetime) - new Date(a.data.datetime));
-      case 'date-asc':    return arr.sort((a,b) => new Date(a.data.datetime) - new Date(b.data.datetime));
-      case 'rating-desc': return arr.sort((a,b) => (b.data.rating||0) - (a.data.rating||0));
-      case 'price-desc':  return arr.sort((a,b) => evalPrice(b.data.price) - evalPrice(a.data.price));
-      case 'artist-asc':  return arr.sort((a,b) => (a.data.artist||'').localeCompare(b.data.artist||''));
+      case 'date-desc': return arr.sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
+      case 'date-asc':  return arr.sort((a,b)=>new Date(a.data.datetime)-new Date(b.data.datetime));
+      case 'rating-desc': return arr.sort((a,b)=>(b.data.rating||0)-(a.data.rating||0));
+      case 'price-desc': return arr.sort((a,b)=>evalPrice(b.data.price)-evalPrice(a.data.price));
+      case 'artist-asc': return arr.sort((a,b)=>(a.data.artist||'').localeCompare(b.data.artist||''));
       default: return arr;
     }
   }
-  return [...srt(pinned), ...srt(rest)];
+  return [...srt(pinned),...srt(rest)];
 }
 
-// ── YEAR FILTER (NEW) ──
+// ── YEAR FILTER ──
 function buildYearFilter(records) {
-  const bar = document.getElementById('yearFilterBar');
-  if (!records.length) { bar.innerHTML = ''; return; }
-  const years = [...new Set(records.map(r => r.data.datetime ? new Date(r.data.datetime).getFullYear() : null).filter(Boolean))].sort((a,b) => b-a);
-  bar.innerHTML = '';
-  if (years.length < 2) return;
-  const allBtn = document.createElement('button');
-  allBtn.className = 'year-btn' + (activeYearFilter === null ? ' active' : '');
-  allBtn.textContent = '全部';
-  allBtn.addEventListener('click', () => { activeYearFilter = null; applyFiltersAndSort(); buildYearFilter(allRecords); });
+  const bar=document.getElementById('yearFilterBar');
+  if(!records.length){bar.innerHTML='';return;}
+  const years=[...new Set(records.map(r=>r.data.datetime?new Date(r.data.datetime).getFullYear():null).filter(Boolean))].sort((a,b)=>b-a);
+  bar.innerHTML='';
+  if(years.length<2)return;
+  const allBtn=document.createElement('button');
+  allBtn.className='year-btn'+(activeYearFilter===null?' active':'');
+  allBtn.textContent='全部';
+  allBtn.addEventListener('click',()=>{activeYearFilter=null;applyFiltersAndSort();buildYearFilter(allRecords);});
   bar.appendChild(allBtn);
-  years.forEach(y => {
-    const btn = document.createElement('button');
-    btn.className = 'year-btn' + (activeYearFilter === y ? ' active' : '');
-    btn.textContent = y;
-    btn.addEventListener('click', () => { activeYearFilter = y; applyFiltersAndSort(); buildYearFilter(allRecords); });
+  years.forEach(y=>{
+    const btn=document.createElement('button');
+    btn.className='year-btn'+(activeYearFilter===y?' active':'');
+    btn.textContent=y;
+    btn.addEventListener('click',()=>{activeYearFilter=y;applyFiltersAndSort();buildYearFilter(allRecords);});
     bar.appendChild(btn);
   });
 }
 
-// ── COUNTDOWN HELPER (NEW) ──
+// ── COUNTDOWN ──
 function getCountdown(datetime) {
-  const now = new Date();
-  const target = new Date(datetime);
-  const diff = target - now;
-  if (diff <= 0) return null;
-  const days = Math.floor(diff / 86400000);
-  const hours = Math.floor((diff % 86400000) / 3600000);
-  if (days > 365) return null;
-  if (days > 0) return `還有 ${days} 天`;
-  if (hours > 0) return `還有 ${hours} 小時`;
+  const now=new Date(), target=new Date(datetime), diff=target-now;
+  if(diff<=0)return null;
+  const days=Math.floor(diff/86400000), hours=Math.floor((diff%86400000)/3600000);
+  if(days>365)return null;
+  if(days>0)return `還有 ${days} 天`;
+  if(hours>0)return `還有 ${hours} 小時`;
   return '今天！';
 }
 
-// ── PINNED IDS (NEW) ──
-function loadPinnedIds() {
-  try { pinnedIds = new Set(JSON.parse(localStorage.getItem('pinned_' + currentUserId) || '[]')); } catch(e) { pinnedIds = new Set(); }
-}
-function savePinnedIds() {
-  localStorage.setItem('pinned_' + currentUserId, JSON.stringify([...pinnedIds]));
-}
-function togglePin(id) {
-  if (pinnedIds.has(id)) pinnedIds.delete(id);
-  else pinnedIds.add(id);
-  savePinnedIds();
-  applyFiltersAndSort();
-}
+// ── PINNED ──
+function loadPinnedIds() { try{pinnedIds=new Set(JSON.parse(localStorage.getItem('pinned_'+currentUserId)||'[]'));}catch(e){pinnedIds=new Set();} }
+function savePinnedIds() { localStorage.setItem('pinned_'+currentUserId,JSON.stringify([...pinnedIds])); }
+function togglePin(id) { if(pinnedIds.has(id))pinnedIds.delete(id);else pinnedIds.add(id); savePinnedIds(); applyFiltersAndSort(); }
 
 // ── APPLY FILTERS ──
 function applyFiltersAndSort() {
-  let filtered = [...allRecords];
-  const term = searchInput.value.trim().toLowerCase();
-  if (term) {
-    filtered = filtered.filter(r =>
-      r.data.artist?.toLowerCase().includes(term) ||
-      r.data.venue?.toLowerCase().includes(term) ||
-      r.data.notes?.toLowerCase().includes(term) ||
-      r.data.tags?.toLowerCase().includes(term)
-    );
-  }
-  if (activeYearFilter !== null) {
-    filtered = filtered.filter(r => r.data.datetime && new Date(r.data.datetime).getFullYear() === activeYearFilter);
-  }
-  if (activeTagFilter) {
-    filtered = filtered.filter(r => r.data.tags?.split(',').map(t=>t.trim()).includes(activeTagFilter));
-  }
-  const sorted = sortRecords(filtered);
-  displayRecords(sorted, viewingFriendUid || currentUserId);
-  const suffix = viewingFriendUid ? `（${viewingFriendName}）` : '筆紀錄';
-  const countBase = activeYearFilter ? `${activeYearFilter} 年 · ` : '';
-  recordCount.textContent = `${countBase}${filtered.length} ${suffix}`;
+  let filtered=[...allRecords];
+  const term=searchInput.value.trim().toLowerCase();
+  if(term) filtered=filtered.filter(r=>r.data.artist?.toLowerCase().includes(term)||r.data.venue?.toLowerCase().includes(term)||r.data.notes?.toLowerCase().includes(term)||r.data.tags?.toLowerCase().includes(term)||(COUNTRY_MAP[r.data.countryCode]?.name||'').includes(term));
+  if(activeYearFilter!==null) filtered=filtered.filter(r=>r.data.datetime&&new Date(r.data.datetime).getFullYear()===activeYearFilter);
+  if(activeTagFilter) filtered=filtered.filter(r=>r.data.tags?.split(',').map(t=>t.trim()).includes(activeTagFilter));
+  const sorted=sortRecords(filtered);
+  displayRecords(sorted, viewingFriendUid||currentUserId);
+  const suffix=viewingFriendUid?`（${viewingFriendName}）`:'筆紀錄';
+  const countBase=activeYearFilter?`${activeYearFilter} 年 · `:'';
+  recordCount.textContent=`${countBase}${filtered.length} ${suffix}`;
 }
 
-// ── EXPORT (NEW) ──
-exportToggleBtn.addEventListener('click', () => {
-  const open = exportPanel.style.display !== 'none';
-  exportPanel.style.display = open ? 'none' : 'block';
+// ── EXPORT ──
+exportToggleBtn.addEventListener('click',()=>{const open=exportPanel.style.display!=='none';exportPanel.style.display=open?'none':'block';});
+document.getElementById('exportJsonBtn').addEventListener('click',()=>{
+  const data=allRecords.map(r=>({...r.data,id:r.id}));
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  downloadBlob(blob,`minejournal_${todayStr()}.json`); showToast('✓ JSON 匯出完成');
 });
-document.getElementById('exportJsonBtn').addEventListener('click', () => {
-  const data = allRecords.map(r => ({...r.data, id:r.id}));
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type:'application/json' });
-  downloadBlob(blob, `minejournal_${todayStr()}.json`);
-  showToast('✓ JSON 匯出完成');
+document.getElementById('exportCsvBtn').addEventListener('click',()=>{
+  const cols=['artist','datetime','price','currency','countryCode','seat','venue','tags','rating','notes'];
+  const rows=[cols.join(',')];
+  allRecords.forEach(r=>{rows.push(cols.map(c=>`"${(r.data[c]||'').toString().replace(/"/g,'""')}"`).join(','));});
+  const blob=new Blob(['\ufeff'+rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  downloadBlob(blob,`minejournal_${todayStr()}.csv`); showToast('✓ CSV 匯出完成');
 });
-document.getElementById('exportCsvBtn').addEventListener('click', () => {
-  const cols = ['artist','datetime','price','currency','seat','venue','tags','rating','notes'];
-  const rows = [cols.join(',')];
-  allRecords.forEach(r => {
-    rows.push(cols.map(c => `"${(r.data[c]||'').toString().replace(/"/g,'""')}"`).join(','));
+document.getElementById('exportTxtBtn').addEventListener('click',()=>{
+  const lines=allRecords.map(r=>{
+    const d=r.data;
+    const country=COUNTRY_MAP[d.countryCode];
+    return `[ ${d.artist} ]\n日期：${d.datetime}  國家：${country?country.flag+' '+country.name:'—'}  場地：${d.venue||'—'}  座位：${d.seat||'—'}\n票價：${d.price} ${d.currency||'TWD'}  評分：${'★'.repeat(d.rating||0)||'—'}\n備註：${d.notes||'—'}\n────────────────────`;
   });
-  const blob = new Blob(['\ufeff' + rows.join('\n')], { type:'text/csv;charset=utf-8;' });
-  downloadBlob(blob, `minejournal_${todayStr()}.csv`);
-  showToast('✓ CSV 匯出完成');
+  const blob=new Blob(['MINEJOURNAL 演唱會紀錄\n匯出時間：'+new Date().toLocaleString('zh-TW')+'\n\n'+lines.join('\n')],{type:'text/plain;charset=utf-8;'});
+  downloadBlob(blob,`minejournal_${todayStr()}.txt`); showToast('✓ 文字檔匯出完成');
 });
-document.getElementById('exportTxtBtn').addEventListener('click', () => {
-  const lines = allRecords.map(r => {
-    const d = r.data;
-    return `[ ${d.artist} ]
-日期：${d.datetime}  場地：${d.venue||'—'}  座位：${d.seat||'—'}
-票價：${d.price} ${d.currency||'TWD'}  評分：${'★'.repeat(d.rating||0)||'—'}
-備註：${d.notes||'—'}
-────────────────────`;
-  });
-  const blob = new Blob(['MINEJOURNAL 演唱會紀錄\n匯出時間：' + new Date().toLocaleString('zh-TW') + '\n\n' + lines.join('\n')], { type:'text/plain;charset=utf-8;' });
-  downloadBlob(blob, `minejournal_${todayStr()}.txt`);
-  showToast('✓ 文字檔匯出完成');
-});
-function downloadBlob(blob, filename) {
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = filename;
-  a.click();
-  URL.revokeObjectURL(a.href);
-}
-function todayStr() {
-  return new Date().toISOString().slice(0,10);
-}
+function downloadBlob(blob,filename){const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=filename;a.click();URL.revokeObjectURL(a.href);}
+function todayStr(){return new Date().toISOString().slice(0,10);}
 
-// ── QUICK NOTE FAB (NEW) ──
-let quickNoteOpen = false;
-quickNoteFab.addEventListener('click', () => {
-  quickNoteOpen = !quickNoteOpen;
-  quickNotePanel.style.display = quickNoteOpen ? 'block' : 'none';
-  if (quickNoteOpen) renderQuickNotes();
+// ── QUICK NOTE ──
+let quickNoteOpen=false;
+quickNoteFab.addEventListener('click',()=>{quickNoteOpen=!quickNoteOpen;quickNotePanel.style.display=quickNoteOpen?'block':'none';if(quickNoteOpen)renderQuickNotes();});
+document.getElementById('saveQuickNoteBtn').addEventListener('click',()=>{
+  const text=document.getElementById('quickNoteText').value.trim(); if(!text)return;
+  const key='qnotes_'+currentUserId; const notes=getQuickNotes();
+  notes.unshift({id:Date.now(),text,createdAt:new Date().toLocaleString('zh-TW')});
+  localStorage.setItem(key,JSON.stringify(notes.slice(0,20)));
+  document.getElementById('quickNoteText').value=''; renderQuickNotes(); showToast('✓ 備忘已儲存');
 });
-document.getElementById('saveQuickNoteBtn').addEventListener('click', () => {
-  const text = document.getElementById('quickNoteText').value.trim();
-  if (!text) return;
-  const key = 'qnotes_' + currentUserId;
-  const notes = getQuickNotes();
-  notes.unshift({ id: Date.now(), text, createdAt: new Date().toLocaleString('zh-TW') });
-  localStorage.setItem(key, JSON.stringify(notes.slice(0,20)));
-  document.getElementById('quickNoteText').value = '';
-  renderQuickNotes();
-  showToast('✓ 備忘已儲存');
-});
-document.getElementById('clearQuickNoteBtn').addEventListener('click', () => {
-  document.getElementById('quickNoteText').value = '';
-});
-function getQuickNotes() {
-  try { return JSON.parse(localStorage.getItem('qnotes_' + currentUserId) || '[]'); } catch(e) { return []; }
+document.getElementById('clearQuickNoteBtn').addEventListener('click',()=>{document.getElementById('quickNoteText').value='';});
+function getQuickNotes(){try{return JSON.parse(localStorage.getItem('qnotes_'+currentUserId)||'[]');}catch(e){return[];}}
+function renderQuickNotes(){
+  const notes=getQuickNotes(); const el=document.getElementById('quickNotesList');
+  if(!notes.length){el.innerHTML='<div style="font-size:12px;color:var(--text3);padding:8px 0">還沒有備忘</div>';return;}
+  el.innerHTML=notes.map((n,i)=>`<div style="padding:8px 0;border-top:1px solid var(--glass-border);position:relative;"><div style="font-size:12px;color:var(--text2);white-space:pre-wrap">${n.text}</div><div style="font-size:10px;color:var(--text3);margin-top:3px">${n.createdAt}</div><button onclick="deleteQuickNote(${n.id})" style="position:absolute;top:6px;right:0;background:none;border:none;color:var(--text3);font-size:12px;padding:2px 4px;cursor:pointer;box-shadow:none;transform:none;">✕</button></div>`).join('');
 }
-function renderQuickNotes() {
-  const notes = getQuickNotes();
-  const el = document.getElementById('quickNotesList');
-  if (!notes.length) { el.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:8px 0">還沒有備忘</div>'; return; }
-  el.innerHTML = notes.map((n,i) => `
-    <div style="padding:8px 0;border-top:1px solid var(--glass-border);position:relative;">
-      <div style="font-size:12px;color:var(--text2);white-space:pre-wrap">${n.text}</div>
-      <div style="font-size:10px;color:var(--text3);margin-top:3px">${n.createdAt}</div>
-      <button onclick="deleteQuickNote(${n.id})" style="position:absolute;top:6px;right:0;background:none;border:none;color:var(--text3);font-size:12px;padding:2px 4px;cursor:pointer;box-shadow:none;transform:none;">✕</button>
-    </div>`).join('');
-}
-window.deleteQuickNote = function(id) {
-  const updated = getQuickNotes().filter(n => n.id !== id);
-  localStorage.setItem('qnotes_' + currentUserId, JSON.stringify(updated));
-  renderQuickNotes();
-};
+window.deleteQuickNote=function(id){const updated=getQuickNotes().filter(n=>n.id!==id);localStorage.setItem('qnotes_'+currentUserId,JSON.stringify(updated));renderQuickNotes();};
 
 // ── STATS ──
 function updateStats(records) {
-  const div = document.getElementById('statsDiv');
-  if (records.length === 0) { div.innerHTML = '<div class="empty-state">✦ 還沒有任何紀錄 ✦</div>'; return; }
-  const active = getActiveModules();
-  let html = '';
-  const streak = checkStreak(records);
-  if (streak) {
-    html += `<div class="streak-banner"><span class="streak-icon">🔥</span><span>連續 <strong>${streak} 年</strong>都有去演唱會！繼續保持追星熱情 ✦</span></div>`;
-  }
-  const curMap = {};
-  records.forEach(r => {
-    const c = r.data.currency || 'TWD';
-    const val = evalPrice(r.data.price);
-    if (!curMap[c]) curMap[c] = { total:0, count:0, values:[] };
-    curMap[c].total += val; curMap[c].count++; curMap[c].values.push(val);
-  });
-  let mainCur = 'TWD', maxC = 0;
-  Object.entries(curMap).forEach(([c,d]) => { if (d.count > maxC) { maxC = d.count; mainCur = c; } });
-  const sym = getCurrencySymbol(mainCur);
-  const mainVals = curMap[mainCur]?.values || [];
-  const mainTotal = Math.round(curMap[mainCur]?.total || 0);
-  const mainAvg = mainVals.length ? Math.round(mainTotal / mainVals.length) : 0;
-  const mainMax = mainVals.length ? Math.round(Math.max(...mainVals)) : 0;
-  const mainMin = mainVals.length ? Math.round(Math.min(...mainVals)) : 0;
+  const div=document.getElementById('statsDiv');
+  if(records.length===0){div.innerHTML='<div class="empty-state">✦ 還沒有任何紀錄 ✦</div>';return;}
+  const active=getActiveModules();
+  let html='';
+  const streak=checkStreak(records);
+  if(streak) html+=`<div class="streak-banner"><span class="streak-icon">🔥</span><span>連續 <strong>${streak} 年</strong>都有去演唱會！繼續保持追星熱情 ✦</span></div>`;
 
-  if (active.includes('overview')) {
-    html += `<div class="stats-module visible"><div class="stats-grid-4">
+  const curMap={};
+  records.forEach(r=>{const c=r.data.currency||'TWD';const val=evalPrice(r.data.price);if(!curMap[c])curMap[c]={total:0,count:0,values:[]};curMap[c].total+=val;curMap[c].count++;curMap[c].values.push(val);});
+  let mainCur='TWD',maxC=0;
+  Object.entries(curMap).forEach(([c,d])=>{if(d.count>maxC){maxC=d.count;mainCur=c;}});
+  const sym=getCurrencySymbol(mainCur);
+  const mainVals=curMap[mainCur]?.values||[];
+  const mainTotal=Math.round(curMap[mainCur]?.total||0);
+  const mainAvg=mainVals.length?Math.round(mainTotal/mainVals.length):0;
+  const mainMax=mainVals.length?Math.round(Math.max(...mainVals)):0;
+  const mainMin=mainVals.length?Math.round(Math.min(...mainVals)):0;
+
+  if(active.includes('overview')) {
+    html+=`<div class="stats-module visible"><div class="stats-grid-4">
       <div class="stat-card"><div class="stat-value">${records.length}</div><div class="stat-label">🎤 總場次</div></div>
       <div class="stat-card blue"><div class="stat-value sm">${sym} ${mainTotal.toLocaleString()}</div><div class="stat-label">💰 ${mainCur} 總花費</div></div>
       <div class="stat-card green"><div class="stat-value sm">${sym} ${mainAvg.toLocaleString()}</div><div class="stat-label">📊 平均票價</div></div>
       <div class="stat-card purple"><div class="stat-value">${Object.keys(countBy(records,r=>r.data.artist)).length}</div><div class="stat-label">🌟 不同藝人</div></div>
     </div></div><hr class="divider">`;
   }
-  if (active.includes('price') && mainVals.length) {
-    const sorted = [...mainVals].sort((a,b) => a-b);
-    const median = sorted.length % 2 === 0
-      ? (sorted[sorted.length/2-1] + sorted[sorted.length/2]) / 2
-      : sorted[Math.floor(sorted.length/2)];
-    html += `<div class="stats-module visible"><div class="stats-grid">
+
+  // ★ WORLD MAP MODULE ★
+  if(active.includes('map')) {
+    const visitedCodes=[...new Set(records.map(r=>r.data.countryCode).filter(Boolean))];
+    const mapEl=renderWorldMap(visitedCodes);
+    // We'll insert as placeholder and fill after HTML is set
+    html+=`<div class="stats-module visible" id="mapModuleSlot"></div><hr class="divider">`;
+    div.innerHTML=html;
+    const slot=div.querySelector('#mapModuleSlot');
+    if(slot) slot.appendChild(mapEl);
+    // Continue building rest
+    html=''; // reset since we set innerHTML
+    buildRemainingStats(div, records, active, curMap, mainCur, sym, mainVals, mainTotal, mainAvg, mainMax, mainMin);
+    return; // early return since we set innerHTML already
+  }
+
+  buildRemainingStats(div, records, active, curMap, mainCur, sym, mainVals, mainTotal, mainAvg, mainMax, mainMin, html);
+}
+
+function buildRemainingStats(div, records, active, curMap, mainCur, sym, mainVals, mainTotal, mainAvg, mainMax, mainMin, existingHtml='') {
+  let html = existingHtml;
+
+  if(active.includes('price')&&mainVals.length){
+    const sorted=[...mainVals].sort((a,b)=>a-b);
+    const median=sorted.length%2===0?(sorted[sorted.length/2-1]+sorted[sorted.length/2])/2:sorted[Math.floor(sorted.length/2)];
+    html+=`<div class="stats-module visible"><div class="stats-grid">
       <div class="stat-card"><div class="stat-value sm">${sym} ${mainMax.toLocaleString()}</div><div class="stat-label">🔺 最高票價</div></div>
       <div class="stat-card"><div class="stat-value sm">${sym} ${mainMin.toLocaleString()}</div><div class="stat-label">🔻 最低票價</div></div>
       <div class="stat-card blue"><div class="stat-value sm">${sym} ${Math.round(median).toLocaleString()}</div><div class="stat-label">📊 中位數</div></div>
       <div class="stat-card green"><div class="stat-value sm">${sym} ${mainAvg.toLocaleString()}</div><div class="stat-label">📐 平均值</div></div>
     </div></div><hr class="divider">`;
   }
-  if (active.includes('artist')) {
-    const artistCount = countBy(records, r => r.data.artist);
-    const top = Object.entries(artistCount).sort((a,b) => b[1]-a[1]).slice(0,8);
-    const maxVal = top[0]?.[1] || 1;
-    html += `<div class="stats-module visible"><div class="bar-chart">${
-      top.map(([name,cnt]) => `<div class="bar-row">
-        <div class="bar-label">${name}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%"></div></div>
-        <div class="bar-val">${cnt} 場</div></div>`).join('')
-    }</div></div><hr class="divider">`;
+  if(active.includes('artist')){
+    const artistCount=countBy(records,r=>r.data.artist);
+    const top=Object.entries(artistCount).sort((a,b)=>b[1]-a[1]).slice(0,8);
+    const maxVal=top[0]?.[1]||1;
+    html+=`<div class="stats-module visible"><div class="bar-chart">${top.map(([name,cnt])=>`<div class="bar-row"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%"></div></div><div class="bar-val">${cnt} 場</div></div>`).join('')}</div></div><hr class="divider">`;
   }
-  if (active.includes('venue')) {
-    const venueCount = countBy(records.filter(r => r.data.venue), r => r.data.venue);
-    const top = Object.entries(venueCount).sort((a,b) => b[1]-a[1]).slice(0,6);
-    const maxVal = top[0]?.[1] || 1;
-    if (top.length) {
-      html += `<div class="stats-module visible"><div class="bar-chart">${
-        top.map(([name,cnt]) => `<div class="bar-row">
-          <div class="bar-label">${name}</div>
-          <div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%;background:linear-gradient(90deg,#3388ff,#00ccff)"></div></div>
-          <div class="bar-val">${cnt} 次</div></div>`).join('')
-      }</div></div><hr class="divider">`;
+  if(active.includes('venue')){
+    const venueCount=countBy(records.filter(r=>r.data.venue),r=>r.data.venue);
+    const top=Object.entries(venueCount).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const maxVal=top[0]?.[1]||1;
+    if(top.length) html+=`<div class="stats-module visible"><div class="bar-chart">${top.map(([name,cnt])=>`<div class="bar-row"><div class="bar-label">${name}</div><div class="bar-track"><div class="bar-fill" style="width:${(cnt/maxVal*100).toFixed(1)}%;background:linear-gradient(90deg,#3388ff,#00ccff)"></div></div><div class="bar-val">${cnt} 次</div></div>`).join('')}</div></div><hr class="divider">`;
+  }
+  if(active.includes('trend')){
+    const yearMap={};
+    records.forEach(r=>{if(r.data.datetime){const y=new Date(r.data.datetime).getFullYear();yearMap[y]=(yearMap[y]||0)+1;}});
+    const years=Object.keys(yearMap).sort();
+    const maxY=Math.max(...Object.values(yearMap),1);
+    if(years.length>0){
+      const W=380,H=90,padX=32,padY=14;
+      const pts=years.map((y,i)=>({x:years.length===1?W/2:padX+(W-padX*2)*i/(years.length-1),y:H-padY-(yearMap[y]/maxY)*(H-padY*2),val:yearMap[y],year:y}));
+      const path=pts.map((p,i)=>i===0?`M${p.x},${p.y}`:`L${p.x},${p.y}`).join(' ');
+      const area=`M${pts[0].x},${H} `+pts.map(p=>`L${p.x},${p.y}`).join(' ')+` L${pts[pts.length-1].x},${H} Z`;
+      const dotsHtml=pts.map((p,i)=>{const isEdge=(i===0||i===pts.length-1);const show=years.length<=8||isEdge||(i%Math.ceil(years.length/6)===0);return `<circle cx="${p.x}" cy="${p.y}" r="${isEdge?5:3.5}" fill="var(--p)" opacity="${isEdge?1:0.8}"/>${show?`<text x="${p.x}" y="${p.y-9}" text-anchor="middle" fill="white" font-size="10">${p.val}</text>`:''} ${show?`<text x="${p.x}" y="${H+16}" text-anchor="middle" fill="rgba(245,238,255,0.4)" font-size="10">${p.year}</text>`:''}`; }).join('');
+      html+=`<div class="stats-module visible"><div class="trend-chart"><svg viewBox="0 0 ${W} ${H+24}" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--p)" stop-opacity="0.35"/><stop offset="100%" stop-color="var(--p)" stop-opacity="0"/></linearGradient></defs><path d="${area}" fill="url(#tg)"/><path d="${path}" fill="none" stroke="var(--p)" stroke-width="2"/>${dotsHtml}</svg></div></div><hr class="divider">`;
     }
   }
-  if (active.includes('trend')) {
-    const yearMap = {};
-    records.forEach(r => { if (r.data.datetime) { const y = new Date(r.data.datetime).getFullYear(); yearMap[y] = (yearMap[y]||0)+1; } });
-    const years = Object.keys(yearMap).sort();
-    const maxY = Math.max(...Object.values(yearMap), 1);
-    if (years.length > 0) {
-      const W=380, H=90, padX=32, padY=14;
-      const pts = years.map((y,i) => {
-        const x = years.length===1 ? W/2 : padX + (W-padX*2)*i/(years.length-1);
-        const yy = H - padY - (yearMap[y]/maxY)*(H-padY*2);
-        return {x, y:yy, val:yearMap[y], year:y};
-      });
-      const path = pts.map((p,i) => i===0 ? `M${p.x},${p.y}` : `L${p.x},${p.y}`).join(' ');
-      const area = `M${pts[0].x},${H} ` + pts.map(p => `L${p.x},${p.y}`).join(' ') + ` L${pts[pts.length-1].x},${H} Z`;
-      const dotsHtml = pts.map((p,i) => {
-        const isEdge = (i===0||i===pts.length-1);
-        const show = years.length<=8 || isEdge || (i%Math.ceil(years.length/6)===0);
-        return `<circle cx="${p.x}" cy="${p.y}" r="${isEdge?5:3.5}" fill="var(--p)" opacity="${isEdge?1:0.8}"/>
-          ${show?`<text x="${p.x}" y="${p.y-9}" text-anchor="middle" fill="white" font-size="10">${p.val}</text>`:''}
-          ${show?`<text x="${p.x}" y="${H+16}" text-anchor="middle" fill="rgba(245,238,255,0.4)" font-size="10">${p.year}</text>`:''}`;
-      }).join('');
-      html += `<div class="stats-module visible"><div class="trend-chart">
-        <svg viewBox="0 0 ${W} ${H+24}" xmlns="http://www.w3.org/2000/svg">
-          <defs><linearGradient id="tg" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--p)" stop-opacity="0.35"/>
-            <stop offset="100%" stop-color="var(--p)" stop-opacity="0"/>
-          </linearGradient></defs>
-          <path d="${area}" fill="url(#tg)"/>
-          <path d="${path}" fill="none" stroke="var(--p)" stroke-width="2"/>
-          ${dotsHtml}
-        </svg>
-      </div></div><hr class="divider">`;
+  if(active.includes('rating')){
+    const rated=records.filter(r=>r.data.rating>0);
+    if(rated.length){
+      const avg=(rated.reduce((s,r)=>s+r.data.rating,0)/rated.length).toFixed(1);
+      const dist=[1,2,3,4,5].map(v=>rated.filter(r=>r.data.rating===v).length);
+      const maxD=Math.max(...dist,1);
+      html+=`<div class="stats-module visible"><div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap"><div class="stat-card" style="min-width:100px"><div class="stat-value">${avg}</div><div class="stat-label">⭐ 平均分</div></div><div style="flex:1;min-width:180px">${[5,4,3,2,1].map(v=>`<div class="bar-row" style="margin-bottom:5px"><div class="bar-label" style="width:40px;font-size:13px">${'★'.repeat(v)}</div><div class="bar-track"><div class="bar-fill" style="width:${(dist[v-1]/maxD*100).toFixed(0)}%;background:linear-gradient(90deg,#ffcc00,#ff9900)"></div></div><div class="bar-val">${dist[v-1]}</div></div>`).join('')}</div></div></div><hr class="divider">`;
     }
   }
-  if (active.includes('rating')) {
-    const rated = records.filter(r => r.data.rating > 0);
-    if (rated.length) {
-      const avg = (rated.reduce((s,r) => s+r.data.rating,0)/rated.length).toFixed(1);
-      const dist = [1,2,3,4,5].map(v => rated.filter(r=>r.data.rating===v).length);
-      const maxD = Math.max(...dist,1);
-      html += `<div class="stats-module visible"><div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">
-        <div class="stat-card" style="min-width:100px"><div class="stat-value">${avg}</div><div class="stat-label">⭐ 平均分</div></div>
-        <div style="flex:1;min-width:180px">${[5,4,3,2,1].map(v =>
-          `<div class="bar-row" style="margin-bottom:5px">
-            <div class="bar-label" style="width:40px;font-size:13px">${'★'.repeat(v)}</div>
-            <div class="bar-track"><div class="bar-fill" style="width:${(dist[v-1]/maxD*100).toFixed(0)}%;background:linear-gradient(90deg,#ffcc00,#ff9900)"></div></div>
-            <div class="bar-val">${dist[v-1]}</div></div>`).join('')}</div>
-      </div></div><hr class="divider">`;
+  if(active.includes('tags')){
+    const tagCount={};
+    records.forEach(r=>{if(r.data.tags)r.data.tags.split(',').forEach(t=>{const tag=t.trim();if(tag)tagCount[tag]=(tagCount[tag]||0)+1;});});
+    const tags=Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,20);
+    if(tags.length) html+=`<div class="stats-module visible"><div>${tags.map(([t,c])=>`<span class="tag-pill" onclick="filterByTag('${t}')">${t} <span style="opacity:.6">${c}</span></span>`).join('')}</div></div><hr class="divider">`;
+  }
+  if(active.includes('month')){
+    const mNames=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+    const mCount=Array(12).fill(0);
+    records.forEach(r=>{if(r.data.datetime){const m=new Date(r.data.datetime).getMonth();mCount[m]++;}});
+    const maxM=Math.max(...mCount,1);
+    html+=`<div class="stats-module visible"><div class="bar-chart">${mCount.map((c,i)=>c>0?`<div class="bar-row"><div class="bar-label">${mNames[i]}</div><div class="bar-track"><div class="bar-fill" style="width:${(c/maxM*100).toFixed(1)}%;background:linear-gradient(90deg,hsl(calc(var(--hue)+60),60%,50%),var(--p))"></div></div><div class="bar-val">${c} 場</div></div>`:'').join('')}</div></div>`;
+  }
+
+  if(active.includes('map')) {
+    // Already handled above
+    const existing=div.querySelector('#mapModuleSlot');
+    if(existing){
+      const after=existing.nextElementSibling;
+      const temp=document.createElement('div');
+      temp.innerHTML=html;
+      while(temp.firstChild){ div.appendChild(temp.firstChild); }
+      return;
     }
   }
-  if (active.includes('tags')) {
-    const tagCount = {};
-    records.forEach(r => {
-      if (r.data.tags) r.data.tags.split(',').forEach(t => { const tag=t.trim(); if (tag) tagCount[tag]=(tagCount[tag]||0)+1; });
-    });
-    const tags = Object.entries(tagCount).sort((a,b)=>b[1]-a[1]).slice(0,20);
-    if (tags.length) {
-      html += `<div class="stats-module visible"><div>${
-        tags.map(([t,c]) => `<span class="tag-pill" onclick="filterByTag('${t}')">${t} <span style="opacity:.6">${c}</span></span>`).join('')
-      }</div></div><hr class="divider">`;
-    }
+
+  if(!active.includes('map')){
+    // Need to append to existing innerHTML if map was not used
+    div.innerHTML += html || '<div style="color:var(--text3);font-size:13px;padding:16px 0">請在上方勾選要顯示的統計模組</div>';
   }
-  if (active.includes('month')) {
-    const mNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
-    const mCount = Array(12).fill(0);
-    records.forEach(r => { if (r.data.datetime) { const m=new Date(r.data.datetime).getMonth(); mCount[m]++; } });
-    const maxM = Math.max(...mCount,1);
-    html += `<div class="stats-module visible"><div class="bar-chart">${
-      mCount.map((c,i) => c>0 ? `<div class="bar-row">
-        <div class="bar-label">${mNames[i]}</div>
-        <div class="bar-track"><div class="bar-fill" style="width:${(c/maxM*100).toFixed(1)}%;background:linear-gradient(90deg,hsl(calc(var(--hue)+60),60%,50%),var(--p))"></div></div>
-        <div class="bar-val">${c} 場</div></div>` : '').join('')
-    }</div></div>`;
-  }
-  document.getElementById('statsDiv').innerHTML = html || '<div style="color:var(--text3);font-size:13px;padding:16px 0">請在上方勾選要顯示的統計模組</div>';
 }
 
-window.filterByTag = function(tag) {
-  if (activeTagFilter === tag) {
-    activeTagFilter = null;
-    showToast('已清除標籤篩選');
-  } else {
-    activeTagFilter = tag;
-    showToast(`🏷 篩選標籤：${tag}`);
-  }
-  applyFiltersAndSort();
-};
+window.filterByTag=function(tag){if(activeTagFilter===tag){activeTagFilter=null;showToast('已清除標籤篩選');}else{activeTagFilter=tag;showToast(`🏷 篩選標籤：${tag}`);}applyFiltersAndSort();};
 
-function checkStreak(records) {
-  if (records.length < 2) return null;
-  const sorted = [...records].filter(r=>r.data.datetime).sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
-  const years = {};
-  sorted.forEach(r => { const y=new Date(r.data.datetime).getFullYear(); years[y]=(years[y]||0)+1; });
-  const yearList = Object.keys(years).map(Number).sort((a,b)=>b-a);
+function checkStreak(records){
+  if(records.length<2)return null;
+  const sorted=[...records].filter(r=>r.data.datetime).sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
+  const years={};sorted.forEach(r=>{const y=new Date(r.data.datetime).getFullYear();years[y]=(years[y]||0)+1;});
+  const yearList=Object.keys(years).map(Number).sort((a,b)=>b-a);
   let streak=1;
-  for (let i=1;i<yearList.length;i++) {
-    if (yearList[i-1]-yearList[i]===1) streak++;
-    else break;
-  }
-  return streak >= 2 ? streak : null;
+  for(let i=1;i<yearList.length;i++){if(yearList[i-1]-yearList[i]===1)streak++;else break;}
+  return streak>=2?streak:null;
 }
 
 // ── COMPARE ──
 function buildCompareStats(myRecs, friendRecs, friendName) {
-  function calc(recs) {
-    const total=recs.length;
-    const artists=Object.keys(countBy(recs,r=>r.data.artist)).length;
-    const rated=recs.filter(r=>r.data.rating>0);
-    const avgRating=rated.length?(rated.reduce((s,r)=>s+r.data.rating,0)/rated.length).toFixed(1):'—';
-    const prices=recs.map(r=>evalPrice(r.data.price)).filter(v=>v>0);
-    const totalSpend=prices.reduce((s,v)=>s+v,0);
-    return {total,artists,avgRating,totalSpend};
-  }
-  const me=calc(myRecs), fr=calc(friendRecs);
-  const sym=getCurrencySymbol('TWD');
-  return `<div class="compare-grid">
-    <div class="compare-col">
-      <div class="compare-col-label me">✦ 我的紀錄</div>
-      <div class="compare-stat"><div class="compare-val">${me.total}</div><div class="compare-desc">總場次</div></div>
-      <div class="compare-stat"><div class="compare-val">${me.artists}</div><div class="compare-desc">不同藝人</div></div>
-      <div class="compare-stat"><div class="compare-val">${me.avgRating}</div><div class="compare-desc">平均評分</div></div>
-      <div class="compare-stat"><div class="compare-val" style="font-size:1.2em">${sym} ${me.totalSpend.toLocaleString()}</div><div class="compare-desc">TWD 總花費</div></div>
-    </div>
-    <div class="compare-vs" style="flex-direction:column;gap:48px;padding:40px 0"><span>VS</span></div>
-    <div class="compare-col">
-      <div class="compare-col-label friend">✦ ${friendName}</div>
-      <div class="compare-stat"><div class="compare-val">${fr.total}</div><div class="compare-desc">總場次</div></div>
-      <div class="compare-stat"><div class="compare-val">${fr.artists}</div><div class="compare-desc">不同藝人</div></div>
-      <div class="compare-stat"><div class="compare-val">${fr.avgRating}</div><div class="compare-desc">平均評分</div></div>
-      <div class="compare-stat"><div class="compare-val" style="font-size:1.2em">${sym} ${fr.totalSpend.toLocaleString()}</div><div class="compare-desc">TWD 總花費</div></div>
-    </div>
-  </div>`;
+  function calc(recs){const total=recs.length;const artists=Object.keys(countBy(recs,r=>r.data.artist)).length;const rated=recs.filter(r=>r.data.rating>0);const avgRating=rated.length?(rated.reduce((s,r)=>s+r.data.rating,0)/rated.length).toFixed(1):'—';const prices=recs.map(r=>evalPrice(r.data.price)).filter(v=>v>0);const totalSpend=prices.reduce((s,v)=>s+v,0);return{total,artists,avgRating,totalSpend};}
+  const me=calc(myRecs),fr=calc(friendRecs);const sym=getCurrencySymbol('TWD');
+  return `<div class="compare-grid"><div class="compare-col"><div class="compare-col-label me">✦ 我的紀錄</div><div class="compare-stat"><div class="compare-val">${me.total}</div><div class="compare-desc">總場次</div></div><div class="compare-stat"><div class="compare-val">${me.artists}</div><div class="compare-desc">不同藝人</div></div><div class="compare-stat"><div class="compare-val">${me.avgRating}</div><div class="compare-desc">平均評分</div></div><div class="compare-stat"><div class="compare-val" style="font-size:1.2em">${sym} ${me.totalSpend.toLocaleString()}</div><div class="compare-desc">TWD 總花費</div></div></div><div class="compare-vs" style="flex-direction:column;gap:48px;padding:40px 0"><span>VS</span></div><div class="compare-col"><div class="compare-col-label friend">✦ ${friendName}</div><div class="compare-stat"><div class="compare-val">${fr.total}</div><div class="compare-desc">總場次</div></div><div class="compare-stat"><div class="compare-val">${fr.artists}</div><div class="compare-desc">不同藝人</div></div><div class="compare-stat"><div class="compare-val">${fr.avgRating}</div><div class="compare-desc">平均評分</div></div><div class="compare-stat"><div class="compare-val" style="font-size:1.2em">${sym} ${fr.totalSpend.toLocaleString()}</div><div class="compare-desc">TWD 總花費</div></div></div></div>`;
 }
-
-toggleCompareBtn.addEventListener('click', () => {
-  const open = comparePanel.style.display !== 'none';
-  if (open) { comparePanel.style.display = 'none'; toggleCompareBtn.textContent = '📊 對比統計'; }
-  else {
-    comparePanel.style.display = 'block';
-    document.getElementById('compareContent').innerHTML = buildCompareStats(myRecords, allRecords, viewingFriendName||'好友');
-    toggleCompareBtn.textContent = '✕ 關閉對比';
-    comparePanel.scrollIntoView({behavior:'smooth',block:'nearest'});
-  }
-});
-bannerBackBtn.addEventListener('click', backToMyRecords);
+toggleCompareBtn.addEventListener('click',()=>{const open=comparePanel.style.display!=='none';if(open){comparePanel.style.display='none';toggleCompareBtn.textContent='📊 對比統計';}else{comparePanel.style.display='block';document.getElementById('compareContent').innerHTML=buildCompareStats(myRecords,allRecords,viewingFriendName||'好友');toggleCompareBtn.textContent='✕ 關閉對比';comparePanel.scrollIntoView({behavior:'smooth',block:'nearest'});}});
+bannerBackBtn.addEventListener('click',backToMyRecords);
 
 // ── CALENDAR ──
 function renderCalendar() {
-  const div = document.getElementById('calendarDiv');
-  const today = new Date();
-  const firstDay = new Date(calYear, calMonth, 1).getDay();
-  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
-  const monthNames = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
-  const eventsByDay = {};
-  const now = new Date();
-  allRecords.forEach(r => {
-    if (r.data.datetime) {
-      const d = new Date(r.data.datetime);
-      if (d.getFullYear()===calYear && d.getMonth()===calMonth) {
-        const day = d.getDate();
-        if (!eventsByDay[day]) eventsByDay[day] = { records:[], future: d > now };
-        eventsByDay[day].records.push(r.data);
-        if (d > now) eventsByDay[day].future = true;
-      }
-    }
-  });
-  let html = `<div class="cal-nav">
-    <button onclick="calPrev()">‹</button>
-    <div class="cal-title">${calYear} 年 ${monthNames[calMonth]}</div>
-    <button onclick="calNext()">›</button>
-  </div>
-  <div class="cal-grid">
-    <div class="cal-weekday">日</div><div class="cal-weekday">一</div><div class="cal-weekday">二</div>
-    <div class="cal-weekday">三</div><div class="cal-weekday">四</div><div class="cal-weekday">五</div><div class="cal-weekday">六</div>`;
-  for (let i=0;i<firstDay;i++) html += `<div class="cal-day other-month"></div>`;
-  for (let d=1;d<=daysInMonth;d++) {
-    const isToday = today.getFullYear()===calYear&&today.getMonth()===calMonth&&today.getDate()===d;
-    const ev = eventsByDay[d];
-    let cls = 'cal-day';
-    if (isToday) cls += ' today';
-    if (ev) cls += ev.future ? ' has-event upcoming-event' : ' has-event';
-    else cls += ' cal-clickable';
-    const onclick = ev ? `onclick="calShowDay(${d})"` : `onclick="calQuickAdd(${calYear},${calMonth+1},${d})"`;
-    html += `<div class="${cls}" ${onclick} data-day="${d}">${d}</div>`;
+  const div=document.getElementById('calendarDiv');
+  const today=new Date();
+  const firstDay=new Date(calYear,calMonth,1).getDay();
+  const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const monthNames=['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+  const eventsByDay={};const now=new Date();
+  allRecords.forEach(r=>{if(r.data.datetime){const d=new Date(r.data.datetime);if(d.getFullYear()===calYear&&d.getMonth()===calMonth){const day=d.getDate();if(!eventsByDay[day])eventsByDay[day]={records:[],future:d>now};eventsByDay[day].records.push(r.data);if(d>now)eventsByDay[day].future=true;}}});
+  let html=`<div class="cal-nav"><button onclick="calPrev()">‹</button><div class="cal-title">${calYear} 年 ${monthNames[calMonth]}</div><button onclick="calNext()">›</button></div><div class="cal-grid"><div class="cal-weekday">日</div><div class="cal-weekday">一</div><div class="cal-weekday">二</div><div class="cal-weekday">三</div><div class="cal-weekday">四</div><div class="cal-weekday">五</div><div class="cal-weekday">六</div>`;
+  for(let i=0;i<firstDay;i++)html+=`<div class="cal-day other-month"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const isToday=today.getFullYear()===calYear&&today.getMonth()===calMonth&&today.getDate()===d;
+    const ev=eventsByDay[d];
+    let cls='cal-day';
+    if(isToday)cls+=' today';
+    if(ev)cls+=ev.future?' has-event upcoming-event':' has-event';
+    else cls+=' cal-clickable';
+    const onclick=ev?`onclick="calShowDay(${d})"`:`onclick="calQuickAdd(${calYear},${calMonth+1},${d})"`;
+    html+=`<div class="${cls}" ${onclick} data-day="${d}">${d}</div>`;
   }
-  html += `</div><div id="calPopup"></div>`;
-  div.innerHTML = html;
+  html+=`</div><div id="calPopup"></div>`;
+  div.innerHTML=html;
 }
-window.calPrev = function() { calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCalendar(); };
-window.calNext = function() { calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCalendar(); };
-window.calShowDay = function(day) {
-  const popup = document.getElementById('calPopup');
-  const events = allRecords.filter(r => {
-    if (!r.data.datetime) return false;
-    const d = new Date(r.data.datetime);
-    return d.getFullYear()===calYear&&d.getMonth()===calMonth&&d.getDate()===day;
-  });
+window.calPrev=function(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}renderCalendar();};
+window.calNext=function(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}renderCalendar();};
+window.calShowDay=function(day){
+  const popup=document.getElementById('calPopup');
+  const events=allRecords.filter(r=>{if(!r.data.datetime)return false;const d=new Date(r.data.datetime);return d.getFullYear()===calYear&&d.getMonth()===calMonth&&d.getDate()===day;});
   const monthNames=['一','二','三','四','五','六','七','八','九','十','十一','十二'];
-  popup.innerHTML = `<div class="cal-events-popup">
-    <div style="font-size:12px;color:var(--text3);letter-spacing:2px;margin-bottom:8px">${calYear}年${monthNames[calMonth]}月${day}日</div>
-    ${events.map(r => `<div class="cal-event-item">
-      <div class="cal-event-artist">🎤 ${r.data.artist}</div>
-      <div style="font-size:12px;color:var(--text3)">${new Date(r.data.datetime).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})} ／ ${r.data.venue||'未填場地'}</div>
-    </div>`).join('')}
-  </div>`;
+  popup.innerHTML=`<div class="cal-events-popup"><div style="font-size:12px;color:var(--text3);letter-spacing:2px;margin-bottom:8px">${calYear}年${monthNames[calMonth]}月${day}日</div>${events.map(r=>`<div class="cal-event-item"><div class="cal-event-artist">🎤 ${r.data.artist}</div><div style="font-size:12px;color:var(--text3)">${new Date(r.data.datetime).toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'})} ／ ${r.data.venue||'未填場地'}</div></div>`).join('')}</div>`;
 };
-
-// NEW: click empty date → pre-fill form datetime
-window.calQuickAdd = function(y, m, d) {
-  if (viewingFriendUid) return;
-  const pad = n => String(n).padStart(2,'0');
-  const dateStr = `${y}-${pad(m)}-${pad(d)}T20:00`;
-  recordForm.datetime.value = dateStr;
-  document.getElementById('formCard').style.display = '';
-  document.getElementById('formCard').scrollIntoView({ behavior:'smooth' });
+window.calQuickAdd=function(y,m,d){
+  if(viewingFriendUid)return;
+  const pad=n=>String(n).padStart(2,'0');
+  recordForm.datetime.value=`${y}-${pad(m)}-${pad(d)}T20:00`;
+  document.getElementById('formCard').style.display='';
+  document.getElementById('formCard').scrollIntoView({behavior:'smooth'});
   showToast(`📅 已帶入 ${y}/${m}/${d}，填寫其他資料後儲存！`);
 };
 
 // ── WISHLIST ──
-wishlistToggleBtn.addEventListener('click', () => {
-  const open = wishlistCard.style.display !== 'none';
-  wishlistCard.style.display = open ? 'none' : 'block';
-  if (!open) renderWishlist();
+wishlistToggleBtn.addEventListener('click',()=>{const open=wishlistCard.style.display!=='none';wishlistCard.style.display=open?'none':'block';if(!open)renderWishlist();});
+document.getElementById('addWishBtn').addEventListener('click',()=>{
+  const artist=document.getElementById('wishArtistInput').value.trim(); if(!artist)return showToast('請輸入藝人名稱');
+  const priority=document.getElementById('wishPrioritySelect').value; const note=document.getElementById('wishNoteInput').value.trim();
+  const wishlist=getWishlist(); wishlist.unshift({id:Date.now(),artist,priority,note,createdAt:new Date().toISOString()});
+  saveWishlist(wishlist); document.getElementById('wishArtistInput').value=''; document.getElementById('wishNoteInput').value=''; renderWishlist(); showToast('✓ 已加入願望清單！');
 });
-document.getElementById('addWishBtn').addEventListener('click', () => {
-  const artist = document.getElementById('wishArtistInput').value.trim();
-  if (!artist) return showToast('請輸入藝人名稱');
-  const priority = document.getElementById('wishPrioritySelect').value;
-  const note = document.getElementById('wishNoteInput').value.trim();
-  const wishlist = getWishlist();
-  wishlist.unshift({ id:Date.now(), artist, priority, note, createdAt:new Date().toISOString() });
-  saveWishlist(wishlist);
-  document.getElementById('wishArtistInput').value = '';
-  document.getElementById('wishNoteInput').value = '';
-  renderWishlist();
-  showToast('✓ 已加入願望清單！');
-});
-function getWishlist() { try { return JSON.parse(localStorage.getItem('wishlist_'+currentUserId)||'[]'); } catch(e) { return []; } }
-function saveWishlist(list) { localStorage.setItem('wishlist_'+currentUserId, JSON.stringify(list)); }
-function renderWishlist() {
-  const ul = document.getElementById('wishlistItems');
-  const list = getWishlist();
-  if (!list.length) { ul.innerHTML = '<li class="empty-state" style="padding:20px">✦ 還沒有願望，加入你想看的演唱會吧 ✦</li>'; return; }
-  const labelMap={high:'🔥 超想看',mid:'⭐ 想看',low:'👀 有機會'};
-  const clsMap={high:'priority-high',mid:'priority-mid',low:'priority-low'};
-  ul.innerHTML = list.map(item => `
-    <li class="wishlist-item" data-wid="${item.id}">
-      <div class="wishlist-item-info">
-        <div class="wishlist-artist">${item.artist}</div>
-        ${item.note ? `<div class="wishlist-note">${item.note}</div>` : ''}
-      </div>
-      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <span class="wishlist-priority ${clsMap[item.priority]}">${labelMap[item.priority]}</span>
-        <button class="wish-convert-btn btn-ghost btn-sm" data-wid="${item.id}" data-artist="${item.artist}">✚ 轉為紀錄</button>
-        <button class="wish-del-btn btn-danger btn-sm" data-wid="${item.id}">✕</button>
-      </div>
-    </li>`).join('');
-  ul.querySelectorAll('.wish-del-btn').forEach(btn => btn.addEventListener('click', () => {
-    const id=parseInt(btn.getAttribute('data-wid'));
-    saveWishlist(getWishlist().filter(w=>w.id!==id));
-    renderWishlist(); showToast('已移除');
-  }));
-  ul.querySelectorAll('.wish-convert-btn').forEach(btn => btn.addEventListener('click', () => {
-    const artist=btn.getAttribute('data-artist');
-    const wid=parseInt(btn.getAttribute('data-wid'));
-    recordForm.artist.value = artist;
-    wishlistCard.style.display = 'none';
-    document.getElementById('formCard').scrollIntoView({behavior:'smooth'});
-    showToast(`✓ 已帶入「${artist}」`);
-    saveWishlist(getWishlist().filter(w=>w.id!==wid));
-    renderWishlist();
-  }));
+function getWishlist(){try{return JSON.parse(localStorage.getItem('wishlist_'+currentUserId)||'[]');}catch(e){return[];}}
+function saveWishlist(list){localStorage.setItem('wishlist_'+currentUserId,JSON.stringify(list));}
+function renderWishlist(){
+  const ul=document.getElementById('wishlistItems'); const list=getWishlist();
+  if(!list.length){ul.innerHTML='<li class="empty-state" style="padding:20px">✦ 還沒有願望，加入你想看的演唱會吧 ✦</li>';return;}
+  const labelMap={high:'🔥 超想看',mid:'⭐ 想看',low:'👀 有機會'};const clsMap={high:'priority-high',mid:'priority-mid',low:'priority-low'};
+  ul.innerHTML=list.map(item=>`<li class="wishlist-item" data-wid="${item.id}"><div class="wishlist-item-info"><div class="wishlist-artist">${item.artist}</div>${item.note?`<div class="wishlist-note">${item.note}</div>`:''}</div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="wishlist-priority ${clsMap[item.priority]}">${labelMap[item.priority]}</span><button class="wish-convert-btn btn-ghost btn-sm" data-wid="${item.id}" data-artist="${item.artist}">✚ 轉為紀錄</button><button class="wish-del-btn btn-danger btn-sm" data-wid="${item.id}">✕</button></div></li>`).join('');
+  ul.querySelectorAll('.wish-del-btn').forEach(btn=>btn.addEventListener('click',()=>{saveWishlist(getWishlist().filter(w=>w.id!==parseInt(btn.getAttribute('data-wid'))));renderWishlist();showToast('已移除');}));
+  ul.querySelectorAll('.wish-convert-btn').forEach(btn=>btn.addEventListener('click',()=>{const artist=btn.getAttribute('data-artist');const wid=parseInt(btn.getAttribute('data-wid'));recordForm.artist.value=artist;wishlistCard.style.display='none';document.getElementById('formCard').scrollIntoView({behavior:'smooth'});showToast(`✓ 已帶入「${artist}」`);saveWishlist(getWishlist().filter(w=>w.id!==wid));renderWishlist();}));
 }
 
 // ── LOAD / DISPLAY RECORDS ──
 async function loadRecords(uid) {
-  viewingFriendUid = null; viewingFriendName = null;
-  activeYearFilter = null; activeTagFilter = null;
-  backToMyRecordsBtn.style.display = 'none';
-  friendBanner.style.display = 'none';
-  comparePanel.style.display = 'none';
-  recordsTitle.textContent = '我的演唱會紀錄';
-  archiveLabel.textContent = 'Archive';
-  statsTitle.textContent = '📊 追星統計';
-  document.getElementById('formCard').style.display = '';
-  recordsList.innerHTML = '<li class="loading">載入中</li>';
+  viewingFriendUid=null; viewingFriendName=null;
+  activeYearFilter=null; activeTagFilter=null;
+  backToMyRecordsBtn.style.display='none';
+  friendBanner.style.display='none'; comparePanel.style.display='none';
+  recordsTitle.textContent='我的演唱會紀錄'; archiveLabel.textContent='Archive'; statsTitle.textContent='📊 追星統計';
+  document.getElementById('formCard').style.display='';
+  recordsList.innerHTML='<li class="loading">載入中</li>';
   loadPinnedIds();
-  const q = query(collection(db,'concerts'), where('uid','==',uid));
-  const snap = await getDocs(q);
-  allRecords = snap.docs.map(d=>({id:d.id,data:d.data()})).sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
-  myRecords = [...allRecords];
-  buildYearFilter(allRecords);
-  applyFiltersAndSort();
-  updateStats(allRecords);
-  renderCalendar();
-  recordCount.textContent = `${allRecords.length} 筆紀錄`;
+  const q=query(collection(db,'concerts'),where('uid','==',uid));
+  const snap=await getDocs(q);
+  allRecords=snap.docs.map(d=>({id:d.id,data:d.data()})).sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
+  myRecords=[...allRecords];
+  buildYearFilter(allRecords); applyFiltersAndSort(); updateStats(allRecords); renderCalendar();
+  recordCount.textContent=`${allRecords.length} 筆紀錄`;
 }
 
 function displayRecords(records, ownerId) {
-  recordsList.innerHTML = '';
-  const isFriendView = !!viewingFriendUid;
-  if (!records.length) {
-    const msg = isFriendView ? `✦ ${viewingFriendName||'好友'} 還沒有任何紀錄 ✦` : '✦ 還沒有任何紀錄，快新增吧 ✦';
-    recordsList.innerHTML = `<li class="empty-state">${msg}</li>`; return;
+  recordsList.innerHTML='';
+  const isFriendView=!!viewingFriendUid;
+  if(!records.length){
+    const msg=isFriendView?`✦ ${viewingFriendName||'好友'} 還沒有任何紀錄 ✦`:'✦ 還沒有任何紀錄，快新增吧 ✦';
+    recordsList.innerHTML=`<li class="empty-state">${msg}</li>`;return;
   }
-  records.forEach((r, i) => {
-    const d = r.data;
-    const li = document.createElement('li');
-    const reactions = d.reactions || {};
-    const fire=reactions.fire||0, heart=reactions.heart||0, sparkle=reactions.sparkle||0, crown=reactions.crown||0;
-    const totalReactions = fire+heart+sparkle+crown;
-    const isPinned = pinnedIds.has(r.id);
-    const countdown = getCountdown(d.datetime);
+  records.forEach((r,i)=>{
+    const d=r.data;
+    const li=document.createElement('li');
+    const reactions=d.reactions||{};
+    const fire=reactions.fire||0,heart=reactions.heart||0,sparkle=reactions.sparkle||0,crown=reactions.crown||0;
+    const totalReactions=fire+heart+sparkle+crown;
+    const isPinned=pinnedIds.has(r.id);
+    const countdown=getCountdown(d.datetime);
+    li.className='record-item'+(isFriendView?' friend-record':'')+(!isFriendView&&totalReactions>0?' has-reactions':'')+(isPinned?' pinned':'')+(!isFriendView&&countdown?' upcoming':'');
+    li.style.animationDelay=`${i*0.04}s`;
+    const date=new Date(d.datetime);
+    const dateStr=date.toLocaleDateString('zh-TW');
+    const timeStr=date.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
+    const hasPhoto=!!d.photo;
+    const starsHTML=d.rating?`<div class="record-stars">${'★'.repeat(d.rating)}<span style="color:var(--text3)">${'★'.repeat(5-d.rating)}</span></div>`:'';
+    const tagsHTML=d.tags?`<div style="margin-top:8px">${d.tags.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag-pill${activeTagFilter===t?' active-filter':''}" onclick="filterByTag('${t}')">${t}</span>`).join('')}</div>`:'';
+    const photoHTML=hasPhoto?`<div class="record-photo-side"><div class="record-photo-container"><img src="${d.photo}" onclick="openLightbox('${d.photo.replace(/'/g,"\\'")}');" alt="演唱會照片" loading="lazy"></div></div>`:'';
 
-    li.className = 'record-item'
-      + (isFriendView ? ' friend-record' : '')
-      + (!isFriendView && totalReactions>0 ? ' has-reactions' : '')
-      + (isPinned ? ' pinned' : '')
-      + (!isFriendView && countdown ? ' upcoming' : '');
-    li.style.animationDelay = `${i*0.04}s`;
+    // Country display
+    const countryInfo = d.countryCode ? COUNTRY_MAP[d.countryCode] : null;
+    const countryHTML = countryInfo ? `<div><span class="info-icon">🌍</span><span>${countryInfo.flag} ${countryInfo.name}</span></div>` : '';
 
-    const date = new Date(d.datetime);
-    const dateStr = date.toLocaleDateString('zh-TW');
-    const timeStr = date.toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'});
-    const hasPhoto = !!d.photo;
+    // Notes
+    let notesHTML='';
+    if(d.notes){const long=d.notes.length>80;notesHTML=`<div class="notes-collapsible"><div class="notes-content${long?' collapsed':''}" id="nc_${r.id}"><div><span class="info-icon">📝</span><span>${d.notes}</span></div></div>${long?`<button class="notes-toggle-btn" onclick="toggleNote('${r.id}')">展開全部 ▼</button>`:''}</div>`;}
 
-    const starsHTML = d.rating
-      ? `<div class="record-stars">${'★'.repeat(d.rating)}<span style="color:var(--text3)">${'★'.repeat(5-d.rating)}</span></div>` : '';
-    const tagsHTML = d.tags
-      ? `<div style="margin-top:8px">${d.tags.split(',').map(t=>t.trim()).filter(Boolean).map(t=>`<span class="tag-pill${activeTagFilter===t?' active-filter':''}" onclick="filterByTag('${t}')">${t}</span>`).join('')}</div>` : '';
-    const photoHTML = hasPhoto
-      ? `<div class="record-photo-side"><div class="record-photo-container"><img src="${d.photo}" onclick="openLightbox('${d.photo.replace(/'/g,"\\'")}');" alt="演唱會照片" loading="lazy"></div></div>` : '';
+    const editDelHTML=(!isFriendView&&currentUserId&&d.uid===currentUserId)?`<div class="button-group"><button class="edit-btn">✏️ 編輯</button><button class="del-btn btn-danger">🗑 刪除</button><button class="pin-btn btn-ghost">${isPinned?'📌 取消固定':'📌 固定'}</button></div>`:'';
 
-    // Notes with collapse
-    let notesHTML = '';
-    if (d.notes) {
-      const long = d.notes.length > 80;
-      notesHTML = `<div class="notes-collapsible">
-        <div class="notes-content${long?' collapsed':''}" id="nc_${r.id}">
-          <div><span class="info-icon">📝</span><span>${d.notes}</span></div>
-        </div>
-        ${long ? `<button class="notes-toggle-btn" onclick="toggleNote('${r.id}')">展開全部 ▼</button>` : ''}
-      </div>`;
+    let reactionHTML='';
+    if(isFriendView){
+      reactionHTML=`<div class="reaction-bar"><span class="reaction-label">送出：</span><button class="reaction-btn" data-emoji="🔥" data-rid="${r.id}"><span>🔥</span><span class="r-count">${fire}</span></button><button class="reaction-btn" data-emoji="💜" data-rid="${r.id}"><span>💜</span><span class="r-count">${heart}</span></button><button class="reaction-btn" data-emoji="✨" data-rid="${r.id}"><span>✨</span><span class="r-count">${sparkle}</span></button><button class="reaction-btn" data-emoji="👑" data-rid="${r.id}"><span>👑</span><span class="r-count">${crown}</span></button></div>`;
+    } else if(totalReactions>0){
+      reactionHTML=`<div class="reaction-received"><span class="reaction-received-label">✦ 收到</span>${fire>0?`<span class="reaction-received-pill">🔥 <span class="r-count">${fire}</span></span>`:''}${heart>0?`<span class="reaction-received-pill">💜 <span class="r-count">${heart}</span></span>`:''}${sparkle>0?`<span class="reaction-received-pill">✨ <span class="r-count">${sparkle}</span></span>`:''}${crown>0?`<span class="reaction-received-pill">👑 <span class="r-count">${crown}</span></span>`:''}</div>`;
     }
 
-    // Edit/delete/pin buttons
-    const editDelHTML = (!isFriendView && currentUserId && d.uid===currentUserId)
-      ? `<div class="button-group">
-           <button class="edit-btn">✏️ 編輯</button>
-           <button class="del-btn btn-danger">🗑 刪除</button>
-           <button class="pin-btn btn-ghost">${isPinned?'📌 取消固定':'📌 固定'}</button>
-         </div>` : '';
-
-    // Reaction section
-    let reactionHTML = '';
-    if (isFriendView) {
-      reactionHTML = `<div class="reaction-bar">
-        <span class="reaction-label">送出：</span>
-        <button class="reaction-btn" data-emoji="🔥" data-rid="${r.id}"><span>🔥</span><span class="r-count">${fire}</span></button>
-        <button class="reaction-btn" data-emoji="💜" data-rid="${r.id}"><span>💜</span><span class="r-count">${heart}</span></button>
-        <button class="reaction-btn" data-emoji="✨" data-rid="${r.id}"><span>✨</span><span class="r-count">${sparkle}</span></button>
-        <button class="reaction-btn" data-emoji="👑" data-rid="${r.id}"><span>👑</span><span class="r-count">${crown}</span></button>
-      </div>`;
-    } else if (totalReactions > 0) {
-      reactionHTML = `<div class="reaction-received">
-        <span class="reaction-received-label">✦ 收到</span>
-        ${fire   >0?`<span class="reaction-received-pill">🔥 <span class="r-count">${fire}</span></span>`:''}
-        ${heart  >0?`<span class="reaction-received-pill">💜 <span class="r-count">${heart}</span></span>`:''}
-        ${sparkle>0?`<span class="reaction-received-pill">✨ <span class="r-count">${sparkle}</span></span>`:''}
-        ${crown  >0?`<span class="reaction-received-pill">👑 <span class="r-count">${crown}</span></span>`:''}
-      </div>`;
-    }
-
-    li.innerHTML = `
-      ${isPinned ? '<div class="pin-badge">📌 已固定</div>' : ''}
-      ${countdown ? `<div class="countdown-badge">⏰ ${countdown}</div>` : ''}
+    li.innerHTML=`${isPinned?'<div class="pin-badge">📌 已固定</div>':''}${countdown?`<div class="countdown-badge">⏰ ${countdown}</div>`:''}
       <div class="record-inner ${hasPhoto?'has-photo':''}">
         ${photoHTML}
         <div class="record-text-side">
@@ -1832,6 +1792,7 @@ function displayRecords(records, ownerId) {
           <div class="record-info">
             <div><span class="info-icon">📅</span><span>${dateStr} ${timeStr}</span></div>
             <div><span class="info-icon">💰</span><span>${getCurrencySymbol(d.currency||'TWD')} ${d.price||'未填'} <span style="color:var(--text3);font-size:11px">(${d.currency||'TWD'})</span></span></div>
+            ${countryHTML}
             <div><span class="info-icon">💺</span><span>${d.seat||'未填'}</span></div>
             <div><span class="info-icon">📍</span><span>${d.venue||'未填'}</span></div>
           </div>
@@ -1842,42 +1803,22 @@ function displayRecords(records, ownerId) {
         </div>
       </div>`;
 
-    if (!isFriendView && currentUserId && d.uid===currentUserId) {
-      li.querySelector('.edit-btn')?.addEventListener('click', () => startEdit(r.id, d));
-      li.querySelector('.del-btn')?.addEventListener('click', async () => {
-        if (confirm('確定刪除這筆紀錄？')) {
-          await deleteDoc(doc(db,'concerts',r.id));
-          showToast('🗑 已刪除');
-          loadRecords(currentUserId);
-        }
-      });
-      li.querySelector('.pin-btn')?.addEventListener('click', () => {
-        togglePin(r.id);
-        showToast(pinnedIds.has(r.id) ? '📌 已固定到頂部' : '已取消固定');
-      });
+    if(!isFriendView&&currentUserId&&d.uid===currentUserId){
+      li.querySelector('.edit-btn')?.addEventListener('click',()=>startEdit(r.id,d));
+      li.querySelector('.del-btn')?.addEventListener('click',async()=>{if(confirm('確定刪除這筆紀錄？')){await deleteDoc(doc(db,'concerts',r.id));showToast('🗑 已刪除');loadRecords(currentUserId);}});
+      li.querySelector('.pin-btn')?.addEventListener('click',()=>{togglePin(r.id);showToast(pinnedIds.has(r.id)?'📌 已固定到頂部':'已取消固定');});
     }
-
-    if (isFriendView) {
-      li.querySelectorAll('.reaction-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (!currentUserId) return;
-          const rid = btn.getAttribute('data-rid');
-          const emoji = btn.getAttribute('data-emoji');
+    if(isFriendView){
+      li.querySelectorAll('.reaction-btn').forEach(btn=>{
+        btn.addEventListener('click',async()=>{
+          if(!currentUserId)return;
+          const rid=btn.getAttribute('data-rid'),emoji=btn.getAttribute('data-emoji');
           const emojiMap={'🔥':'fire','💜':'heart','✨':'sparkle','👑':'crown'};
-          const key = emojiMap[emoji] || emoji;
-          const sessionKey = `reacted_${rid}_${key}`;
-          if (sessionStorage.getItem(sessionKey)) { showToast('已經送出過囉！'); return; }
-          try {
-            const docRef = doc(db,'concerts',rid);
-            const snap = await getDoc(docRef);
-            const current = snap.data()?.reactions?.[key] || 0;
-            await updateDoc(docRef, {[`reactions.${key}`]: current+1});
-            sessionStorage.setItem(sessionKey,'1');
-            btn.classList.add('reacted');
-            const countEl = btn.querySelector('.r-count');
-            if (countEl) countEl.textContent = current+1;
-            showToast(`${emoji} 已送出！`);
-          } catch(e) { showToast('送出失敗'); }
+          const key=emojiMap[emoji]||emoji;
+          const sessionKey=`reacted_${rid}_${key}`;
+          if(sessionStorage.getItem(sessionKey)){showToast('已經送出過囉！');return;}
+          try{const docRef=doc(db,'concerts',rid);const snap=await getDoc(docRef);const current=snap.data()?.reactions?.[key]||0;await updateDoc(docRef,{[`reactions.${key}`]:current+1});sessionStorage.setItem(sessionKey,'1');btn.classList.add('reacted');const countEl=btn.querySelector('.r-count');if(countEl)countEl.textContent=current+1;showToast(`${emoji} 已送出！`);}
+          catch(e){showToast('送出失敗');}
         });
       });
     }
@@ -1886,187 +1827,131 @@ function displayRecords(records, ownerId) {
 }
 
 // Notes toggle
-window.toggleNote = function(id) {
-  const el = document.getElementById('nc_'+id);
-  const btn = el?.nextElementSibling;
-  if (!el) return;
-  const isCollapsed = el.classList.contains('collapsed');
-  el.classList.toggle('collapsed', !isCollapsed);
-  el.style.maxHeight = isCollapsed ? 'none' : '42px';
-  if (btn) btn.textContent = isCollapsed ? '收起 ▲' : '展開全部 ▼';
-};
+window.toggleNote=function(id){const el=document.getElementById('nc_'+id);const btn=el?.nextElementSibling;if(!el)return;const isCollapsed=el.classList.contains('collapsed');el.classList.toggle('collapsed',!isCollapsed);el.style.maxHeight=isCollapsed?'none':'42px';if(btn)btn.textContent=isCollapsed?'收起 ▲':'展開全部 ▼';};
 
 function startEdit(id, data) {
-  editingId = id;
-  formTitle.textContent = "編輯演唱會紀錄";
-  submitBtn.textContent = "💾 更新紀錄";
-  cancelBtn.style.display = "inline-block"; clearBtn.style.display = "none";
-  recordForm.artist.value = data.artist||'';
-  recordForm.datetime.value = data.datetime||'';
-  recordForm.price.value = data.price||'';
-  document.getElementById('currencySelect').value = data.currency||'TWD';
-  recordForm.seat.value = data.seat||'';
-  recordForm.venue.value = data.venue||'';
-  recordForm.notes.value = data.notes||'';
-  recordForm.tags.value = data.tags||'';
-  formRating = data.rating||0; updateStarDisplay('formStars', formRating);
-  currentPhotoBase64 = data.photo||null;
-  photoPreview.innerHTML = data.photo
-    ? `<img src="${data.photo}" style="max-width:100%;border-radius:12px"><br><button type="button" class="remove-photo-btn" onclick="removePhoto()">移除照片</button>` : '';
+  editingId=id; formTitle.textContent='編輯演唱會紀錄'; submitBtn.textContent='💾 更新紀錄';
+  cancelBtn.style.display='inline-block'; clearBtn.style.display='none';
+  recordForm.artist.value=data.artist||''; recordForm.datetime.value=data.datetime||'';
+  recordForm.price.value=data.price||''; document.getElementById('currencySelect').value=data.currency||'TWD';
+  recordForm.seat.value=data.seat||''; recordForm.venue.value=data.venue||'';
+  recordForm.notes.value=data.notes||''; recordForm.tags.value=data.tags||'';
+  // Restore country
+  if(data.countryCode && window._selectCountry) { window._selectCountry(data.countryCode); }
+  else if(window._clearCountry) window._clearCountry();
+  formRating=data.rating||0; updateStarDisplay('formStars',formRating);
+  currentPhotoBase64=data.photo||null;
+  photoPreview.innerHTML=data.photo?`<img src="${data.photo}" style="max-width:100%;border-radius:12px"><br><button type="button" class="remove-photo-btn" onclick="removePhoto()">移除照片</button>`:'';
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-recordForm.addEventListener('submit', async e => {
+recordForm.addEventListener('submit',async e=>{
   e.preventDefault();
-  const user = auth.currentUser;
-  if (!user) return showToast('請先登入');
-  const payload = {
-    uid:user.uid,
-    artist:recordForm.artist.value.trim(),
-    datetime:recordForm.datetime.value,
-    price:recordForm.price.value.trim(),
-    currency:document.getElementById('currencySelect').value,
-    seat:recordForm.seat.value.trim(),
-    venue:recordForm.venue.value.trim(),
-    notes:recordForm.notes.value.trim(),
-    tags:recordForm.tags.value.trim(),
-    rating:formRating,
-    photo:currentPhotoBase64||'',
-    visibility:'public',
-    updatedAt:new Date().toISOString()
+  const user=auth.currentUser; if(!user)return showToast('請先登入');
+  const payload={
+    uid:user.uid, artist:recordForm.artist.value.trim(), datetime:recordForm.datetime.value,
+    price:recordForm.price.value.trim(), currency:document.getElementById('currencySelect').value,
+    countryCode:document.getElementById('countryCodeInput').value||'',
+    seat:recordForm.seat.value.trim(), venue:recordForm.venue.value.trim(),
+    notes:recordForm.notes.value.trim(), tags:recordForm.tags.value.trim(),
+    rating:formRating, photo:currentPhotoBase64||'', visibility:'public', updatedAt:new Date().toISOString()
   };
-  if (!editingId) payload.createdAt = new Date().toISOString();
-  try {
-    if (editingId) await updateDoc(doc(db,'concerts',editingId), payload);
-    else await addDoc(collection(db,'concerts'), payload);
-    showToast(editingId ? '✓ 更新成功！' : '✓ 新增成功！');
+  if(!editingId)payload.createdAt=new Date().toISOString();
+  try{
+    if(editingId)await updateDoc(doc(db,'concerts',editingId),payload);
+    else await addDoc(collection(db,'concerts'),payload);
+    showToast(editingId?'✓ 更新成功！':'✓ 新增成功！');
     cancelEdit(); loadRecords(user.uid);
-  } catch(err) { showToast('儲存失敗：'+err.message); }
+  }catch(err){showToast('儲存失敗：'+err.message);}
 });
 
-clearBtn.addEventListener("click", () => { if (confirm('清除表單內容嗎？')) clearForm(); });
-function clearForm() {
-  recordForm.reset();
-  document.getElementById('currencySelect').value='TWD';
+clearBtn.addEventListener('click',()=>{if(confirm('清除表單內容嗎？'))clearForm();});
+function clearForm(){
+  recordForm.reset(); document.getElementById('currencySelect').value='TWD';
   photoInput.value=''; photoPreview.innerHTML=''; currentPhotoBase64=null;
   formRating=0; updateStarDisplay('formStars',0);
-  if (editingId) cancelEdit();
-  showToast('✓ 表單已清除');
+  if(window._clearCountry)window._clearCountry();
+  if(editingId)cancelEdit(); showToast('✓ 表單已清除');
 }
-function cancelEdit() {
-  editingId=null; recordForm.reset();
-  document.getElementById('currencySelect').value='TWD';
+function cancelEdit(){
+  editingId=null; recordForm.reset(); document.getElementById('currencySelect').value='TWD';
   photoInput.value=''; photoPreview.innerHTML=''; currentPhotoBase64=null;
   formRating=0; updateStarDisplay('formStars',0);
-  formTitle.textContent="新增演唱會紀錄"; submitBtn.textContent="💾 儲存紀錄";
-  cancelBtn.style.display="none"; clearBtn.style.display="inline-block";
+  if(window._clearCountry)window._clearCountry();
+  formTitle.textContent='新增演唱會紀錄'; submitBtn.textContent='💾 儲存紀錄';
+  cancelBtn.style.display='none'; clearBtn.style.display='inline-block';
   window.scrollTo({top:0,behavior:'smooth'});
 }
-cancelBtn.addEventListener("click", cancelEdit);
+cancelBtn.addEventListener('click',cancelEdit);
 
-photoInput.addEventListener('change', async e => {
-  const file = e.target.files[0];
-  if (!file) { currentPhotoBase64=null; photoPreview.innerHTML=''; return; }
-  if (file.size > 2*1024*1024) { showToast('⚠️ 照片需小於2MB'); photoInput.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    currentPhotoBase64 = ev.target.result;
-    photoPreview.innerHTML = `<img src="${currentPhotoBase64}" style="max-width:100%;max-height:200px;border-radius:12px"><br><button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑 移除照片</button>`;
-  };
+photoInput.addEventListener('change',async e=>{
+  const file=e.target.files[0]; if(!file){currentPhotoBase64=null;photoPreview.innerHTML='';return;}
+  if(file.size>2*1024*1024){showToast('⚠️ 照片需小於2MB');photoInput.value='';return;}
+  const reader=new FileReader();
+  reader.onload=ev=>{currentPhotoBase64=ev.target.result;photoPreview.innerHTML=`<img src="${currentPhotoBase64}" style="max-width:100%;max-height:200px;border-radius:12px"><br><button type="button" class="remove-photo-btn" onclick="removePhoto()">🗑 移除照片</button>`;};
   reader.readAsDataURL(file);
 });
-
-window.removePhoto = function() { currentPhotoBase64=null; photoInput.value=''; photoPreview.innerHTML=''; };
+window.removePhoto=function(){currentPhotoBase64=null;photoInput.value='';photoPreview.innerHTML='';};
 
 // ── STARS ──
-document.querySelectorAll('#formStars .star').forEach(star => {
-  star.addEventListener('click', () => { formRating=parseInt(star.dataset.val); updateStarDisplay('formStars',formRating); });
-  star.addEventListener('mouseenter', () => {
-    const v=parseInt(star.dataset.val);
-    document.querySelectorAll('#formStars .star').forEach(s=>s.classList.toggle('hover',parseInt(s.dataset.val)<=v));
-  });
-  star.addEventListener('mouseleave', () => document.querySelectorAll('#formStars .star').forEach(s=>s.classList.remove('hover')));
+document.querySelectorAll('#formStars .star').forEach(star=>{
+  star.addEventListener('click',()=>{formRating=parseInt(star.dataset.val);updateStarDisplay('formStars',formRating);});
+  star.addEventListener('mouseenter',()=>{const v=parseInt(star.dataset.val);document.querySelectorAll('#formStars .star').forEach(s=>s.classList.toggle('hover',parseInt(s.dataset.val)<=v));});
+  star.addEventListener('mouseleave',()=>document.querySelectorAll('#formStars .star').forEach(s=>s.classList.remove('hover')));
 });
-function updateStarDisplay(cid, rating) {
-  document.querySelectorAll(`#${cid} .star`).forEach(s=>s.classList.toggle('filled',parseInt(s.dataset.val)<=rating));
-}
+function updateStarDisplay(cid,rating){document.querySelectorAll(`#${cid} .star`).forEach(s=>s.classList.toggle('filled',parseInt(s.dataset.val)<=rating));}
 
 // Password toggle
-document.addEventListener('click', e => {
-  if (e.target?.classList?.contains('toggle-password')) {
-    const btn=e.target, input=document.getElementById(btn.getAttribute('data-target'));
-    if (input) { input.type=input.type==='password'?'text':'password'; btn.textContent=input.type==='password'?'👁':'🙈'; }
+document.addEventListener('click',e=>{
+  if(e.target?.classList?.contains('toggle-password')){
+    const btn=e.target,input=document.getElementById(btn.getAttribute('data-target'));
+    if(input){input.type=input.type==='password'?'text':'password';btn.textContent=input.type==='password'?'👁':'🙈';}
     e.preventDefault();
   }
 });
-function checkPasswordStrength(p) {
-  const bar=document.getElementById('passwordStrength');
-  const lh=document.getElementById('lengthHint'), sh=document.getElementById('strengthHint');
-  if (!bar) return;
-  if (!p) { bar.style.display='none'; return; }
-  bar.style.display='block';
+function checkPasswordStrength(p){
+  const bar=document.getElementById('passwordStrength'),lh=document.getElementById('lengthHint'),sh=document.getElementById('strengthHint');if(!bar)return;
+  if(!p){bar.style.display='none';return;}bar.style.display='block';
   lh.className=p.length>=6?'password-hint valid':'password-hint invalid';
-  let s=0;
-  if(p.length>=8)s++;if(/[a-z]/.test(p))s++;if(/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^A-Za-z0-9]/.test(p))s++;
+  let s=0;if(p.length>=8)s++;if(/[a-z]/.test(p))s++;if(/[A-Z]/.test(p))s++;if(/[0-9]/.test(p))s++;if(/[^A-Za-z0-9]/.test(p))s++;
   if(s>=4){sh.textContent='密碼強度：強';sh.className='password-hint valid';bar.className='password-strength strength-strong';}
   else if(s>=3){sh.textContent='密碼強度：中';sh.className='password-hint';bar.className='password-strength strength-medium';}
   else{sh.textContent='密碼強度：弱';sh.className='password-hint invalid';bar.className='password-strength strength-weak';}
 }
-document.addEventListener('input', e => { if(e.target.id==='signupPassword') checkPasswordStrength(e.target.value); });
+document.addEventListener('input',e=>{if(e.target.id==='signupPassword')checkPasswordStrength(e.target.value);});
 
 // ── HELPERS ──
-function getCurrencySymbol(c) {
-  return {TWD:'NT$',KRW:'₩',JPY:'¥',USD:'US$',EUR:'€',HKD:'HK$',CNY:'¥',THB:'฿',SGD:'S$',MYR:'RM'}[c]||c;
-}
-function evalPrice(str) {
-  try { const v=eval((str||'0').replace(/[^0-9+\-*/().]/g,'')); return isNaN(v)?0:v; } catch(e) { return 0; }
-}
-function countBy(arr, fn) {
-  const map={};
-  arr.forEach(item=>{const k=fn(item);if(k){map[k]=(map[k]||0)+1;}});
-  return map;
-}
+function getCurrencySymbol(c){return{TWD:'NT$',KRW:'₩',JPY:'¥',USD:'US$',EUR:'€',HKD:'HK$',CNY:'¥',THB:'฿',SGD:'S$',MYR:'RM'}[c]||c;}
+function evalPrice(str){try{const v=eval((str||'0').replace(/[^0-9+\-*/().]/g,''));return isNaN(v)?0:v;}catch(e){return 0;}}
+function countBy(arr,fn){const map={};arr.forEach(item=>{const k=fn(item);if(k){map[k]=(map[k]||0)+1;}});return map;}
 
 // ── FRIENDS ──
-generateInviteBtn.addEventListener('click',()=>{ inviteCodeInput.value='KPOP'+Math.random().toString(36).substring(2,8).toUpperCase(); });
-saveInviteBtn.addEventListener('click', async()=>{
-  if(!currentUserId)return;
-  const code=inviteCodeInput.value.trim();
-  if(!code)return showToast('請輸入邀請碼');
-  try{
-    await setDoc(doc(db,'inviteCodes',code),{ownerUid:currentUserId,createdAt:serverTimestamp(),singleUse:false});
-    await setDoc(doc(db,'users',currentUserId),{inviteCode:code},{merge:true});
-    showToast('✓ 邀請碼已儲存'); loadFriends();
-  }catch(e){showToast('儲存失敗');}
+generateInviteBtn.addEventListener('click',()=>{inviteCodeInput.value='KPOP'+Math.random().toString(36).substring(2,8).toUpperCase();});
+saveInviteBtn.addEventListener('click',async()=>{
+  if(!currentUserId)return;const code=inviteCodeInput.value.trim();if(!code)return showToast('請輸入邀請碼');
+  try{await setDoc(doc(db,'inviteCodes',code),{ownerUid:currentUserId,createdAt:serverTimestamp(),singleUse:false});await setDoc(doc(db,'users',currentUserId),{inviteCode:code},{merge:true});showToast('✓ 邀請碼已儲存');loadFriends();}catch(e){showToast('儲存失敗');}
 });
-joinByCodeBtn.addEventListener('click', async()=>{
-  if(!currentUserId)return;
-  const code=joinInviteInput.value.trim();
-  if(!code)return;
-  try{
-    const snap=await getDoc(doc(db,'inviteCodes',code));
-    if(!snap.exists())throw new Error('無效邀請碼');
-    const{ownerUid}=snap.data();
-    if(ownerUid===currentUserId)throw new Error('不能加自己');
-    await setDoc(doc(db,'users',currentUserId,'friends',ownerUid),{createdAt:serverTimestamp()});
-    await setDoc(doc(db,'users',ownerUid,'friends',currentUserId),{createdAt:serverTimestamp()});
-    showToast('✓ 加入好友成功'); loadFriends();
-  }catch(e){showToast(e.message);}
+joinByCodeBtn.addEventListener('click',async()=>{
+  if(!currentUserId)return;const code=joinInviteInput.value.trim();if(!code)return;
+  try{const snap=await getDoc(doc(db,'inviteCodes',code));if(!snap.exists())throw new Error('無效邀請碼');const{ownerUid}=snap.data();if(ownerUid===currentUserId)throw new Error('不能加自己');await setDoc(doc(db,'users',currentUserId,'friends',ownerUid),{createdAt:serverTimestamp()});await setDoc(doc(db,'users',ownerUid,'friends',currentUserId),{createdAt:serverTimestamp()});showToast('✓ 加入好友成功');loadFriends();}catch(e){showToast(e.message);}
 });
-saveProfileBtn.addEventListener('click', async()=>{
+saveProfileBtn.addEventListener('click',async()=>{
   if(!currentUserId)return;
-  await setDoc(doc(db,'users',currentUserId),{displayName:displayNameInput.value.trim(),bio:bioInput.value.trim(),preferredLang:preferredLang.value},{merge:true});
-  showToast('✓ 已儲存'); loadProfile();
+  const lang=preferredLang.value;
+  await setDoc(doc(db,'users',currentUserId),{displayName:displayNameInput.value.trim(),bio:bioInput.value.trim(),preferredLang:lang},{merge:true});
+  applyLang(lang);
+  showToast('✓ 已儲存' + (lang==='en' ? ' · Applied English UI' : ' · 已套用中文介面'));
+  loadProfile();
 });
 
 async function loadProfile(){
   if(!currentUserId)return;
   const snap=await getDoc(doc(db,'users',currentUserId));
   const d=snap.data()||{};
-  displayNameInput.value=d.displayName||'';
-  bioInput.value=d.bio||'';
-  preferredLang.value=d.preferredLang||'zh';
-  inviteCodeInput.value=d.inviteCode||'';
+  displayNameInput.value=d.displayName||''; bioInput.value=d.bio||'';
+  preferredLang.value=d.preferredLang||'zh'; inviteCodeInput.value=d.inviteCode||'';
+  // Apply saved language
+  if(d.preferredLang) applyLang(d.preferredLang);
 }
 
 async function loadFriends(){
@@ -2077,140 +1962,73 @@ async function loadFriends(){
   if(snaps.empty){friendsList.innerHTML='<li style="color:var(--text3);font-size:13px;padding:8px 0">暫無好友，使用邀請碼新增好友吧！</li>';return;}
   friendsList.innerHTML='';
   for(const f of snaps.docs){
-    const fid=f.id;
-    let displayName=fid, recordCount2=0;
+    const fid=f.id;let displayName=fid,recordCount2=0;
     try{const u=await getDoc(doc(db,'users',fid));if(u.exists()&&u.data().displayName)displayName=u.data().displayName;}catch(e){}
     try{const q2=query(collection(db,'concerts'),where('uid','==',fid));const s2=await getDocs(q2);recordCount2=s2.size;}catch(e){}
-    const alias=f.data().alias||'';
-    const showName=alias||displayName;
-    const li=document.createElement('li');
-    li.className='friend-item';
-    li.innerHTML=`
-      <div class="friend-item-left">
-        <div class="friend-item-avatar">${showName.slice(0,1).toUpperCase()||'?'}</div>
-        <div>
-          <div class="friend-item-name">${showName} ${alias?`<span class="friend-badge">暱稱</span>`:''}</div>
-          <div class="friend-item-count">🎤 ${recordCount2} 筆紀錄</div>
-        </div>
-      </div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap">
-        <button data-fid="${fid}" class="view-friend-btn">查看紀錄</button>
-        <button data-fid="${fid}" class="edit-alias-btn btn-ghost">暱稱</button>
-        <button data-fid="${fid}" class="remove-friend-btn btn-danger">移除</button>
-      </div>`;
+    const alias=f.data().alias||'',showName=alias||displayName;
+    const li=document.createElement('li');li.className='friend-item';
+    li.innerHTML=`<div class="friend-item-left"><div class="friend-item-avatar">${showName.slice(0,1).toUpperCase()||'?'}</div><div><div class="friend-item-name">${showName} ${alias?`<span class="friend-badge">暱稱</span>`:''}</div><div class="friend-item-count">🎤 ${recordCount2} 筆紀錄</div></div></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button data-fid="${fid}" class="view-friend-btn">查看紀錄</button><button data-fid="${fid}" class="edit-alias-btn btn-ghost">暱稱</button><button data-fid="${fid}" class="remove-friend-btn btn-danger">移除</button></div>`;
     friendsList.appendChild(li);
   }
-  document.querySelectorAll('.view-friend-btn').forEach(btn=>btn.addEventListener('click',()=>{
-    const fid=btn.getAttribute('data-fid');
-    const li=btn.closest('.friend-item');
-    const name=li.querySelector('.friend-item-name').textContent.replace('暱稱','').trim();
-    profileCard.style.display='none';
-    displayFriendRecords(fid,name);
-  }));
-  document.querySelectorAll('.edit-alias-btn').forEach(btn=>btn.addEventListener('click',async()=>{
-    const fid=btn.getAttribute('data-fid');
-    const alias=prompt('設定好友暱稱（留空清除）');
-    if(alias!==null)await setDoc(doc(db,'users',currentUserId,'friends',fid),{alias:alias.trim()},{merge:true});
-    loadFriends();
-  }));
-  document.querySelectorAll('.remove-friend-btn').forEach(btn=>btn.addEventListener('click',async()=>{
-    const fid=btn.getAttribute('data-fid');
-    if(confirm('確定移除好友？')){
-      await deleteDoc(doc(db,'users',currentUserId,'friends',fid));
-      await deleteDoc(doc(db,'users',fid,'friends',currentUserId));
-      if(viewingFriendUid===fid)backToMyRecords();
-      loadFriends(); showToast('已移除好友');
-    }
-  }));
+  document.querySelectorAll('.view-friend-btn').forEach(btn=>btn.addEventListener('click',()=>{const fid=btn.getAttribute('data-fid');const li=btn.closest('.friend-item');const name=li.querySelector('.friend-item-name').textContent.replace('暱稱','').trim();profileCard.style.display='none';displayFriendRecords(fid,name);}));
+  document.querySelectorAll('.edit-alias-btn').forEach(btn=>btn.addEventListener('click',async()=>{const fid=btn.getAttribute('data-fid');const alias=prompt('設定好友暱稱（留空清除）');if(alias!==null)await setDoc(doc(db,'users',currentUserId,'friends',fid),{alias:alias.trim()},{merge:true});loadFriends();}));
+  document.querySelectorAll('.remove-friend-btn').forEach(btn=>btn.addEventListener('click',async()=>{const fid=btn.getAttribute('data-fid');if(confirm('確定移除好友？')){await deleteDoc(doc(db,'users',currentUserId,'friends',fid));await deleteDoc(doc(db,'users',fid,'friends',currentUserId));if(viewingFriendUid===fid)backToMyRecords();loadFriends();showToast('已移除好友');}}));
 }
 
-async function displayFriendRecords(fid, friendName){
-  viewingFriendUid=fid; viewingFriendName=friendName||'好友';
-  activeYearFilter=null; activeTagFilter=null;
-  backToMyRecordsBtn.style.display='inline-block';
-  comparePanel.style.display='none'; toggleCompareBtn.textContent='📊 對比統計';
-  recordsTitle.textContent=`${viewingFriendName} 的演唱會紀錄`;
-  archiveLabel.textContent="Friend's Archive";
-  statsTitle.textContent=`📊 ${viewingFriendName} 的統計`;
-  document.getElementById('formCard').style.display='none';
-  friendBanner.style.display='block';
-  friendBannerName.textContent=viewingFriendName;
+async function displayFriendRecords(fid,friendName){
+  viewingFriendUid=fid;viewingFriendName=friendName||'好友';activeYearFilter=null;activeTagFilter=null;
+  backToMyRecordsBtn.style.display='inline-block';comparePanel.style.display='none';toggleCompareBtn.textContent='📊 對比統計';
+  recordsTitle.textContent=`${viewingFriendName} 的演唱會紀錄`;archiveLabel.textContent="Friend's Archive";statsTitle.textContent=`📊 ${viewingFriendName} 的統計`;
+  document.getElementById('formCard').style.display='none';friendBanner.style.display='block';friendBannerName.textContent=viewingFriendName;
   const q=query(collection(db,'concerts'),where('uid','==',fid));
   const snap=await getDocs(q);
   allRecords=snap.docs.map(d=>({id:d.id,data:d.data()})).sort((a,b)=>new Date(b.data.datetime)-new Date(a.data.datetime));
   const artists=Object.keys(countBy(allRecords,r=>r.data.artist)).length;
   const rated=allRecords.filter(r=>r.data.rating>0);
   const avgRating=rated.length?(rated.reduce((s,r)=>s+r.data.rating,0)/rated.length).toFixed(1):'—';
-  friendBannerStats.innerHTML=`
-    <div class="friend-stat-pill"><strong>${allRecords.length}</strong> 場次</div>
-    <div class="friend-stat-pill"><strong>${artists}</strong> 位藝人</div>
-    <div class="friend-stat-pill">⭐ <strong>${avgRating}</strong></div>`;
-  buildYearFilter(allRecords);
-  applyFiltersAndSort();
-  updateStats(allRecords);
-  renderCalendar();
+  friendBannerStats.innerHTML=`<div class="friend-stat-pill"><strong>${allRecords.length}</strong> 場次</div><div class="friend-stat-pill"><strong>${artists}</strong> 位藝人</div><div class="friend-stat-pill">⭐ <strong>${avgRating}</strong></div>`;
+  buildYearFilter(allRecords);applyFiltersAndSort();updateStats(allRecords);renderCalendar();
   recordCount.textContent=`${allRecords.length} 筆（${viewingFriendName}）`;
   friendBanner.scrollIntoView({behavior:'smooth',block:'start'});
 }
 
 function backToMyRecords(){
-  viewingFriendUid=null; viewingFriendName=null;
-  activeYearFilter=null; activeTagFilter=null;
-  backToMyRecordsBtn.style.display='none';
-  friendBanner.style.display='none';
-  comparePanel.style.display='none';
-  profileCard.style.display='none';
+  viewingFriendUid=null;viewingFriendName=null;activeYearFilter=null;activeTagFilter=null;
+  backToMyRecordsBtn.style.display='none';friendBanner.style.display='none';comparePanel.style.display='none';profileCard.style.display='none';
   if(currentUserId)loadRecords(currentUserId);
 }
-backToMyRecordsBtn.addEventListener('click', backToMyRecords);
-
-profileToggleBtn.addEventListener('click',()=>{
-  if(profileCard.style.display==='none'){profileCard.style.display='block';loadProfile();loadFriends();}
-  else profileCard.style.display='none';
-});
+backToMyRecordsBtn.addEventListener('click',backToMyRecords);
+profileToggleBtn.addEventListener('click',()=>{if(profileCard.style.display==='none'){profileCard.style.display='block';loadProfile();loadFriends();}else profileCard.style.display='none';});
 
 // ── SEARCH ──
-function initSearch(){
-  searchInput.addEventListener('input', () => applyFiltersAndSort());
-}
+function initSearch(){searchInput.addEventListener('input',()=>applyFiltersAndSort());}
 
 // ── AUTH ──
-onAuthStateChanged(auth, user=>{
+onAuthStateChanged(auth,user=>{
   if(user){
-    loginDiv.style.display='none'; appDiv.style.display='block';
-    currentUserId=user.uid;
+    loginDiv.style.display='none';appDiv.style.display='block';currentUserId=user.uid;
     quickNoteFab.style.display='flex';
     setDoc(doc(db,'users',user.uid),{email:user.email},{merge:true});
-    loadRecords(user.uid); loadProfile(); loadFriends(); initSearch();
+    loadRecords(user.uid);loadProfile();loadFriends();initSearch();initCountrySearch();
+    applyLang(loadLangPref());
   }else{
-    loginDiv.style.display='block'; appDiv.style.display='none';
-    currentUserId=null; viewingFriendUid=null; viewingFriendName=null;
-    backToMyRecordsBtn.style.display='none';
-    profileCard.style.display='none';
-    friendBanner.style.display='none';
-    quickNoteFab.style.display='none';
-    quickNotePanel.style.display='none';
+    loginDiv.style.display='block';appDiv.style.display='none';currentUserId=null;viewingFriendUid=null;viewingFriendName=null;
+    backToMyRecordsBtn.style.display='none';profileCard.style.display='none';friendBanner.style.display='none';
+    quickNoteFab.style.display='none';quickNotePanel.style.display='none';
   }
 });
-signupForm.addEventListener('submit', async e=>{
-  e.preventDefault();
-  const email=signupForm.email.value.trim(), pwd=signupForm.password.value;
-  try{
-    await createUserWithEmailAndPassword(auth,email,pwd);
-    await setDoc(doc(db,'users',auth.currentUser.uid),{email,displayName:'',bio:'',preferredLang:'zh'});
-    showToast('✓ 註冊成功！'); signupForm.reset();
-  }catch(err){showToast('註冊失敗：'+err.message);}
+signupForm.addEventListener('submit',async e=>{
+  e.preventDefault();const email=signupForm.email.value.trim(),pwd=signupForm.password.value;
+  try{await createUserWithEmailAndPassword(auth,email,pwd);await setDoc(doc(db,'users',auth.currentUser.uid),{email,displayName:'',bio:'',preferredLang:'zh'});showToast('✓ 註冊成功！');signupForm.reset();}
+  catch(err){showToast('註冊失敗：'+err.message);}
 });
-loginForm.addEventListener('submit', async e=>{
+loginForm.addEventListener('submit',async e=>{
   e.preventDefault();
   try{await signInWithEmailAndPassword(auth,loginForm.email.value.trim(),loginForm.password.value);loginForm.reset();}
   catch(err){showToast('登入失敗：帳密錯誤');}
 });
-logoutBtn.addEventListener('click', async()=>{await signOut(auth);showToast('已登出');});
-forgotPasswordBtn.addEventListener('click', async()=>{
-  const email=prompt('請輸入 Email');
-  if(email)try{await sendPasswordResetEmail(auth,email);showToast('✓ 重設信件已發送！');}catch(e){showToast('發送失敗');}
-});
+logoutBtn.addEventListener('click',async()=>{await signOut(auth);showToast('已登出');});
+forgotPasswordBtn.addEventListener('click',async()=>{const email=prompt('請輸入 Email');if(email)try{await sendPasswordResetEmail(auth,email);showToast('✓ 重設信件已發送！');}catch(e){showToast('發送失敗');}});
 
 window.toggleMode=function(){
   document.body.classList.toggle('desktop-mode');
