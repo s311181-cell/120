@@ -387,6 +387,10 @@
     .merch-total-val { font-family:'Cormorant Garamond',serif; font-size:1.6em; font-weight:300; color:white; }
     .merch-total-label { font-size:10px; color:var(--text3); letter-spacing:1.5px; text-transform:uppercase; margin-top:2px; }
 
+    /* ── MERCH ANALYTICS ── */
+    #merchAnalyticsPanel { background:linear-gradient(135deg,hsla(calc(var(--hue)+30),60%,50%,0.08),hsla(var(--hue),78%,62%,0.05)); border:1px solid hsla(calc(var(--hue)+30),60%,50%,0.2); border-radius:var(--radius-sm); padding:18px; margin-bottom:12px; animation:fadeUp .3s ease both; }
+    #merchFilterRow { background:rgba(255,255,255,0.03); border:1px solid var(--glass-border); border-radius:var(--radius-sm); padding:10px 14px; margin-bottom:8px; }
+
     /* ── TICKET RELEASE ── */
     #ticketReleaseBtn { background:linear-gradient(135deg,hsl(calc(var(--hue)+40),80%,50%),hsl(calc(var(--hue)+80),65%,42%)); }
     #ticketReleaseBtn:hover { box-shadow:0 8px 24px hsla(calc(var(--hue)+60),70%,50%,0.45); }
@@ -629,8 +633,8 @@
     <!-- EXPORT PANEL -->
     <div id="exportPanel" class="card">
       <div class="section-label">Export</div>
-      <h2>📤 匯出資料</h2>
-      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">將演唱會紀錄匯出為本地檔案備份</p>
+      <h2 id="exportCardTitle">📤 匯出資料</h2>
+      <p id="exportCardSub" style="font-size:13px;color:var(--text3);margin-bottom:16px">將演唱會紀錄匯出為本地檔案備份</p>
       <div class="export-options">
         <button id="exportJsonBtn">📄 匯出 JSON</button>
         <button id="exportCsvBtn" class="btn-ghost">📊 匯出 CSV</button>
@@ -703,8 +707,8 @@
     <!-- WISHLIST CARD -->
     <div id="wishlistCard" class="card">
       <div class="section-label">Bucket List</div>
-      <h2>🎯 願望清單</h2>
-      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">記錄你想看的演唱會，實現後可以轉換為正式紀錄！</p>
+      <h2 id="wishlistCardTitle">🎯 願望清單</h2>
+      <p id="wishlistCardSub" style="font-size:13px;color:var(--text3);margin-bottom:16px">記錄你想看的演唱會，實現後可以轉換為正式紀錄！</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px">
         <input id="wishArtistInput" placeholder="藝人／活動名稱" style="flex:1;min-width:0;margin-bottom:0">
         <select id="wishPrioritySelect" style="width:auto;min-width:100px;margin-bottom:0">
@@ -722,8 +726,8 @@
     <!-- MERCH 周邊記帳 -->
     <div id="merchCard" class="card">
       <div class="section-label">Merchandise</div>
-      <h2>🛍 周邊記帳</h2>
-      <p style="font-size:13px;color:var(--text3);margin-bottom:16px">記錄演唱會周邊消費，掌握追星完整花費</p>
+      <h2 id="merchCardTitle">🛍 周邊記帳</h2>
+      <p id="merchCardSub" style="font-size:13px;color:var(--text3);margin-bottom:16px">記錄演唱會周邊消費，掌握追星完整花費</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
         <input id="merchArtistInput" placeholder="藝人 / 活動" style="flex:1;min-width:0;margin-bottom:0">
         <select id="merchCatSelect" style="width:auto;min-width:120px;margin-bottom:0">
@@ -754,6 +758,34 @@
       <button id="addMerchBtn" style="width:100%">✚ 新增周邊記帳</button>
       <hr class="divider">
       <div id="merchTotalBar" class="merch-total-bar" style="display:none"></div>
+
+      <!-- 周邊分析面板 -->
+      <div id="merchAnalyticsPanel" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px">
+          <div style="font-size:11px;color:var(--p2);letter-spacing:2px;text-transform:uppercase">✶ 周邊分析</div>
+          <button id="closeAnalyticsBtn" class="btn-ghost btn-sm">✕ 關閉</button>
+        </div>
+        <div id="merchAnalyticsContent"></div>
+      </div>
+
+      <!-- 筛選列 -->
+      <div id="merchFilterRow" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;align-items:center">
+        <span style="font-size:11px;color:var(--text3);letter-spacing:1px">篩選：</span>
+        <select id="merchFilterCat" style="width:auto;min-width:110px;margin-bottom:0;font-size:12px;padding:6px 10px">
+          <option value="">全部分類</option>
+          <option value="album">💿 專輯</option>
+          <option value="photobook">📖 寫真集</option>
+          <option value="goods">🎀 官方周邊</option>
+          <option value="lightstick">🪄 螢光棒</option>
+          <option value="fanmade">✂️ 自製周邊</option>
+          <option value="outfit">👗 演唱會服裝</option>
+          <option value="food">🍱 現場餐飲</option>
+          <option value="other">📦 其他</option>
+        </select>
+        <input id="merchFilterArtist" placeholder="藝人搜尋…" style="flex:1;min-width:100px;margin-bottom:0;font-size:12px;padding:6px 10px">
+        <button id="clearMerchFilterBtn" class="btn-ghost btn-sm">清除</button>
+      </div>
+
       <ul id="merchItems" style="list-style:none;margin-top:4px"></ul>
     </div>
 
@@ -1213,7 +1245,6 @@ let currentSort = 'date-desc';
 let activeYearFilter = null;
 let activeTagFilter = null;
 let pinnedIds = new Set();
-let merchEditingId = null;
 
 // ── UI LANGUAGE ──
 const UI_TEXT = {
@@ -1223,7 +1254,14 @@ const UI_TEXT = {
     sortLabel: '排序：', newest:'最新', oldest:'最舊', ratingHigh:'評分高', priceHigh:'票價高', artistAZ:'藝人',
     archive: 'Archive', myRecords:'我的演唱會紀錄', stats:'📊 追星統計',
     searchPlaceholder: '搜尋…', logout: '登出', profile: '個人檔案',
-    merch: '周邊記帳', merchAdd: '✚ 新增周邊記帳', merchUpdate: '💾 更新周邊', merchCancel: '✕ 取消編輯',
+    merch: '🛍 周邊', wishlist: '🎯 願望', export: '📤 匯出',
+    ticketRelease: '🎫 釋票通知', backToRecords: '← 我的紀錄',
+    merchTitle: '🛍 周邊記帳', merchSub: '記錄演唱會周邊消費，掌握追星完整花費',
+    wishlistTitle: '🎯 願望清單', wishlistSub: '記錄你想看的演唱會，實現後可以轉換為正式紀錄！',
+    exportTitle: '📤 匯出資料', exportSub: '將演唱會紀錄匯出為本地檔案備份',
+    addWish: '✚ 加入願望清單', addMerch: '✚ 新增周邊記帳',
+    exportJson: '📄 匯出 JSON', exportCsv: '📊 匯出 CSV', exportTxt: '📝 匯出純文字',
+    analysisBtn: '📊 分析', closeBtn: '✕ 關閉', filterLabel: '篩選：', clearFilter: '清除',
   },
   en: {
     newEntry: 'New Concert Entry', save: '💾 Save', update: '💾 Update',
@@ -1231,7 +1269,14 @@ const UI_TEXT = {
     sortLabel: 'Sort: ', newest:'Newest', oldest:'Oldest', ratingHigh:'Top Rated', priceHigh:'Priciest', artistAZ:'Artist A-Z',
     archive: 'Archive', myRecords: 'My Concert Records', stats:'📊 Statistics',
     searchPlaceholder: 'Search…', logout: 'Logout', profile: 'Profile',
-    merch: 'Merch', merchAdd: '✚ Add Merch', merchUpdate: '💾 Update Merch', merchCancel: '✕ Cancel',
+    merch: '🛍 Merch', wishlist: '🎯 Wishlist', export: '📤 Export',
+    ticketRelease: '🎫 Ticket Alert', backToRecords: '← My Records',
+    merchTitle: '🛍 Merch Tracker', merchSub: 'Track merchandise spending for your complete fan budget',
+    wishlistTitle: '🎯 Wishlist', wishlistSub: 'Record concerts you want to attend and convert them to records!',
+    exportTitle: '📤 Export Data', exportSub: 'Export your concert records as a local backup file',
+    addWish: '✚ Add to Wishlist', addMerch: '✚ Add Merch',
+    exportJson: '📄 Export JSON', exportCsv: '📊 Export CSV', exportTxt: '📝 Export Text',
+    analysisBtn: '📊 Analysis', closeBtn: '✕ Close', filterLabel: 'Filter: ', clearFilter: 'Clear',
   }
 };
 let currentLang = 'zh';
@@ -1239,29 +1284,79 @@ let currentLang = 'zh';
 function applyLang(lang) {
   currentLang = lang;
   const t = UI_TEXT[lang] || UI_TEXT.zh;
-  formTitle.textContent = t.newEntry;
-  submitBtn.textContent = editingId ? t.update : t.save;
-  cancelBtn.textContent = t.cancel;
-  clearBtn.textContent = t.clear;
-  document.querySelector('.sort-label').textContent = t.sortLabel;
+  
+  // Form elements
+  if(formTitle) formTitle.textContent = t.newEntry;
+  if(submitBtn) submitBtn.textContent = editingId ? t.update : t.save;
+  if(cancelBtn) cancelBtn.textContent = t.cancel;
+  if(clearBtn) clearBtn.textContent = t.clear;
+  
+  // Sort bar
+  const sortLabelEl = document.querySelector('.sort-label');
+  if(sortLabelEl) sortLabelEl.textContent = t.sortLabel;
   const sortBtns = document.querySelectorAll('.sort-btn');
   const sortKeys = ['newest','oldest','ratingHigh','priceHigh','artistAZ'];
   sortBtns.forEach((b,i) => { if(sortKeys[i]) b.textContent = t[sortKeys[i]]; });
-  archiveLabel.textContent = t.archive;
-  if (!viewingFriendUid) recordsTitle.textContent = t.myRecords;
-  if (!viewingFriendUid) statsTitle.textContent = t.stats;
-  searchInput.placeholder = t.searchPlaceholder;
-  logoutBtn.textContent = t.logout;
-  profileToggleBtn.textContent = t.profile;
   
-  // Update merch button
-  const merchBtn = document.getElementById('addMerchBtn');
-  if (merchBtn) {
-    merchBtn.textContent = merchEditingId ? t.merchUpdate : t.merchAdd;
-  }
+  // Archive and stats
+  if(archiveLabel) archiveLabel.textContent = t.archive;
+  if (!viewingFriendUid && recordsTitle) recordsTitle.textContent = t.myRecords;
+  if (!viewingFriendUid && statsTitle) statsTitle.textContent = t.stats;
   
-  // Re-render merch list to update category labels
-  renderMerchList();
+  // Search and profile
+  if(searchInput) searchInput.placeholder = t.searchPlaceholder;
+  if(logoutBtn) logoutBtn.textContent = t.logout;
+  if(profileToggleBtn) profileToggleBtn.textContent = t.profile;
+  
+  // Toolbar buttons
+  const backToMyRecordsBtnEl = document.getElementById('backToMyRecordsBtn');
+  if(backToMyRecordsBtnEl) backToMyRecordsBtnEl.textContent = t.backToRecords;
+  const merchToggleBtnEl = document.getElementById('merchToggleBtn');
+  if(merchToggleBtnEl) merchToggleBtnEl.textContent = t.merch;
+  const wishlistToggleBtnEl = document.getElementById('wishlistToggleBtn');
+  if(wishlistToggleBtnEl) wishlistToggleBtnEl.textContent = t.wishlist;
+  const exportToggleBtnEl = document.getElementById('exportToggleBtn');
+  if(exportToggleBtnEl) exportToggleBtnEl.textContent = t.export;
+  const ticketReleaseBtnEl = document.getElementById('ticketReleaseBtn');
+  if(ticketReleaseBtnEl) ticketReleaseBtnEl.textContent = t.ticketRelease;
+  
+  // Card titles and subtitles
+  const merchCardTitle = document.getElementById('merchCardTitle');
+  if(merchCardTitle) merchCardTitle.textContent = t.merchTitle;
+  const merchCardSub = document.getElementById('merchCardSub');
+  if(merchCardSub) merchCardSub.textContent = t.merchSub;
+  const wishlistCardTitle = document.getElementById('wishlistCardTitle');
+  if(wishlistCardTitle) wishlistCardTitle.textContent = t.wishlistTitle;
+  const wishlistCardSub = document.getElementById('wishlistCardSub');
+  if(wishlistCardSub) wishlistCardSub.textContent = t.wishlistSub;
+  const exportCardTitle = document.getElementById('exportCardTitle');
+  if(exportCardTitle) exportCardTitle.textContent = t.exportTitle;
+  const exportCardSub = document.getElementById('exportCardSub');
+  if(exportCardSub) exportCardSub.textContent = t.exportSub;
+  
+  // Action buttons
+  const addWishBtn = document.getElementById('addWishBtn');
+  if(addWishBtn) addWishBtn.textContent = t.addWish;
+  const addMerchBtn = document.getElementById('addMerchBtn');
+  if(addMerchBtn) addMerchBtn.textContent = t.addMerch;
+  const exportJsonBtn = document.getElementById('exportJsonBtn');
+  if(exportJsonBtn) exportJsonBtn.textContent = t.exportJson;
+  const exportCsvBtn = document.getElementById('exportCsvBtn');
+  if(exportCsvBtn) exportCsvBtn.textContent = t.exportCsv;
+  const exportTxtBtn = document.getElementById('exportTxtBtn');
+  if(exportTxtBtn) exportTxtBtn.textContent = t.exportTxt;
+  
+  // Merch analytics
+  const showAnalyticsBtn = document.getElementById('showAnalyticsBtn');
+  if(showAnalyticsBtn) showAnalyticsBtn.textContent = t.analysisBtn;
+  const closeAnalyticsBtn = document.getElementById('closeAnalyticsBtn');
+  if(closeAnalyticsBtn) closeAnalyticsBtn.textContent = t.closeBtn;
+  
+  // Merch filter
+  const filterLabelSpan = document.querySelector('#merchFilterRow span');
+  if(filterLabelSpan && filterLabelSpan.textContent.includes('篩選')) filterLabelSpan.textContent = t.filterLabel;
+  const clearMerchFilterBtn = document.getElementById('clearMerchFilterBtn');
+  if(clearMerchFilterBtn) clearMerchFilterBtn.textContent = t.clearFilter;
   
   localStorage.setItem('mj_lang_' + (currentUserId||''), lang);
 }
@@ -1781,16 +1876,9 @@ function renderWishlist(){
 // 🛍 周邊記帳 MERCH ACCOUNTING
 // ════════════════════════════════════════
 const MERCH_CAT_LABELS = {
-  zh: {
-    album:'💿 專輯', photobook:'📖 寫真集', goods:'🎀 官方周邊',
-    lightstick:'🪄 螢光棒', fanmade:'✂️ 自製周邊', outfit:'👗 演唱會服裝',
-    food:'🍱 現場餐飲', other:'📦 其他'
-  },
-  en: {
-    album:'💿 Album', photobook:'📖 Photobook', goods:'🎀 Goods',
-    lightstick:'🪄 Lightstick', fanmade:'✂️ Fanmade', outfit:'👗 Outfit',
-    food:'🍱 Food', other:'📦 Other'
-  }
+  album:'💿 專輯', photobook:'📖 寫真集', goods:'🎀 官方周邊',
+  lightstick:'🪄 螢光棒', fanmade:'✂️ 自製周邊', outfit:'👗 演唱會服裝',
+  food:'🍱 現場餐飲', other:'📦 其他'
 };
 
 document.getElementById('merchToggleBtn').addEventListener('click', () => {
@@ -1800,6 +1888,19 @@ document.getElementById('merchToggleBtn').addEventListener('click', () => {
   if (!open) renderMerchList();
 });
 
+// Merch filter controls
+document.getElementById('merchFilterCat').addEventListener('change', () => renderMerchList());
+document.getElementById('merchFilterArtist').addEventListener('input', () => renderMerchList());
+document.getElementById('clearMerchFilterBtn').addEventListener('click', () => {
+  document.getElementById('merchFilterCat').value = '';
+  document.getElementById('merchFilterArtist').value = '';
+  renderMerchList();
+  showToast('已清除篩選');
+});
+document.getElementById('closeAnalyticsBtn').addEventListener('click', () => {
+  document.getElementById('merchAnalyticsPanel').style.display = 'none';
+});
+
 document.getElementById('addMerchBtn').addEventListener('click', () => {
   const artist   = document.getElementById('merchArtistInput').value.trim();
   const name     = document.getElementById('merchNameInput').value.trim();
@@ -1807,52 +1908,18 @@ document.getElementById('addMerchBtn').addEventListener('click', () => {
   const currency = document.getElementById('merchCurrencySelect').value;
   const category = document.getElementById('merchCatSelect').value;
   const note     = document.getElementById('merchNoteInput').value.trim();
-  if (!name && !artist) return showToast(currentLang === 'zh' ? '請輸入品項或藝人名稱' : 'Please enter item or artist name');
-  if (!price) return showToast(currentLang === 'zh' ? '請輸入金額' : 'Please enter price');
-  
-  let list = getMerchList();
-  if (merchEditingId) {
-    list = list.map(item => item.id === merchEditingId ? { ...item, artist, name, price, currency, category, note, updatedAt: new Date().toISOString() } : item);
-    showToast(currentLang === 'zh' ? '✓ 周邊紀錄已更新！' : '✓ Merch updated!');
-    cancelMerchEdit();
-  } else {
-    list.unshift({ id:Date.now(), artist, name, price, currency, category, note, createdAt:new Date().toISOString() });
-    showToast(currentLang === 'zh' ? '✓ 周邊記帳已新增！' : '✓ Merch added!');
-    clearMerchForm();
-  }
+  if (!name && !artist) return showToast('請輸入品項或藝人名稱');
+  if (!price) return showToast('請輸入金額');
+  const list = getMerchList();
+  list.unshift({ id:Date.now(), artist, name, price, currency, category, note, createdAt:new Date().toISOString() });
   saveMerchList(list);
-  renderMerchList();
-});
-
-function clearMerchForm() {
   document.getElementById('merchArtistInput').value = '';
   document.getElementById('merchNameInput').value   = '';
   document.getElementById('merchPriceInput').value  = '';
   document.getElementById('merchNoteInput').value   = '';
-}
-
-function cancelMerchEdit() {
-  merchEditingId = null;
-  clearMerchForm();
-  const t = UI_TEXT[currentLang] || UI_TEXT.zh;
-  document.getElementById('addMerchBtn').textContent = t.merchAdd;
-}
-
-function startEditMerch(id) {
-  const item = getMerchList().find(i => i.id === id);
-  if (!item) return;
-  merchEditingId = id;
-  document.getElementById('merchArtistInput').value = item.artist || '';
-  document.getElementById('merchNameInput').value   = item.name || '';
-  document.getElementById('merchPriceInput').value  = item.price || '';
-  document.getElementById('merchCurrencySelect').value = item.currency || 'TWD';
-  document.getElementById('merchCatSelect').value = item.category || 'other';
-  document.getElementById('merchNoteInput').value = item.note || '';
-  
-  const t = UI_TEXT[currentLang] || UI_TEXT.zh;
-  document.getElementById('addMerchBtn').textContent = t.merchUpdate;
-  document.getElementById('merchCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+  renderMerchList();
+  showToast('✓ 周邊記帳已新增！');
+});
 
 function getMerchList() {
   try { return JSON.parse(localStorage.getItem('merch_' + (currentUserId||'guest')) || '[]'); } catch(e) { return []; }
@@ -1861,16 +1928,20 @@ function saveMerchList(list) {
   localStorage.setItem('merch_' + (currentUserId||'guest'), JSON.stringify(list));
 }
 
-function renderMerchList() {
+function renderMerchList(filterCat, filterArtist) {
   const ul    = document.getElementById('merchItems');
   const total = document.getElementById('merchTotalBar');
-  const list  = getMerchList();
+  const analyticsPanel = document.getElementById('merchAnalyticsPanel');
+  let list  = getMerchList();
+
   if (!list.length) {
-    ul.innerHTML = '<li class="empty-state" style="padding:20px">✦ 還沒有周邊紀錄，快來記帳吧 ✦</li>';
+    ul.innerHTML = '<li class="empty-state" style="padding:20px">✶ 還沒有周邊紀錄，快來記帳吧 ✶</li>';
     total.style.display = 'none';
+    analyticsPanel.style.display = 'none';
     return;
   }
-  // Totals per currency
+
+  // Totals per currency (all items, before filter)
   const byC = {};
   list.forEach(item => {
     const val = evalPrice(item.price);
@@ -1882,33 +1953,158 @@ function renderMerchList() {
     `<div class="merch-total-item"><div class="merch-total-val">${list.length}</div><div class="merch-total-label">📦 件數</div></div>` +
     Object.entries(byC).map(([cur, amt]) =>
       `<div class="merch-total-item"><div class="merch-total-val">${getCurrencySymbol(cur)} ${Math.round(amt).toLocaleString()}</div><div class="merch-total-label">${cur} 合計</div></div>`
-    ).join('');
+    ).join('') +
+    `<div class="merch-total-item" style="margin-left:auto"><button id="showAnalyticsBtn" class="btn-ghost btn-sm">📊 分析</button></div>`;
 
-  ul.innerHTML = list.map(item => `
+  document.getElementById('showAnalyticsBtn')?.addEventListener('click', () => {
+    const panel = document.getElementById('merchAnalyticsPanel');
+    if (panel.style.display === 'none') {
+      renderMerchAnalytics();
+      panel.style.display = 'block';
+    } else {
+      panel.style.display = 'none';
+    }
+  });
+
+  // Apply filters
+  const cat = filterCat !== undefined ? filterCat : (document.getElementById('merchFilterCat')?.value || '');
+  const artist = filterArtist !== undefined ? filterArtist : (document.getElementById('merchFilterArtist')?.value.trim().toLowerCase() || '');
+  let filtered = list;
+  if (cat) filtered = filtered.filter(i => i.category === cat);
+  if (artist) filtered = filtered.filter(i => (i.artist||'').toLowerCase().includes(artist));
+
+  if (!filtered.length) {
+    ul.innerHTML = '<li style="padding:16px 0;font-size:13px;color:var(--text3);text-align:center">篩選結果為空</li>';
+    return;
+  }
+
+  ul.innerHTML = filtered.map(item => `
     <li class="merch-item" data-mid="${item.id}">
       <div class="merch-item-info">
         <div class="merch-item-name">${item.name || item.artist || '—'}</div>
         <div class="merch-item-sub">${item.artist ? '🎤 ' + item.artist + '　' : ''}${item.note ? '📝 ' + item.note : ''}</div>
       </div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <span class="merch-cat-pill">${(MERCH_CAT_LABELS[currentLang] || MERCH_CAT_LABELS.zh)[item.category] || item.category}</span>
+        <span class="merch-cat-pill">${MERCH_CAT_LABELS[item.category] || item.category}</span>
         <span style="font-family:'Space Mono',monospace;font-size:13px;color:white;flex-shrink:0">${getCurrencySymbol(item.currency)} ${Math.round(evalPrice(item.price)).toLocaleString()}</span>
-        <button class="merch-edit-btn btn-ghost btn-sm" data-mid="${item.id}">✏️</button>
         <button class="merch-del-btn btn-danger btn-sm" data-mid="${item.id}">✕</button>
       </div>
     </li>`).join('');
 
-  ul.querySelectorAll('.merch-edit-btn').forEach(btn => btn.addEventListener('click', () => {
-    startEditMerch(parseInt(btn.getAttribute('data-mid')));
-  }));
   ul.querySelectorAll('.merch-del-btn').forEach(btn => btn.addEventListener('click', () => {
-    if (confirm(currentLang === 'zh' ? '確定刪除此周邊紀錄？' : 'Delete this merch record?')) {
-      saveMerchList(getMerchList().filter(i => i.id !== parseInt(btn.getAttribute('data-mid'))));
-      if (merchEditingId === parseInt(btn.getAttribute('data-mid'))) cancelMerchEdit();
-      renderMerchList();
-      showToast(currentLang === 'zh' ? '已刪除' : 'Deleted');
-    }
+    saveMerchList(getMerchList().filter(i => i.id !== parseInt(btn.getAttribute('data-mid'))));
+    renderMerchList();
+    showToast('已刪除');
   }));
+}
+
+// ── MERCH ANALYTICS ──
+function renderMerchAnalytics() {
+  const list = getMerchList();
+  const content = document.getElementById('merchAnalyticsContent');
+  if (!list.length) { content.innerHTML = '<div style="color:var(--text3);font-size:13px">還沒有資料</div>'; return; }
+
+  // Category breakdown
+  const catMap = {};
+  list.forEach(item => {
+    const c = item.category || 'other';
+    if (!catMap[c]) catMap[c] = { count: 0, total: 0, currency: item.currency };
+    catMap[c].count++;
+    catMap[c].total += evalPrice(item.price);
+  });
+  const catEntries = Object.entries(catMap).sort((a,b) => b[1].total - a[1].total);
+  const maxCatVal = catEntries[0]?.[1].total || 1;
+
+  // Artist breakdown
+  const artistMap = {};
+  list.forEach(item => {
+    const a = item.artist || '未指定';
+    if (!artistMap[a]) artistMap[a] = { count: 0, total: 0 };
+    artistMap[a].count++;
+    artistMap[a].total += evalPrice(item.price);
+  });
+  const artistEntries = Object.entries(artistMap).sort((a,b) => b[1].total - a[1].total).slice(0, 8);
+  const maxArtistVal = artistEntries[0]?.[1].total || 1;
+
+  // Month trend (last 12 months)
+  const monthMap = {};
+  list.forEach(item => {
+    if (item.createdAt) {
+      const d = new Date(item.createdAt);
+      const key = `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}`;
+      if (!monthMap[key]) monthMap[key] = 0;
+      monthMap[key] += evalPrice(item.price);
+    }
+  });
+  const monthKeys = Object.keys(monthMap).sort().slice(-12);
+  const maxMonthVal = Math.max(...monthKeys.map(k => monthMap[k]), 1);
+
+  // Most expensive item
+  const mostExpensive = [...list].sort((a,b) => evalPrice(b.price) - evalPrice(a.price))[0];
+
+  // Avg per item
+  const allTWD = list.filter(i => i.currency === 'TWD').map(i => evalPrice(i.price));
+  const avgTWD = allTWD.length ? Math.round(allTWD.reduce((s,v)=>s+v,0)/allTWD.length) : 0;
+
+  let html = `
+    <div class="stats-grid-4" style="margin-bottom:16px">
+      <div class="stat-card"><div class="stat-value">${list.length}</div><div class="stat-label">📦 總件數</div></div>
+      <div class="stat-card blue"><div class="stat-value" style="font-size:1.2em">${Object.keys(catMap).length}</div><div class="stat-label">🏷 分類數</div></div>
+      <div class="stat-card green"><div class="stat-value" style="font-size:1.2em">${Object.keys(artistMap).length}</div><div class="stat-label">🎤 藝人數</div></div>
+      ${avgTWD > 0 ? `<div class="stat-card purple"><div class="stat-value" style="font-size:1.1em">NT$ ${avgTWD.toLocaleString()}</div><div class="stat-label">💰 TWD 平均單價</div></div>` : ''}
+    </div>
+    <div style="font-size:11px;color:var(--p2);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase">🏷 分類分析</div>
+    <div class="bar-chart" style="margin-bottom:20px">
+      ${catEntries.map(([cat, data]) => `
+        <div class="bar-row">
+          <div class="bar-label">${MERCH_CAT_LABELS[cat] || cat}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(data.total/maxCatVal*100).toFixed(1)}%;background:linear-gradient(90deg,hsl(calc(var(--hue)+30),70%,55%),hsl(calc(var(--hue)+80),60%,50%))"></div></div>
+          <div class="bar-val">${data.count}件</div>
+        </div>`).join('')}
+    </div>`;
+
+  if (artistEntries.length > 1) {
+    html += `
+    <div style="font-size:11px;color:var(--p2);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase">🎤 藝人排行</div>
+    <div class="bar-chart" style="margin-bottom:20px">
+      ${artistEntries.map(([artist, data]) => `
+        <div class="bar-row">
+          <div class="bar-label">${artist}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(data.total/maxArtistVal*100).toFixed(1)}%"></div></div>
+          <div class="bar-val">${data.count}件</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  if (monthKeys.length > 1) {
+    html += `
+    <div style="font-size:11px;color:var(--p2);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase">📈 月份花費趨勢</div>
+    <div class="bar-chart" style="margin-bottom:20px">
+      ${monthKeys.map(k => `
+        <div class="bar-row">
+          <div class="bar-label" style="font-size:11px">${k}</div>
+          <div class="bar-track"><div class="bar-fill" style="width:${(monthMap[k]/maxMonthVal*100).toFixed(1)}%;background:linear-gradient(90deg,hsl(calc(var(--hue)+60),60%,50%),var(--p))"></div></div>
+          <div class="bar-val" style="font-size:10px">${Math.round(monthMap[k]).toLocaleString()}</div>
+        </div>`).join('')}
+    </div>`;
+  }
+
+  if (mostExpensive) {
+    html += `
+    <div style="font-size:11px;color:var(--p2);letter-spacing:2px;margin-bottom:10px;text-transform:uppercase">🏆 最貴單品</div>
+    <div class="merch-item" style="margin-bottom:16px">
+      <div class="merch-item-info">
+        <div class="merch-item-name">${mostExpensive.name || mostExpensive.artist || '—'}</div>
+        <div class="merch-item-sub">${mostExpensive.artist ? '🎤 ' + mostExpensive.artist : ''}</div>
+      </div>
+      <div style="display:flex;gap:6px;align-items:center">
+        <span class="merch-cat-pill">${MERCH_CAT_LABELS[mostExpensive.category] || mostExpensive.category}</span>
+        <span style="font-family:'Space Mono',monospace;font-size:14px;color:white">${getCurrencySymbol(mostExpensive.currency)} ${Math.round(evalPrice(mostExpensive.price)).toLocaleString()}</span>
+      </div>
+    </div>`;
+  }
+
+  content.innerHTML = html;
 }
 
 // ════════════════════════════════════════
