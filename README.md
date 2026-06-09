@@ -565,7 +565,7 @@
   </div>
 
   <!-- LOGIN -->
-  <div id="loginDiv">
+  <div id="loginDiv" class="container">
     <div class="card">
       <div class="auth-forms">
         <div>
@@ -608,7 +608,7 @@
   </div>
 
   <!-- APP -->
-  <div id="appDiv" style="display:none">
+  <div id="appDiv" style="display:none" class="container">
 
     <!-- Toolbar -->
     <div class="card" style="padding:18px 28px;margin-bottom:16px">
