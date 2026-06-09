@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>MINEJOURNAL ✦ 我的星光旅程</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+TC:wght@300;400;500&family=Space+Mono&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --hue: 338;
+      --sat: 78%;
+      --p: hsl(var(--hue), var(--sat), 62%);
+      --p2: hsl(var(--hue), 80%, 80%);
+      --glow: hsla(var(--hue), 78%, 62%, 0.5);
+      --bg-l: 5%;
+      --bg1: hsl(var(--hue), 40%, var(--bg-l));
+      --bg2: hsl(var(--hue), 35%, calc(var(--bg-l) + 4%));
+      --glass: rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.10);
+      --glass-hover: rgba(255,255,255,0.08);
+      --text: #f5eeff;
+      --text2: rgba(245,238,255,0.6);
+      --text3: rgba(245,238,255,0.35);
+      --radius: 20px;
+      --radius-sm: 12px;
+    }
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+    body::before {
+      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='2'/%3E%3CfeDisplacementMap in='SourceGraphic' scale='30'/%3E%3C/filter%3E%3Crect width='256' height='256' fill='%23140a18' filter='url(%23n)'/%3E%3C/svg%3E");
+      opacity:0.4;
+    }
+    body {
+      font-family:'Noto Sans TC','Arial',sans-serif;
+      background:var(--bg1); color:var(--text);
+      min-height:100vh; padding:24px 16px 80px;
+      position:relative; transition:background .4s;
+    }
+
+    .orb { position:fixed; border-radius:50%; filter:blur(80px); opacity:0.22; pointer-events:none; animation:drift 18s ease-in-out infinite alternate; z-index:0; }
+    .orb1 { width:500px;height:500px;background:radial-gradient(circle,var(--p),transparent);top:-100px;left:-100px;animation-duration:20s; }
+    .orb2 { width:400px;height:400px;background:radial-gradient(circle,hsl(calc(var(--hue)+60),60%,40%),transparent);bottom:-80px;right:-80px;animation-duration:25s;animation-direction:alternate-reverse; }
+    .orb3 { width:300px;height:300px;background:radial-gradient(circle,hsl(calc(var(--hue)-40),70%,50%),transparent);top:40%;left:60%;animation-duration:15s; }
+    @keyframes drift { 0%{transform:translate(0,0) scale(1)} 100%{transform:translate(40px,30px) scale(1.1)} }
+
+    .container { max-width:600px; margin:0 auto; position:relative; z-index:1; transition:max-width .3s; }
+    body.desktop-mode { padding:32px 32px 80px; }
+    body.desktop-mode .container { max-width:1320px; }
+
+    .mode-toggle {
+      position:fixed; top:18px; right:18px; z-index:9999;
+      background:rgba(10,5,16,0.85); backdrop-filter:blur(16px);
+      border:1px solid var(--glass-border); color:var(--text2);
+      padding:8px 18px; border-radius:40px;
+      font-family:'Noto Sans TC',sans-serif; font-size:12px; font-weight:500;
+      cursor:pointer; letter-spacing:.5px; transition:all .2s;
+    }
+    .mode-toggle:hover { color:var(--text); border-color:var(--p); }
+
+    .site-header { text-align:center; padding:20px 0 8px; margin-bottom:6px; }
+    .site-title {
+      font-family:'Cormorant Garamond',serif; font-size:3.4em; font-weight:300;
+      letter-spacing:8px; color:white; text-transform:uppercase;
+      text-shadow:0 0 40px var(--glow),0 0 80px hsla(var(--hue),78%,62%,0.2);
+      animation:titleGlow 3s ease-in-out infinite alternate;
+    }
+    body.desktop-mode .site-title { font-size:5em; }
+    @keyframes titleGlow {
+      from { text-shadow:0 0 30px var(--glow),0 0 60px hsla(var(--hue),78%,62%,0.15); }
+      to   { text-shadow:0 0 50px var(--glow),0 0 100px hsla(var(--hue),78%,62%,0.3),0 0 140px hsla(calc(var(--hue)+60),60%,50%,0.1); }
+    }
+    .site-subtitle { font-family:'Cormorant Garamond',serif; font-size:1em; font-weight:300; letter-spacing:4px; color:var(--text3); font-style:italic; margin-top:4px; }
+    .title-line { width:60px; height:1px; background:linear-gradient(90deg,transparent,var(--p),transparent); margin:16px auto; }
+
+    .theme-panel {
+      background:var(--glass); backdrop-filter:blur(20px);
+      border:1px solid var(--glass-border);
+      border-radius:var(--radius); padding:20px 24px;
+      margin:0 auto 28px; max-width:520px;
+    }
+    .theme-panel-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+    .theme-panel-title { font-family:'Cormorant Garamond',serif; font-size:1em; letter-spacing:3px; text-transform:uppercase; color:var(--p2); font-weight:400; }
+    .theme-presets { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:16px; }
+    .theme-preset { width:30px; height:30px; border-radius:50%; cursor:pointer; transition:transform .2s,box-shadow .2s; border:2px solid transparent; flex-shrink:0; position:relative; }
+    .theme-preset.active { border-color:white; transform:scale(1.15); }
+    .theme-preset:hover { transform:scale(1.2); }
+
+    .card { background:var(--glass); backdrop-filter:blur(24px); border:1px solid var(--glass-border); border-radius:var(--radius); padding:28px; margin-bottom:16px; transition:border-color .25s,background .25s; }
+    .card:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.16); }
+    body.desktop-mode .card { padding:36px; }
+
+    .app-layout { display:block; }
+    body.desktop-mode .app-layout { display:grid; grid-template-columns:400px 1fr; gap:20px; align-items:start; }
+    body.desktop-mode .app-left { position:sticky; top:32px; max-height:calc(100vh - 64px); overflow-y:auto; overflow-x:hidden; scrollbar-width:thin; scrollbar-color:rgba(232,80,122,0.3) transparent; }
+    .app-right { min-width:0; }
+
+    .section-label { font-family:'Cormorant Garamond',serif; font-size:.7em; letter-spacing:4px; text-transform:uppercase; color:var(--p2); font-weight:400; margin-bottom:4px; }
+    h2 { font-family:'Cormorant Garamond',serif; color:white !important; font-size:1.6em; font-weight:300; letter-spacing:1px; margin-bottom:20px; padding-bottom:0; border:none !important; position:relative; }
+    h2::after { content:''; display:block; width:40px; height:2px; background:linear-gradient(90deg,var(--p),transparent); margin-top:8px; transition:width .3s; }
+    .card:hover h2::after { width:70px; }
+
+    .auth-forms { display:grid; grid-template-columns:1fr; gap:24px; }
+    @media(min-width:900px) { body.desktop-mode .auth-forms { grid-template-columns:1fr 1fr; gap:32px; } }
+
+    input[type=text], input[type=email], input[type=password], input[type=datetime-local], textarea, select {
+      width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); border-radius:var(--radius-sm);
+      color:var(--text); padding:13px 16px; font-family:'Noto Sans TC',sans-serif; font-size:14px;
+      margin-bottom:12px; transition:border-color .2s,background .2s,box-shadow .2s; -webkit-appearance:none;
+    }
+    input::placeholder, textarea::placeholder { color:var(--text3); }
+    select option { background:#1a0a1f; color:var(--text); }
+    input:focus, textarea:focus, select:focus { outline:none; border-color:var(--p); background:hsla(var(--hue),78%,62%,0.06); box-shadow:0 0 0 3px hsla(var(--hue),78%,62%,0.12); }
+    textarea { resize:vertical; min-height:90px; line-height:1.6; }
+
+    button {
+      background:linear-gradient(135deg,var(--p),hsl(var(--hue),60%,42%));
+      color:white; border:none; padding:12px 28px; border-radius:40px;
+      font-family:'Noto Sans TC',sans-serif; font-size:14px; font-weight:500;
+      cursor:pointer; letter-spacing:.5px; transition:all .25s;
+      position:relative; overflow:hidden; white-space:nowrap;
+    }
+    button:hover { transform:translateY(-2px); box-shadow:0 8px 24px hsla(var(--hue),78%,62%,0.35); }
+    button:active { transform:translateY(0); }
+    .btn-ghost { background:transparent; border:1px solid var(--glass-border); color:var(--text2); }
+    .btn-ghost:hover { background:var(--glass-hover); border-color:rgba(255,255,255,0.25); box-shadow:none; color:var(--text); }
+    .btn-sm { padding:8px 18px; font-size:12px; }
+
+    .toolbar { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; }
+    .toolbar-buttons { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .record-count { font-family:'Space Mono',monospace; font-size:11px; color:var(--text3); letter-spacing:1px; }
+
+    .form-buttons { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; margin-top:8px; }
+
+    .loading { text-align:center; color:var(--text3); font-style:italic; font-size:13px; padding:20px; letter-spacing:1px; }
+    .empty-state { text-align:center; padding:48px 20px; font-family:'Cormorant Garamond',serif; font-size:1.1em; font-style:italic; color:var(--text3); letter-spacing:1px; }
+    .divider { border:none; border-top:1px solid var(--glass-border); margin:20px 0; }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:transparent; }
+    ::-webkit-scrollbar-thumb { background:hsla(var(--hue),78%,62%,0.3); border-radius:3px; }
+  </style>
+</head>
+<body>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+<div class="orb orb3"></div>
+
+<button class="mode-toggle" onclick="toggleMode()">💻 电脑模式</button>
+
+<div class="container">
+  <header class="site-header">
+    <div class="site-title">MINEJOURNAL</div>
+    <div class="site-subtitle">✦ 我的星光旅程 ✦</div>
+    <div class="title-line"></div>
+  </header>
+
+  <!-- LOGIN -->
+  <div id="loginDiv">
+    <div class="card">
+      <div class="auth-forms">
+        <div>
+          <div class="section-label">Welcome Back</div>
+          <h2>登入</h2>
+          <form id="loginForm">
+            <input type="email" name="email" placeholder="电子邮件" required>
+            <input type="password" name="password" placeholder="密码" required>
+            <button type="submit" style="width:100%">登入</button>
+          </form>
+        </div>
+        <div>
+          <div class="section-label">Join Us</div>
+          <h2>注册</h2>
+          <form id="signupForm">
+            <input type="email" name="email" placeholder="电子邮件" required>
+            <input type="password" name="password" placeholder="密码（至少6个字元）" required minlength="6">
+            <button type="submit" style="width:100%">建立帐号</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="appDiv" style="display:none">
+    <div class="card" style="padding:18px 28px;margin-bottom:16px">
+      <div class="toolbar">
+        <div class="record-count" id="recordCount">载入中…</div>
+        <div class="toolbar-buttons">
+          <button id="logoutBtn">登出</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="section-label">Dashboard</div>
+      <h2>📊 我的演唱会纪录</h2>
+      <div id="recordsList" class="empty-state">暂无纪录</div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signOut, onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBCss32anuzHUC4PkM2AQea0xswIRj9sbM",
+  authDomain: "daily-d5009.firebaseapp.com",
+  projectId: "daily-d5009",
+  storageBucket: "daily-d5009.firebasestorage.app",
+  messagingSenderId: "630564153291",
+  appId: "1:630564153291:web:5f9e7672784fd511b6b84e"
+};
+
+let app, auth;
+try {
+  app = initializeApp(firebaseConfig);
+  auth = getAuth(app);
+} catch(e) { 
+  console.error(e);
+  alert("初始化失败");
+}
+
+// 模式切换
+function toggleMode() {
+  document.body.classList.toggle('desktop-mode');
+}
+
+// 登入
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+  
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    alert('登入失败: ' + error.message);
+  }
+});
+
+// 注册
+document.getElementById('signupForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const email = e.target.email.value;
+  const password = e.target.password.value;
+  
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+  } catch (error) {
+    alert('注册失败: ' + error.message);
+  }
+});
+
+// 登出
+document.getElementById('logoutBtn').addEventListener('click', async () => {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    alert('登出失败: ' + error.message);
+  }
+});
+
+// 监听认证状态
+onAuthStateChanged(auth, (user) => {
+  const loginDiv = document.getElementById('loginDiv');
+  const appDiv = document.getElementById('appDiv');
+  
+  if (user) {
+    loginDiv.style.display = 'none';
+    appDiv.style.display = 'block';
+    document.getElementById('recordCount').textContent = `用户: ${user.email}`;
+  } else {
+    loginDiv.style.display = 'block';
+    appDiv.style.display = 'none';
+  }
+});
+</script>
+</body>
+</html>
