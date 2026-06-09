@@ -1222,14 +1222,6 @@ const UI_TEXT = {
     sortLabel: '排序：', newest:'最新', oldest:'最舊', ratingHigh:'評分高', priceHigh:'票價高', artistAZ:'藝人',
     archive: 'Archive', myRecords:'我的演唱會紀錄', stats:'📊 追星統計',
     searchPlaceholder: '搜尋…', logout: '登出', profile: '個人檔案',
-    wishlist: '🎯 願望', merch: '🛍 周邊', export: '📤 匯出', ticket: '🎫 釋票通知',
-    wishTitle: '🎯 願望清單', wishPlaceholder: '藝人／活動名稱', wishAdd: '✚ 加入願望清單',
-    merchTitle: '🛍 周邊記帳', merchArtist: '藝人 / 活動', merchName: '品項名稱', merchAdd: '✚ 新增周邊記帳',
-    merchUpdate: '💾 更新周邊', merchCancel: '✕ 取消',
-    exportTitle: '📤 匯出資料', exportJson: '📄 匯出 JSON', exportCsv: '📊 匯出 CSV', exportTxt: '📝 匯出純文字',
-    profileTitle: '個人檔案', saveProfile: '儲存', inviteTitle: '邀請好友', joinTitle: '加入好友',
-    artist: '表演者 / 活動名稱', price: '票價', seat: '座位 / 區域', venue: '場地', tags: '標籤', notes: '心得 / 備註',
-    photo: '📸 照片', removePhoto: '🗑 移除照片',
   },
   en: {
     newEntry: 'New Concert Entry', save: '💾 Save', update: '💾 Update',
@@ -1237,14 +1229,6 @@ const UI_TEXT = {
     sortLabel: 'Sort: ', newest:'Newest', oldest:'Oldest', ratingHigh:'Top Rated', priceHigh:'Priciest', artistAZ:'Artist A-Z',
     archive: 'Archive', myRecords: 'My Concert Records', stats:'📊 Statistics',
     searchPlaceholder: 'Search…', logout: 'Logout', profile: 'Profile',
-    wishlist: '🎯 Wishlist', merch: '🛍 Merch', export: '📤 Export', ticket: '🎫 Tickets',
-    wishTitle: '🎯 Bucket List', wishPlaceholder: 'Artist / Event', wishAdd: '✚ Add to Wishlist',
-    merchTitle: '🛍 Merchandise', merchArtist: 'Artist / Event', merchName: 'Item Name', merchAdd: '✚ Add Merch',
-    merchUpdate: '💾 Update Merch', merchCancel: '✕ Cancel',
-    exportTitle: '📤 Export Data', exportJson: '📄 Export JSON', exportCsv: '📊 Export CSV', exportTxt: '📝 Export Text',
-    profileTitle: 'Profile', saveProfile: 'Save', inviteTitle: 'Invite Friends', joinTitle: 'Join a Friend',
-    artist: 'Artist / Event', price: 'Price', seat: 'Seat / Section', venue: 'Venue', tags: 'Tags', notes: 'Notes',
-    photo: '📸 Photo', removePhoto: '🗑 Remove Photo',
   }
 };
 let currentLang = 'zh';
@@ -1252,86 +1236,20 @@ let currentLang = 'zh';
 function applyLang(lang) {
   currentLang = lang;
   const t = UI_TEXT[lang] || UI_TEXT.zh;
-  
-  // Header & Navigation
-  if (!viewingFriendUid) {
-    recordsTitle.textContent = t.myRecords;
-    statsTitle.textContent = t.stats;
-  }
-  archiveLabel.textContent = t.archive;
-  logoutBtn.textContent = t.logout;
-  profileToggleBtn.textContent = t.profile;
-  
-  // Toolbar Buttons
-  document.getElementById('wishlistToggleBtn').textContent = t.wishlist;
-  document.getElementById('merchToggleBtn').textContent = t.merch;
-  document.getElementById('exportToggleBtn').textContent = t.export;
-  document.getElementById('ticketReleaseBtn').textContent = t.ticket;
-
-  // Main Form
-  formTitle.textContent = editingId ? t.update : t.newEntry;
+  formTitle.textContent = t.newEntry;
   submitBtn.textContent = editingId ? t.update : t.save;
   cancelBtn.textContent = t.cancel;
   clearBtn.textContent = t.clear;
-  recordForm.artist.placeholder = t.artist;
-  recordForm.price.placeholder = t.price;
-  recordForm.seat.placeholder = t.seat;
-  recordForm.venue.placeholder = t.venue;
-  recordForm.tags.placeholder = t.tags;
-  recordForm.notes.placeholder = t.notes;
-
-  // Search & Sort
-  searchInput.placeholder = t.searchPlaceholder;
-  const sortLabel = document.querySelector('.sort-label');
-  if (sortLabel) sortLabel.textContent = t.sortLabel;
+  document.querySelector('.sort-label').textContent = t.sortLabel;
   const sortBtns = document.querySelectorAll('.sort-btn');
   const sortKeys = ['newest','oldest','ratingHigh','priceHigh','artistAZ'];
   sortBtns.forEach((b,i) => { if(sortKeys[i]) b.textContent = t[sortKeys[i]]; });
-
-  // Wishlist Card
-  const wishCard = document.getElementById('wishlistCard');
-  if (wishCard) {
-    wishCard.querySelector('h2').textContent = t.wishTitle;
-    document.getElementById('wishArtistInput').placeholder = t.wishPlaceholder;
-    document.getElementById('addWishBtn').textContent = t.wishAdd;
-  }
-
-  // Merch Card
-  const merchCard = document.getElementById('merchCard');
-  if (merchCard) {
-    merchCard.querySelector('h2').textContent = t.merchTitle;
-    document.getElementById('merchArtistInput').placeholder = t.merchArtist;
-    document.getElementById('merchNameInput').placeholder = t.merchName;
-    document.getElementById('addMerchBtn').textContent = merchEditingId ? t.merchUpdate : t.merchAdd;
-    const cancelMerchBtn = document.getElementById('cancelMerchEditBtn');
-    if (cancelMerchBtn) cancelMerchBtn.textContent = t.merchCancel;
-  }
-
-  // Export Panel
-  const exportPanel = document.getElementById('exportPanel');
-  if (exportPanel) {
-    exportPanel.querySelector('h2').textContent = t.exportTitle;
-    document.getElementById('exportJsonBtn').textContent = t.exportJson;
-    document.getElementById('exportCsvBtn').textContent = t.exportCsv;
-    document.getElementById('exportTxtBtn').textContent = t.exportTxt;
-  }
-
-  // Profile Card
-  const profileCard = document.getElementById('profileCard');
-  if (profileCard) {
-    profileCard.querySelector('h2').textContent = t.profileTitle;
-    document.getElementById('saveProfileBtn').textContent = t.saveProfile;
-    profileCard.querySelectorAll('.section-label').forEach(sl => {
-      if (sl.textContent.includes('Invite')) sl.textContent = t.inviteTitle;
-      if (sl.textContent.includes('Join')) sl.textContent = t.joinTitle;
-    });
-  }
-
-  // Re-render lists to update dynamic content
-  renderMerchList();
-  renderWishlist();
-  applyFiltersAndSort();
-
+  archiveLabel.textContent = t.archive;
+  if (!viewingFriendUid) recordsTitle.textContent = t.myRecords;
+  if (!viewingFriendUid) statsTitle.textContent = t.stats;
+  searchInput.placeholder = t.searchPlaceholder;
+  logoutBtn.textContent = t.logout;
+  profileToggleBtn.textContent = t.profile;
   localStorage.setItem('mj_lang_' + (currentUserId||''), lang);
 }
 function loadLangPref() {
@@ -1839,31 +1757,20 @@ function getWishlist(){try{return JSON.parse(localStorage.getItem('wishlist_'+cu
 function saveWishlist(list){localStorage.setItem('wishlist_'+currentUserId,JSON.stringify(list));}
 function renderWishlist(){
   const ul=document.getElementById('wishlistItems'); const list=getWishlist();
-  if(!list.length){
-    ul.innerHTML = `<li class="empty-state" style="padding:20px">${currentLang === 'zh' ? '✦ 還沒有願望，加入你想看的演唱會吧 ✦' : '✦ No wishes yet, add some! ✦'}</li>`;
-    return;
-  }
-  const labelMap = currentLang === 'zh' ? {high:'🔥 超想看',mid:'⭐ 想看',low:'👀 有機會'} : {high:'🔥 Must See',mid:'⭐ Want to See',low:'👀 Maybe'};
-  const clsMap={high:'priority-high',mid:'priority-mid',low:'priority-low'};
-  ul.innerHTML=list.map(item=>`<li class="wishlist-item" data-wid="${item.id}"><div class="wishlist-item-info"><div class="wishlist-artist">${item.artist}</div>${item.note?`<div class="wishlist-note">${item.note}</div>`:''}</div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="wishlist-priority ${clsMap[item.priority]}">${labelMap[item.priority]}</span><button class="wish-convert-btn btn-ghost btn-sm" data-wid="${item.id}" data-artist="${item.artist}">${currentLang === 'zh' ? '✚ 轉為紀錄' : '✚ To Record'}</button><button class="wish-del-btn btn-danger btn-sm" data-wid="${item.id}">✕</button></div></li>`).join('');
-  ul.querySelectorAll('.wish-del-btn').forEach(btn=>btn.addEventListener('click',()=>{saveWishlist(getWishlist().filter(w=>w.id!==parseInt(btn.getAttribute('data-wid'))));renderWishlist();showToast(currentLang === 'zh' ? '已移除' : 'Removed');}));
-  ul.querySelectorAll('.wish-convert-btn').forEach(btn=>btn.addEventListener('click',()=>{const artist=btn.getAttribute('data-artist');const wid=parseInt(btn.getAttribute('data-wid'));recordForm.artist.value=artist;wishlistCard.style.display='none';document.getElementById('formCard').scrollIntoView({behavior:'smooth'});showToast(currentLang === 'zh' ? `✓ 已帶入「${artist}」` : `✓ Loaded "${artist}"`);saveWishlist(getWishlist().filter(w=>w.id!==wid));renderWishlist();}));
+  if(!list.length){ul.innerHTML='<li class="empty-state" style="padding:20px">✦ 還沒有願望，加入你想看的演唱會吧 ✦</li>';return;}
+  const labelMap={high:'🔥 超想看',mid:'⭐ 想看',low:'👀 有機會'};const clsMap={high:'priority-high',mid:'priority-mid',low:'priority-low'};
+  ul.innerHTML=list.map(item=>`<li class="wishlist-item" data-wid="${item.id}"><div class="wishlist-item-info"><div class="wishlist-artist">${item.artist}</div>${item.note?`<div class="wishlist-note">${item.note}</div>`:''}</div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap"><span class="wishlist-priority ${clsMap[item.priority]}">${labelMap[item.priority]}</span><button class="wish-convert-btn btn-ghost btn-sm" data-wid="${item.id}" data-artist="${item.artist}">✚ 轉為紀錄</button><button class="wish-del-btn btn-danger btn-sm" data-wid="${item.id}">✕</button></div></li>`).join('');
+  ul.querySelectorAll('.wish-del-btn').forEach(btn=>btn.addEventListener('click',()=>{saveWishlist(getWishlist().filter(w=>w.id!==parseInt(btn.getAttribute('data-wid'))));renderWishlist();showToast('已移除');}));
+  ul.querySelectorAll('.wish-convert-btn').forEach(btn=>btn.addEventListener('click',()=>{const artist=btn.getAttribute('data-artist');const wid=parseInt(btn.getAttribute('data-wid'));recordForm.artist.value=artist;wishlistCard.style.display='none';document.getElementById('formCard').scrollIntoView({behavior:'smooth'});showToast(`✓ 已帶入「${artist}」`);saveWishlist(getWishlist().filter(w=>w.id!==wid));renderWishlist();}));
 }
 
 // ════════════════════════════════════════
 // 🛍 周邊記帳 MERCH ACCOUNTING
 // ════════════════════════════════════════
 const MERCH_CAT_LABELS = {
-  zh: {
-    album:'💿 專輯', photobook:'📖 寫真集', goods:'🎀 官方周邊',
-    lightstick:'🪄 螢光棒', fanmade:'✂️ 自製周邊', outfit:'👗 演唱會服裝',
-    food:'🍱 現場餐飲', other:'📦 其他'
-  },
-  en: {
-    album:'💿 Album', photobook:'📖 Photobook', goods:'🎀 Official Goods',
-    lightstick:'🪄 Lightstick', fanmade:'✂️ Fanmade', outfit:'👗 Outfit',
-    food:'🍱 Food/Drink', other:'📦 Other'
-  }
+  album:'💿 專輯', photobook:'📖 寫真集', goods:'🎀 官方周邊',
+  lightstick:'🪄 螢光棒', fanmade:'✂️ 自製周邊', outfit:'👗 演唱會服裝',
+  food:'🍱 現場餐飲', other:'📦 其他'
 };
 
 document.getElementById('merchToggleBtn').addEventListener('click', () => {
@@ -1880,56 +1787,18 @@ document.getElementById('addMerchBtn').addEventListener('click', () => {
   const currency = document.getElementById('merchCurrencySelect').value;
   const category = document.getElementById('merchCatSelect').value;
   const note     = document.getElementById('merchNoteInput').value.trim();
-  if (!name && !artist) return showToast(currentLang === 'zh' ? '請輸入品項或藝人名稱' : 'Please enter item or artist name');
-  if (!price) return showToast(currentLang === 'zh' ? '請輸入金額' : 'Please enter price');
-  
-  let list = getMerchList();
-  if (merchEditingId) {
-    list = list.map(item => item.id === merchEditingId ? { ...item, artist, name, price, currency, category, note, updatedAt: new Date().toISOString() } : item);
-    showToast(currentLang === 'zh' ? '✓ 周邊紀錄已更新！' : '✓ Merch updated!');
-    cancelMerchEdit();
-  } else {
-    list.unshift({ id:Date.now(), artist, name, price, currency, category, note, createdAt:new Date().toISOString() });
-    showToast(currentLang === 'zh' ? '✓ 周邊記帳已新增！' : '✓ Merch added!');
-    clearMerchForm();
-  }
+  if (!name && !artist) return showToast('請輸入品項或藝人名稱');
+  if (!price) return showToast('請輸入金額');
+  const list = getMerchList();
+  list.unshift({ id:Date.now(), artist, name, price, currency, category, note, createdAt:new Date().toISOString() });
   saveMerchList(list);
-  renderMerchList();
-});
-
-document.getElementById('cancelMerchEditBtn').addEventListener('click', cancelMerchEdit);
-
-function clearMerchForm() {
   document.getElementById('merchArtistInput').value = '';
   document.getElementById('merchNameInput').value   = '';
   document.getElementById('merchPriceInput').value  = '';
   document.getElementById('merchNoteInput').value   = '';
-}
-
-function cancelMerchEdit() {
-  merchEditingId = null;
-  clearMerchForm();
-  const t = UI_TEXT[currentLang] || UI_TEXT.zh;
-  document.getElementById('addMerchBtn').textContent = t.merchAdd;
-  document.getElementById('cancelMerchEditBtn').style.display = 'none';
-}
-
-function startEditMerch(id) {
-  const item = getMerchList().find(i => i.id === id);
-  if (!item) return;
-  merchEditingId = id;
-  document.getElementById('merchArtistInput').value = item.artist || '';
-  document.getElementById('merchNameInput').value   = item.name || '';
-  document.getElementById('merchPriceInput').value  = item.price || '';
-  document.getElementById('merchCurrencySelect').value = item.currency || 'TWD';
-  document.getElementById('merchCatSelect').value = item.category || 'other';
-  document.getElementById('merchNoteInput').value = item.note || '';
-  
-  const t = UI_TEXT[currentLang] || UI_TEXT.zh;
-  document.getElementById('addMerchBtn').textContent = t.merchUpdate;
-  document.getElementById('cancelMerchEditBtn').style.display = 'inline-block';
-  document.getElementById('merchCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+  renderMerchList();
+  showToast('✓ 周邊記帳已新增！');
+});
 
 function getMerchList() {
   try { return JSON.parse(localStorage.getItem('merch_' + (currentUserId||'guest')) || '[]'); } catch(e) { return []; }
@@ -1943,7 +1812,7 @@ function renderMerchList() {
   const total = document.getElementById('merchTotalBar');
   const list  = getMerchList();
   if (!list.length) {
-    ul.innerHTML = `<li class="empty-state" style="padding:20px">${currentLang === 'zh' ? '✦ 還沒有周邊紀錄，快來記帳吧 ✦' : '✦ No merch records yet ✦'}</li>`;
+    ul.innerHTML = '<li class="empty-state" style="padding:20px">✦ 還沒有周邊紀錄，快來記帳吧 ✦</li>';
     total.style.display = 'none';
     return;
   }
@@ -1956,9 +1825,9 @@ function renderMerchList() {
   });
   total.style.display = 'flex';
   total.innerHTML =
-    `<div class="merch-total-item"><div class="merch-total-val">${list.length}</div><div class="merch-total-label">${currentLang === 'zh' ? '📦 件數' : '📦 Items'}</div></div>` +
+    `<div class="merch-total-item"><div class="merch-total-val">${list.length}</div><div class="merch-total-label">📦 件數</div></div>` +
     Object.entries(byC).map(([cur, amt]) =>
-      `<div class="merch-total-item"><div class="merch-total-val">${getCurrencySymbol(cur)} ${Math.round(amt).toLocaleString()}</div><div class="merch-total-label">${cur} ${currentLang === 'zh' ? '合計' : 'Total'}</div></div>`
+      `<div class="merch-total-item"><div class="merch-total-val">${getCurrencySymbol(cur)} ${Math.round(amt).toLocaleString()}</div><div class="merch-total-label">${cur} 合計</div></div>`
     ).join('');
 
   ul.innerHTML = list.map(item => `
@@ -1968,25 +1837,16 @@ function renderMerchList() {
         <div class="merch-item-sub">${item.artist ? '🎤 ' + item.artist + '　' : ''}${item.note ? '📝 ' + item.note : ''}</div>
       </div>
       <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
-        <span class="merch-cat-pill">${(MERCH_CAT_LABELS[currentLang] || MERCH_CAT_LABELS.zh)[item.category] || item.category}</span>
+        <span class="merch-cat-pill">${MERCH_CAT_LABELS[item.category] || item.category}</span>
         <span style="font-family:'Space Mono',monospace;font-size:13px;color:white;flex-shrink:0">${getCurrencySymbol(item.currency)} ${Math.round(evalPrice(item.price)).toLocaleString()}</span>
-        <div style="display:flex;gap:4px">
-          <button class="merch-edit-btn btn-ghost btn-sm" data-mid="${item.id}">✏️</button>
-          <button class="merch-del-btn btn-danger btn-sm" data-mid="${item.id}">✕</button>
-        </div>
+        <button class="merch-del-btn btn-danger btn-sm" data-mid="${item.id}">✕</button>
       </div>
     </li>`).join('');
 
-  ul.querySelectorAll('.merch-edit-btn').forEach(btn => btn.addEventListener('click', () => {
-    startEditMerch(parseInt(btn.getAttribute('data-mid')));
-  }));
   ul.querySelectorAll('.merch-del-btn').forEach(btn => btn.addEventListener('click', () => {
-    if (confirm(currentLang === 'zh' ? '確定刪除此周邊紀錄？' : 'Delete this merch record?')) {
-      saveMerchList(getMerchList().filter(i => i.id !== parseInt(btn.getAttribute('data-mid'))));
-      if (merchEditingId === parseInt(btn.getAttribute('data-mid'))) cancelMerchEdit();
-      renderMerchList();
-      showToast(currentLang === 'zh' ? '已刪除' : 'Deleted');
-    }
+    saveMerchList(getMerchList().filter(i => i.id !== parseInt(btn.getAttribute('data-mid'))));
+    renderMerchList();
+    showToast('已刪除');
   }));
 }
 
@@ -2133,7 +1993,7 @@ function displayRecords(records, ownerId) {
       </div>`;
     if(!isFriendView&&currentUserId&&d.uid===currentUserId){
       li.querySelector('.edit-btn')?.addEventListener('click',()=>startEdit(r.id,d));
-      li.querySelector('.del-btn')?.addEventListener('click',async()=>{if(confirm(currentLang === 'zh' ? '確定刪除這筆紀錄？' : 'Delete this record?')){await deleteDoc(doc(db,'concerts',r.id));showToast(currentLang === 'zh' ? '🗑 已刪除' : '🗑 Deleted');loadRecords(currentUserId);}});
+      li.querySelector('.del-btn')?.addEventListener('click',async()=>{if(confirm('確定刪除這筆紀錄？')){await deleteDoc(doc(db,'concerts',r.id));showToast('🗑 已刪除');loadRecords(currentUserId);}});
       li.querySelector('.pin-btn')?.addEventListener('click',()=>{togglePin(r.id);showToast(pinnedIds.has(r.id)?'📌 已固定到頂部':'已取消固定');});
     }
     if(isFriendView){
@@ -2186,9 +2046,9 @@ recordForm.addEventListener('submit',async e=>{
   try{
     if(editingId)await updateDoc(doc(db,'concerts',editingId),payload);
     else await addDoc(collection(db,'concerts'),payload);
-    showToast(editingId ? (currentLang === 'zh' ? '✓ 更新成功！' : '✓ Updated!') : (currentLang === 'zh' ? '✓ 新增成功！' : '✓ Added!'));
+    showToast(editingId?'✓ 更新成功！':'✓ 新增成功！');
     cancelEdit(); loadRecords(user.uid);
-  }catch(err){showToast((currentLang === 'zh' ? '儲存失敗：' : 'Save failed: ') + err.message);}
+  }catch(err){showToast('儲存失敗：'+err.message);}
 });
 
 clearBtn.addEventListener('click',()=>{if(confirm('清除表單內容嗎？'))clearForm();});
